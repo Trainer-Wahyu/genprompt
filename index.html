@@ -14,7 +14,7 @@
         <div class="brand-icon">GP</div>
         <div>
           <h1>Generator Prompt Media Pembelajaran Interaktif</h1>
-          <p>Pilih jenis media &bull; Rakit prompt presisi &bull; Siap semat langsung (Embed HTML) di Google Sites</p>
+          <p>Pilih rekomendasi atau isi manual &bull; Rakit prompt presisi &bull; Siap semat di Google Sites</p>
         </div>
       </div>
       <div class="topbar-actions">
@@ -25,14 +25,19 @@
   </header>
 
   <main class="container">
-    <!-- KOLOM KIRI: FORMULIR ADAPTIF -->
+    <!-- KOLOM KIRI: FORMULIR ADAPTIF + OPSI MANUAL -->
     <section>
-      <!-- LANGKAH 0: PILIH JENIS GENERATOR -->
+      <!-- LANGKAH 1: JENIS GENERATOR -->
       <div class="card highlight-card">
         <div class="section-title">
           <span><span class="step-badge">1</span>Pilih Jenis Generator Media</span>
         </div>
         <div id="generatorTypeGrid" class="gen-type-grid"></div>
+
+        <div id="customGenWrap" class="manual-box">
+          <label for="customGenInput">Tulis Jenis Media yang Diinginkan (Manual)</label>
+          <input type="text" id="customGenInput" placeholder="Contoh: Modul Praktikum Interaktif + Kuis Refleksi Mandiri" />
+        </div>
       </div>
 
       <!-- LANGKAH 2: JENJANG & KELAS -->
@@ -44,8 +49,18 @@
         <span class="sub-label">Jenjang Pendidikan</span>
         <div id="stageGrid" class="stage-grid"></div>
 
+        <div id="customStageWrap" class="manual-box" style="margin-bottom: 14px;">
+          <label for="customStageInput">Nama Jenjang / Sasaran Peserta Didik (Manual)</label>
+          <input type="text" id="customStageInput" placeholder="Contoh: PAUD / TK B, Mahasiswa Semester 1, atau Peserta Pelatihan" />
+        </div>
+
         <span class="sub-label">Pilih Kelas / Fase</span>
         <div id="gradePills" class="grade-pills"></div>
+
+        <div id="customGradeWrap" class="manual-box" style="margin-bottom: 12px;">
+          <label for="customGradeInput">Tulis Kelas / Fase / Tingkat Secara Manual</label>
+          <input type="text" id="customGradeInput" placeholder="Contoh: Kelas 8 Akselerasi, Fase F Lanjutan, atau Tingkat Dasar" />
+        </div>
 
         <div id="levelBadge" class="info-box"></div>
       </div>
@@ -58,9 +73,10 @@
         </div>
         <div id="subjectGrid" class="subject-grid"></div>
 
-        <div id="customSubjectWrap" class="custom-subject-wrap">
-          <label for="customSubjectInput">Nama Konsentrasi Keahlian / Mapel Produktif SMK</label>
-          <input type="text" id="customSubjectInput" placeholder="Contoh: Teknik Kendaraan Ringan, Akuntansi, TJKT, atau Tata Boga" />
+        <div id="customSubjectWrap" class="manual-box">
+          <label for="customSubjectInput" id="customSubjectLabel">Tulis Nama Mata Pelajaran / Konsentrasi Keahlian</label>
+          <input type="text" id="customSubjectInput" placeholder="Contoh: Bahasa Daerah, Antropologi, Akuntansi Keuangan, atau Teknik Otomotif" />
+          <div class="hint">Isian ini akan menggantikan nama mata pelajaran di dalam struktur prompt.</div>
         </div>
       </div>
 
@@ -82,7 +98,7 @@
         </div>
       </div>
 
-      <!-- LANGKAH 5: MEKANIKA & FORMAT (DINAMIS SESUAI JENIS GENERATOR) -->
+      <!-- LANGKAH 5: MEKANIKA & FORMAT (DENGAN OPSI MANUAL) -->
       <div class="card">
         <div class="section-title">
           <span id="step5Title"><span class="step-badge">5</span>Spesifikasi Interaktivitas &amp; Format</span>
@@ -91,14 +107,24 @@
         <span class="sub-label" id="mechanicSubLabel">Pilih Bentuk Interaktivitas</span>
         <div id="mechanicGrid" class="option-grid"></div>
 
+        <div id="customMechanicWrap" class="manual-box">
+          <label for="customMechanicInput">Jelaskan Bentuk Interaktivitas / Permainan Manual Anda</label>
+          <textarea id="customMechanicInput" placeholder="Contoh: Siswa menyusun potongan puzzle peta wilayah, lalu muncul pertanyaan saat tiap potongan terpasang."></textarea>
+        </div>
+
         <div class="field" style="margin-top: 14px;">
           <label for="mechanicDetail" id="detailLabel">Detail Variabel / Objek / Aturan Main (Opsional namun Disarankan)</label>
           <textarea id="mechanicDetail" placeholder="Tuliskan rentang angka, daftar objek, atau aturan khusus yang diinginkan..."></textarea>
         </div>
 
         <div style="margin-top: 18px;">
-          <span class="sub-label" id="subOptionLabel">Format Struktur Tampilan</span>
+          <span class="sub-label" id="subOptionLabel">Format Struktur Alur Belajar</span>
           <div id="subOptionGrid" class="option-grid"></div>
+
+          <div id="customSubOptionWrap" class="manual-box">
+            <label for="customSubOptionInput">Jelaskan Format Tata Letak / Alur Belajar Manual Anda</label>
+            <textarea id="customSubOptionInput" placeholder="Contoh: Layar dibagi atas-bawah; bagian atas menampilkan video/ilustrasi utama, bagian bawah berisi 5 kartu soal interaktif berurutan."></textarea>
+          </div>
         </div>
       </div>
 
@@ -116,6 +142,11 @@
         <div class="field">
           <label>Fitur Tambahan (Otomatis Aman untuk Embed HTML Google Sites)</label>
           <div id="featureToggles" class="toggle-list"></div>
+        </div>
+
+        <div class="field" style="margin-top: 12px;">
+          <label for="customFeatureInput">Instruksi Fitur / Aturan Tambahan Manual (Opsional)</label>
+          <input type="text" id="customFeatureInput" placeholder="Contoh: Gunakan nuansa warna hijau pastel dan sertakan tombol cetak/reset di pojok kanan." />
         </div>
       </div>
     </section>
