@@ -1,5 +1,5 @@
 /* =========================================================================
-   DATA REFERENSI: JENIS GENERATOR, JENJANG, MAPEL INDIVIDUAL, & OPSI FITUR
+   DATA REFERENSI: JENIS GENERATOR, JENJANG, MAPEL INDIVIDUAL, & OPSI MANUAL
    ========================================================================= */
 
 const GENERATOR_TYPES = {
@@ -133,6 +133,35 @@ const GENERATOR_TYPES = {
         ]
       }
     }
+  },
+
+  custom_gen: {
+    id: "custom_gen",
+    badge: "+ Isi Manual",
+    title: "Jenis Media Kustom / Bebas",
+    desc: "Tentukan sendiri bentuk media gabungan atau format unik sesuai kebutuhan kelas Anda.",
+    isManual: true,
+    step5Title: "Spesifikasi Mekanika & Format Media Kustom",
+    mechanicLabel: "Pilih Dasar Mekanika atau Isi Manual",
+    detailLabel: "Rincian Alur Kerja, Komponen Layar, dan Cara Siswa Berinteraksi",
+    detailPlaceholder: "Jelaskan secara bebas apa yang tampil di layar awal, tengah, dan akhir...",
+    subOptionLabel: "Pilih Struktur Dasar atau Isi Manual",
+    subOptions: {
+      alur_4_tahap: {
+        label: "Struktur 4 Tahap Bertahap",
+        desc: "Apersepsi → Eksplorasi → Tantangan → Rangkuman dalam satu layar.",
+        spec: [
+          "Bangun dalam satu viewport (100vh) dengan alur bertahap: Apersepsi singkat, Area Eksplorasi Utama, Tantangan Evaluasi Instan, dan Layar Rangkuman."
+        ]
+      },
+      split_bebas: {
+        label: "Layar Belah (Split-Screen 70:30)",
+        desc: "Area interaksi utama di kiri/atas, panel panduan & kontrol di kanan/bawah.",
+        spec: [
+          "Bangun dalam satu viewport (100vh) dengan tata letak layar belah: 70% area interaksi utama dan 30% panel kontrol serta panduan konsep singkat."
+        ]
+      }
+    }
   }
 };
 
@@ -229,6 +258,14 @@ const COGNITIVE_PROFILES = {
       "Sediakan antarmuka bergaya panel kontrol/simulator terapan yang menekankan ketepatan prosedur, keselamatan kerja (K3), dan pembacaan indikator presisi.",
       "Rancang tantangan berbentuk simulasi pemecahan masalah lapangan (troubleshooting) atau efisiensi kerja."
     ]
+  },
+  umum_manual: {
+    badge: "Mode Kustom / Umum: Antarmuka bersih, bahasa Indonesia komunikatif terstruktur, instruksi jelas, dan kontrol interaktif yang proporsional dengan sasaran peserta didik.",
+    autoTTS: false,
+    promptSpec: [
+      "Sesuaikan gaya bahasa, kedalaman materi, dan kompleksitas kontrol antarmuka secara proporsional dengan tingkat perkembangan sasaran peserta didik yang disebutkan.",
+      "Pastikan instruksi penggunaan jelas sejak layar pertama dan berikan umpan balik yang membangun pada setiap interaksi."
+    ]
   }
 };
 
@@ -318,6 +355,28 @@ const STAGE_DATA = {
       "bahasa_indonesia",
       "bahasa_inggris",
       "sejarah",
+      "pendidikan_pancasila",
+      "pendidikan_agama",
+      "seni_budaya",
+      "pjok"
+    ]
+  },
+  lainnya: {
+    short: "Lainnya",
+    sub: "Isi Manual",
+    isManual: true,
+    grades: [
+      { id: "paud", label: "PAUD / TK", profile: "sd_rendah" },
+      { id: "pt", label: "Perguruan Tinggi", profile: "sma" },
+      { id: "umum", label: "Umum / Pelatihan", profile: "umum_manual" }
+    ],
+    subjects: [
+      "matematika",
+      "bahasa_indonesia",
+      "bahasa_inggris",
+      "ipa",
+      "ips",
+      "informatika",
       "pendidikan_pancasila",
       "pendidikan_agama",
       "seni_budaya",
@@ -935,56 +994,56 @@ const EXTRA_FEATURES = [
     id: "optAudio",
     label: "Efek Suara Umpan Balik (Web Audio)",
     checked: true,
-    modes: ["simulasi", "game", "skenario"],
+    modes: ["simulasi", "game", "skenario", "custom_gen"],
     rule: "Sertakan efek suara umpan balik halus (klik, benar, salah, selesai) menggunakan Web Audio API murni bawaan peramban yang aktif setelah klik pertama siswa, dilengkapi tombol mute."
   },
   {
     id: "optScoreCopy",
     label: "Tombol Salin Bukti Skor (Google Form)",
     checked: true,
-    modes: ["simulasi", "game", "skenario"],
+    modes: ["simulasi", "game", "skenario", "custom_gen"],
     rule: "Pada layar akhir, sediakan tombol 'Salin Bukti Belajar' ke clipboard (dengan fallback execCommand agar berjalan di sandbox Google Sites) berisi nama/topik, skor, dan kode validasi unik untuk ditempel siswa ke Google Form."
   },
   {
     id: "optA11y",
     label: "Tombol Layar Penuh & Ukuran Teks",
     checked: true,
-    modes: ["simulasi", "game", "skenario"],
+    modes: ["simulasi", "game", "skenario", "custom_gen"],
     rule: "Sediakan bilah atas ringkas berisi tombol Layar Penuh (Fullscreen Toggle) dan pengatur ukuran huruf (A- / A+)."
   },
   {
     id: "optHints",
     label: "Petunjuk Bertahap saat Siswa Salah",
     checked: true,
-    modes: ["simulasi", "game", "skenario"],
+    modes: ["simulasi", "game", "skenario", "custom_gen"],
     rule: "Sediakan petunjuk bertahap (progressive hints) dan pembahasan singkat setiap kali siswa melakukan kesalahan."
   },
   {
     id: "optTTS",
     label: "Pembaca Teks Suara (TTS Indonesia)",
     checked: false,
-    modes: ["simulasi", "game", "skenario"],
+    modes: ["simulasi", "game", "skenario", "custom_gen"],
     rule: "Sertakan fitur pembaca teks otomatis/klik (Text-to-Speech via Web Speech API) pada instruksi dan soal/kartu materi."
   },
   {
     id: "optDataTable",
     label: "Tabel Data Pengamatan Otomatis",
     checked: false,
-    modes: ["simulasi"],
+    modes: ["simulasi", "custom_gen"],
     rule: "Sediakan tombol 'Catat Data ke Tabel' dan tabel log pengamatan otomatis di panel samping untuk merekam hasil percobaan variabel siswa beserta tombol salin tabel."
   },
   {
     id: "optCapturePng",
     label: "Unduh Bukti Simulasi/Sertifikat (PNG)",
     checked: false,
-    modes: ["simulasi", "game", "skenario"],
+    modes: ["simulasi", "game", "skenario", "custom_gen"],
     rule: "Sediakan tombol 'Simpan Gambar Hasil (PNG)' menggunakan konversi Canvas lokal agar siswa dapat mengunduh bukti hasil percobaan/skor tanpa perlu koneksi server."
   },
   {
     id: "optHighContrast",
     label: "Dukungan Mode Kontras Tinggi",
     checked: false,
-    modes: ["simulasi", "game", "skenario"],
+    modes: ["simulasi", "game", "skenario", "custom_gen"],
     rule: "Sediakan tombol pengalih Mode Kontras Tinggi untuk meningkatkan keterbacaan teks."
   }
 ];
