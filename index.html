@@ -17,10 +17,7 @@
       --primary-hover: #4338ca;
       --primary-soft: #eef2ff;
       --success: #059669;
-      --success-soft: #ecfdf5;
       --warning: #d97706;
-      --warning-soft: #fffbeb;
-      --danger: #dc2626;
       --radius: 12px;
       --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
     }
@@ -79,7 +76,7 @@
     }
 
     .brand h1 {
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       font-weight: 700;
       color: var(--text);
     }
@@ -101,7 +98,7 @@
       margin: 24px auto 0;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 24px;
       align-items: start;
     }
@@ -150,19 +147,184 @@
       margin-right: 8px;
     }
 
-    /* Form Controls */
-    .form-grid {
+    .sub-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* Jenjang Selector (4 Kolom) */
+    .stage-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
     @media (max-width: 600px) {
-      .form-grid {
+      .stage-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stage-btn {
+      border: 1.5px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 10px;
+      padding: 12px 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .stage-btn:hover {
+      border-color: #a5b4fc;
+      background: #fff;
+    }
+
+    .stage-btn.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.12);
+    }
+
+    .stage-btn strong {
+      display: block;
+      font-size: 0.98rem;
+      color: var(--text);
+    }
+
+    .stage-btn span {
+      display: block;
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .stage-btn.active strong {
+      color: var(--primary);
+    }
+
+    /* Kelas / Fase Pills */
+    .grade-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .grade-pill {
+      border: 1.5px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      padding: 7px 13px;
+      border-radius: 99px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .grade-pill:hover {
+      border-color: #a5b4fc;
+      background: var(--surface-soft);
+    }
+
+    .grade-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Level Cognitive Info Box */
+    .info-box {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      color: #312e81;
+    }
+
+    /* Subject Grid (Terpisah) */
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .subject-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 440px) {
+      .subject-grid {
         grid-template-columns: 1fr;
       }
     }
 
+    .subject-card {
+      border: 1.5px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 10px;
+      padding: 11px 12px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+
+    .subject-card:hover {
+      border-color: #a5b4fc;
+      background: #fff;
+    }
+
+    .subject-card.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.12);
+    }
+
+    .subject-code {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .subject-card.active .subject-code {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .subject-info strong {
+      display: block;
+      font-size: 0.84rem;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .subject-info span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.25;
+    }
+
+    /* Form Controls */
     .field {
       margin-bottom: 14px;
     }
@@ -187,7 +349,6 @@
     }
 
     input[type="text"],
-    select,
     textarea {
       width: 100%;
       padding: 10px 12px;
@@ -201,7 +362,6 @@
     }
 
     input[type="text"]:focus,
-    select:focus,
     textarea:focus {
       outline: none;
       border-color: var(--border-focus);
@@ -211,17 +371,6 @@
     textarea {
       resize: vertical;
       min-height: 76px;
-    }
-
-    /* Level Cognitive Info Box */
-    .info-box {
-      background: var(--primary-soft);
-      border-left: 4px solid var(--primary);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 0.82rem;
-      color: #312e81;
-      margin-top: 8px;
     }
 
     /* Option Cards (Interactivity & Format) */
@@ -367,6 +516,24 @@
       top: 84px;
     }
 
+    /* Active Selection Summary Chips */
+    .active-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: 1px solid #c7d2fe;
+    }
+
     /* Precision Meter */
     .meter-wrap {
       margin-bottom: 14px;
@@ -467,8 +634,8 @@
     /* Output Box */
     .prompt-output {
       width: 100%;
-      min-height: 330px;
-      max-height: 440px;
+      min-height: 320px;
+      max-height: 430px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 0.81rem;
       line-height: 1.55;
@@ -582,28 +749,39 @@
   </header>
 
   <main class="container">
-    <!-- KOLOM KIRI: FORMULIR GURU -->
+    <!-- KOLOM KIRI: FORMULIR TERPISAH PER LANGKAH -->
     <section>
-      <!-- Blok 1: Identitas Kurikulum -->
+      <!-- LANGKAH 1: JENJANG & KELAS (TERPISAH) -->
       <div class="card">
         <div class="section-title">
-          <span><span class="step-badge">1</span>Konteks Kurikulum &amp; Jenjang</span>
+          <span><span class="step-badge">1</span>Pilih Jenjang &amp; Kelas</span>
         </div>
 
-        <div class="form-grid">
-          <div class="field">
-            <label for="subjectSelect">Mata Pelajaran</label>
-            <select id="subjectSelect"></select>
-          </div>
-          <div class="field">
-            <label for="levelSelect">Jenjang &amp; Fase</label>
-            <select id="levelSelect"></select>
-          </div>
-        </div>
+        <span class="sub-label">Jenjang Pendidikan</span>
+        <div id="stageGrid" class="stage-grid"></div>
+
+        <span class="sub-label">Pilih Kelas / Fase</span>
+        <div id="gradePills" class="grade-pills"></div>
 
         <div id="levelBadge" class="info-box"></div>
+      </div>
 
-        <div class="field" style="margin-top: 14px;">
+      <!-- LANGKAH 2: MATA PELAJARAN (TERPISAH) -->
+      <div class="card">
+        <div class="section-title">
+          <span><span class="step-badge">2</span>Pilih Mata Pelajaran</span>
+        </div>
+        <div id="subjectGrid" class="subject-grid"></div>
+      </div>
+
+      <!-- LANGKAH 3: TOPIK & TUJUAN PEMBELAJARAN -->
+      <div class="card">
+        <div class="section-title">
+          <span><span class="step-badge">3</span>Topik &amp; Tujuan Pembelajaran</span>
+          <button type="button" class="btn btn-soft btn-sm" id="btnLoadPresetInline">Isi Contoh Cepat</button>
+        </div>
+
+        <div class="field">
           <label for="topicInput">Topik / Judul Materi</label>
           <input type="text" id="topicInput" placeholder="Contoh: Perubahan Wujud Zat & Kalor" />
         </div>
@@ -614,11 +792,13 @@
         </div>
       </div>
 
-      <!-- Blok 2: Interaktivitas Khusus Mapel -->
+      <!-- LANGKAH 4: JENIS INTERAKTIVITAS & FORMAT ALUR -->
       <div class="card">
         <div class="section-title">
-          <span><span class="step-badge">2</span>Jenis Interaktivitas Sesuai Mapel</span>
+          <span><span class="step-badge">4</span>Jenis Interaktivitas &amp; Format Alur</span>
         </div>
+
+        <span class="sub-label" id="interactivitySubLabel">Pilihan Interaktivitas Sesuai Mapel</span>
         <div id="interactivityGrid" class="option-grid"></div>
 
         <div class="field" style="margin-top: 14px;">
@@ -626,20 +806,17 @@
           <textarea id="mechanicDetail" placeholder="Contoh: Sediakan 3 pilihan zat (Air, Besi, Oksigen) dan slider suhu dari -50°C hingga 150°C dengan tampilan partikel bergerak di kanvas."></textarea>
           <div class="hint">Semakin spesifik objek, rentang angka, atau kasus yang ditulis, semakin presisi hasil kode Gemini AI.</div>
         </div>
-      </div>
 
-      <!-- Blok 3: Format Struktur Media -->
-      <div class="card">
-        <div class="section-title">
-          <span><span class="step-badge">3</span>Format Alur Pembelajaran</span>
+        <div style="margin-top: 18px;">
+          <span class="sub-label">Format Struktur Alur Belajar</span>
+          <div id="formatGrid" class="option-grid"></div>
         </div>
-        <div id="formatGrid" class="option-grid"></div>
       </div>
 
-      <!-- Blok 4: Pengaman Presisi & Aksesibilitas Google Sites -->
+      <!-- LANGKAH 5: PENGAMAN PRESISI & AKSESIBILITAS -->
       <div class="card">
         <div class="section-title">
-          <span><span class="step-badge">4</span>Pengaman Presisi, Materi Kunci &amp; Aksesibilitas</span>
+          <span><span class="step-badge">5</span>Pengaman Presisi, Materi Kunci &amp; Aksesibilitas</span>
         </div>
 
         <div class="field">
@@ -688,6 +865,9 @@
           <span id="charCount" style="font-size: 0.76rem; color: var(--text-muted); font-weight: 500;">0 karakter</span>
         </div>
 
+        <!-- Ringkasan Pilihan Aktif -->
+        <div id="activeChips" class="active-chips"></div>
+
         <!-- Meteran Presisi -->
         <div class="meter-wrap">
           <div class="meter-head">
@@ -706,7 +886,7 @@
           <button type="button" class="mode-btn" data-mode="iterative">Mode 3 Putaran (Anti-Terpotong)</button>
         </div>
 
-        <!-- Tab Putaran (Muncul hanya di Mode 3 Putaran) -->
+        <!-- Tab Putaran -->
         <div id="iterTabs" class="iter-tabs">
           <button type="button" class="iter-tab active" data-step="0">Putaran 1: Inti</button>
           <button type="button" class="iter-tab" data-step="1">Putaran 2: Alur</button>
@@ -746,13 +926,12 @@
 
   <script>
     /* =========================================================================
-       1. DATA REFERENSI MATA PELAJARAN, JENJANG, DAN FORMAT MEDIA
+       1. DATA JENJANG & KELAS (TERPISAH) SERTA PROFIL KOGNITIF
        ========================================================================= */
 
-    const LEVEL_DATA = {
+    const COGNITIVE_PROFILES = {
       sd_rendah: {
-        label: "SD Kelas 1–3 (Fase A–B)",
-        badge: "Mode SD Awal: Tombol ekstra besar ramah sentuh, bahasa sangat sederhana (maks 8–10 kata/kartu), visual cerah, maksimal 2 kontrol interaksi, dan dukungan suara TTS disarankan aktif.",
+        badge: "Mode SD Awal: Tombol ekstra besar ramah sentuh (52px+), bahasa sangat sederhana (maks 8–10 kata/kartu), visual cerah, maksimal 2 kontrol interaksi, dan suara TTS otomatis diaktifkan.",
         autoTTS: true,
         promptSpec: [
           "Gunakan bahasa Indonesia sangat sederhana, ramah anak, maksimal 8–10 kata per kartu instruksi.",
@@ -762,7 +941,6 @@
         ]
       },
       sd_tinggi: {
-        label: "SD Kelas 4–6 (Fase C)",
         badge: "Mode SD Atas: Bahasa komunikatif kontekstual, 2–3 kontrol interaksi terpandu, kartu langkah singkat, dan tantangan berbasis eksplorasi permainan.",
         autoTTS: false,
         promptSpec: [
@@ -772,7 +950,6 @@
         ]
       },
       smp: {
-        label: "SMP Kelas 7–9 (Fase D)",
         badge: "Mode SMP: Bahasa semi-formal dengan istilah kunci ber-glosarium, kombinasi 2–3 variabel interaktif, dan misi eksperimen berumpan balik konseptual.",
         autoTTS: false,
         promptSpec: [
@@ -781,21 +958,77 @@
           "Rancang tantangan berbentuk misi eksperimen atau studi kasus terstruktur dengan petunjuk bertahap."
         ]
       },
-      sma_smk: {
-        label: "SMA / SMK Kelas 10–12 (Fase E–F)",
-        badge: "Mode SMA/SMK: Tampilan laboratorium/analitis modern, dukungan multi-variabel presisi, grafik real-time, terminologi ilmiah/vokasi baku, dan penalaran HOTS.",
+      sma: {
+        badge: "Mode SMA: Antarmuka bergaya laboratorium/analitis modern, dukungan multi-variabel presisi, grafik real-time, terminologi ilmiah baku, dan penalaran HOTS.",
         autoTTS: false,
         promptSpec: [
-          "Gunakan terminologi ilmiah/vokasi yang baku, akurat, dan mendorong penalaran tingkat tinggi (HOTS).",
+          "Gunakan terminologi ilmiah yang baku, akurat, dan mendorong penalaran tingkat tinggi (HOTS).",
           "Gunakan antarmuka bersih bergaya laboratorium/analitis modern yang mendukung multi-variabel presisi dan pembacaan data atau grafik real-time.",
           "Rancang tantangan berbasis pemecahan masalah kompleks, optimasi parameter, atau analisis skenario bercabang."
+        ]
+      },
+      smk: {
+        badge: "Mode SMK (Vokasi): Konteks terapan dunia kerja/industri, simulasi prosedur kerja & troubleshooting, parameter alat ukur presisi, dan studi kasus efisiensi praktik.",
+        autoTTS: false,
+        promptSpec: [
+          "Gunakan terminologi vokasi/industri yang akurat dan kaitkan konteks pembelajaran dengan skenario praktik kerja nyata.",
+          "Sediakan antarmuka bergaya panel kontrol/simulator terapan yang menekankan ketepatan prosedur, keselamatan kerja, dan pembacaan indikator/parameter presisi.",
+          "Rancang tantangan berbentuk simulasi pemecahan masalah lapangan (troubleshooting) atau efisiensi kerja."
         ]
       }
     };
 
+    const STAGE_DATA = {
+      sd: {
+        short: "SD",
+        sub: "Fase A – C",
+        grades: [
+          { id: "sd1", label: "Kelas 1 (Fase A)", profile: "sd_rendah" },
+          { id: "sd2", label: "Kelas 2 (Fase A)", profile: "sd_rendah" },
+          { id: "sd3", label: "Kelas 3 (Fase B)", profile: "sd_rendah" },
+          { id: "sd4", label: "Kelas 4 (Fase B)", profile: "sd_tinggi" },
+          { id: "sd5", label: "Kelas 5 (Fase C)", profile: "sd_tinggi" },
+          { id: "sd6", label: "Kelas 6 (Fase C)", profile: "sd_tinggi" }
+        ]
+      },
+      smp: {
+        short: "SMP",
+        sub: "Fase D",
+        grades: [
+          { id: "smp7", label: "Kelas 7 (Fase D)", profile: "smp" },
+          { id: "smp8", label: "Kelas 8 (Fase D)", profile: "smp" },
+          { id: "smp9", label: "Kelas 9 (Fase D)", profile: "smp" }
+        ]
+      },
+      sma: {
+        short: "SMA",
+        sub: "Fase E – F",
+        grades: [
+          { id: "sma10", label: "Kelas 10 (Fase E)", profile: "sma" },
+          { id: "sma11", label: "Kelas 11 (Fase F)", profile: "sma" },
+          { id: "sma12", label: "Kelas 12 (Fase F)", profile: "sma" }
+        ]
+      },
+      smk: {
+        short: "SMK",
+        sub: "Fase E – F (Vokasi)",
+        grades: [
+          { id: "smk10", label: "Kelas 10 (Fase E)", profile: "smk" },
+          { id: "smk11", label: "Kelas 11 (Fase F)", profile: "smk" },
+          { id: "smk12", label: "Kelas 12 (Fase F)", profile: "smk" }
+        ]
+      }
+    };
+
+    /* =========================================================================
+       2. DATA MATA PELAJARAN (TERPISAH) & FORMAT MEDIA
+       ========================================================================= */
+
     const SUBJECT_DATA = {
       matematika: {
+        code: "MTK",
         name: "Matematika",
+        sub: "Numerasi, Aljabar, Geometri",
         interactivities: [
           {
             id: "manipulatif",
@@ -830,7 +1063,9 @@
         }
       },
       ipa: {
-        name: "IPA (Fisika, Kimia, Biologi)",
+        code: "IPA",
+        name: "IPA / IPAS",
+        sub: "Fisika, Kimia, Biologi",
         interactivities: [
           {
             id: "lab_virtual",
@@ -865,7 +1100,9 @@
         }
       },
       bahasa: {
-        name: "Bahasa (Indonesia, Inggris, Asing)",
+        code: "BHS",
+        name: "Bahasa",
+        sub: "Indonesia, Inggris, Asing",
         interactivities: [
           {
             id: "teks_glosarium",
@@ -900,7 +1137,9 @@
         }
       },
       ips: {
-        name: "IPS (Sejarah, Geografi, Ekonomi, Sosiologi)",
+        code: "IPS",
+        name: "IPS",
+        sub: "Sejarah, Geografi, Ekonomi",
         interactivities: [
           {
             id: "timeline",
@@ -929,7 +1168,9 @@
         }
       },
       ppkn: {
-        name: "Pendidikan Pancasila & Kewarganegaraan (PPKn)",
+        code: "PKN",
+        name: "PPKn / Pancasila",
+        sub: "Norma, Hukum, Kewarganegaraan",
         interactivities: [
           {
             id: "dilema_etika",
@@ -945,7 +1186,7 @@
           },
           {
             id: "klasifikasi_norma",
-            label: "Papan Klasifikasi Norma & Hak-Kewajiban",
+            label: "Papan Klasifikasi Norma & Hak",
             desc: "Drag-and-drop kartu kasus perilaku ke kategori norma/hak/kewajiban.",
             spec: "Sediakan papan kategorisasi drag-and-drop kartu studi kasus perilaku sehari-hari ke dalam kolom kategori (misal Norma Agama, Kesusilaan, Kesopanan, Hukum) lengkap dengan penjelasan sanksi dan alasannya saat dijatuhkan."
           },
@@ -964,7 +1205,9 @@
         }
       },
       agama: {
-        name: "Pendidikan Agama & Budi Pekerti",
+        code: "AGM",
+        name: "Pendidikan Agama",
+        sub: "Ibadah, Kitab, Akhlak, Sejarah",
         interactivities: [
           {
             id: "urutan_ibadah",
@@ -974,7 +1217,7 @@
           },
           {
             id: "eksplorator_teks",
-            label: "Eksplorator Teks Suci & Kaidah Bacaan",
+            label: "Eksplorator Teks Suci & Kaidah",
             desc: "Klik per frasa untuk melihat arti kata, konteks, dan sorotan warna kaidah bacaan.",
             spec: "Tampilkan teks/ayat dengan pewarnaan semantik pada kaidah bacaan (misal tajwid atau struktur ayat); saat tiap potongan frasa diklik, tampilkan penjelasan kaidah, terjemahan per kata, dan konteks pesannya."
           },
@@ -986,7 +1229,7 @@
           },
           {
             id: "peta_sejarah_agama",
-            label: "Peta Jejak Sejarah & Tokoh Teladan",
+            label: "Peta Jejak Sejarah & Tokoh",
             desc: "Peta vektor rute sejarah peradaban dan kartu nilai keteladanan tokoh.",
             spec: "Bangun peta rute sejarah berbasis SVG interaktif dengan titik-titik persinggahan berurutan yang menampilkan kisah singkat dan nilai keteladanan yang relevan bagi kehidupan modern."
           }
@@ -999,7 +1242,9 @@
         }
       },
       seni: {
-        name: "Seni Budaya & Prakarya",
+        code: "SNI",
+        name: "Seni & Prakarya",
+        sub: "Rupa, Musik, Desain, Budaya",
         interactivities: [
           {
             id: "warna_komposisi",
@@ -1028,7 +1273,9 @@
         }
       },
       pjok: {
-        name: "PJOK (Olahraga & Kesehatan)",
+        code: "PJK",
+        name: "PJOK",
+        sub: "Olahraga, Taktik, Kesehatan",
         interactivities: [
           {
             id: "papan_taktik",
@@ -1054,6 +1301,37 @@
           objective: "Siswa mampu memahami peran 5 posisi pemain bola basket dan merancang pola pergerakan dasar saat menyerang.",
           detail: "Sediakan setengah lapangan basket SVG, 5 pion penyerang (PG, SG, SF, PF, C) dan 5 pion bertahan yang bisa digeser, tombol preset formasi (1-2-2 dan 1-3-1), serta tombol animasi jalur operan.",
           misconception: "Pastikan siswa memahami aturan area 3 detik (paint area) dan perbedaan tugas Point Guard sebagai pengatur serangan dengan Center di bawah ring."
+        }
+      },
+      informatika: {
+        code: "TIK",
+        name: "Informatika / Kejuruan",
+        sub: "Logika, Jaringan, Simulasi Alat",
+        interactivities: [
+          {
+            id: "algoritma_visual",
+            label: "Visualisasi Algoritma & Flowchart",
+            desc: "Jalankan blok perintah langkah demi langkah dan lihat perubahan variabel.",
+            spec: "Bangun simulator eksekusi algoritma/logika (seperti urutan blok perintah, gerbang logika, atau sorting) dengan tombol 'Jalankan per Langkah (Step)' yang menyorot alur aktif dan perubahan nilai variabel secara real-time."
+          },
+          {
+            id: "simulasi_alat",
+            label: "Simulator Panel Alat & Rangkaian",
+            desc: "Hubungkan komponen/kabel atau atur sakelar untuk menguji fungsi sistem.",
+            spec: "Bangun papan simulasi teknis (seperti topologi jaringan, rangkaian elektronika, atau panel mesin) di mana siswa menyambungkan komponen/mengatur sakelar dan mengamati indikator status sistem serta pesan error jika salah sambung."
+          },
+          {
+            id: "troubleshooting",
+            label: "Misi Diagnosis & Troubleshooting",
+            desc: "Temukan sumber kerusakan sistem dari gejala yang muncul secara sistematis.",
+            spec: "Bangun skenario diagnosis kerusakan teknis di mana siswa memilih alat uji virtual untuk memeriksa tiap komponen, menemukan titik gangguan, dan menerapkan langkah perbaikan yang sesuai SOP."
+          }
+        ],
+        preset: {
+          topic: "Gerbang Logika Dasar (AND, OR, NOT) & Tabel Kebenaran",
+          objective: "Siswa mampu menguji kombinasi input biner (0 dan 1) pada gerbang logika AND, OR, dan NOT serta memverifikasi output lampunya.",
+          detail: "Sediakan 2 sakelar input biner (0/1), pemilih jenis gerbang logika SVG, jalur kabel yang menyala saat berarus (1), indikator lampu output, serta tabel kebenaran yang menyorot baris aktif secara otomatis.",
+          misconception: "Tegaskan bahwa gerbang OR menghasilkan output 1 meskipun kedua input bernilai 1 (berbeda dengan XOR)."
         }
       }
     };
@@ -1103,26 +1381,29 @@
     };
 
     /* =========================================================================
-       2. STATE APLIKASI & ELEMEN DOM
+       3. STATE APLIKASI & ELEMEN DOM
        ========================================================================= */
 
     const state = {
+      stage: "smp",
+      gradeId: "smp7",
       subject: "ipa",
-      level: "smp",
       interactivityId: "lab_virtual",
       formatId: "alur_4_tahap",
-      mode: "single", // "single" | "iterative"
-      iterStep: 0     // 0, 1, 2
+      mode: "single",
+      iterStep: 0
     };
 
-    const HISTORY_KEY = "gp_edu_prompt_history_v1";
+    const HISTORY_KEY = "gp_edu_prompt_history_v2";
 
     const els = {
-      subjectSelect: document.getElementById("subjectSelect"),
-      levelSelect: document.getElementById("levelSelect"),
+      stageGrid: document.getElementById("stageGrid"),
+      gradePills: document.getElementById("gradePills"),
       levelBadge: document.getElementById("levelBadge"),
+      subjectGrid: document.getElementById("subjectGrid"),
       topicInput: document.getElementById("topicInput"),
       objectiveInput: document.getElementById("objectiveInput"),
+      interactivitySubLabel: document.getElementById("interactivitySubLabel"),
       interactivityGrid: document.getElementById("interactivityGrid"),
       mechanicDetail: document.getElementById("mechanicDetail"),
       formatGrid: document.getElementById("formatGrid"),
@@ -1133,6 +1414,7 @@
       optA11y: document.getElementById("optA11y"),
       optHints: document.getElementById("optHints"),
       optHighContrast: document.getElementById("optHighContrast"),
+      activeChips: document.getElementById("activeChips"),
       precisionScoreText: document.getElementById("precisionScoreText"),
       precisionBarFill: document.getElementById("precisionBarFill"),
       precisionTip: document.getElementById("precisionTip"),
@@ -1143,6 +1425,7 @@
       btnSaveHistory: document.getElementById("btnSaveHistory"),
       btnDownloadTxt: document.getElementById("btnDownloadTxt"),
       btnLoadPreset: document.getElementById("btnLoadPreset"),
+      btnLoadPresetInline: document.getElementById("btnLoadPresetInline"),
       btnResetForm: document.getElementById("btnResetForm"),
       btnClearHistory: document.getElementById("btnClearHistory"),
       historyList: document.getElementById("historyList"),
@@ -1150,32 +1433,92 @@
     };
 
     /* =========================================================================
-       3. INISIALISASI ANTARMUKA
+       4. RENDER ANTARMUKA TERPISAH (JENJANG, KELAS, MAPEL, INTERAKTIVITAS)
        ========================================================================= */
 
-    function initSelects() {
-      Object.entries(SUBJECT_DATA).forEach(([key, val]) => {
-        const opt = document.createElement("option");
-        opt.value = key;
-        opt.textContent = val.name;
-        els.subjectSelect.appendChild(opt);
-      });
-      els.subjectSelect.value = state.subject;
+    function getCurrentGradeObj() {
+      const stageObj = STAGE_DATA[state.stage];
+      return stageObj.grades.find((g) => g.id === state.gradeId) || stageObj.grades[0];
+    }
 
-      Object.entries(LEVEL_DATA).forEach(([key, val]) => {
-        const opt = document.createElement("option");
-        opt.value = key;
-        opt.textContent = val.label;
-        els.levelSelect.appendChild(opt);
+    function renderStages() {
+      els.stageGrid.innerHTML = "";
+      Object.entries(STAGE_DATA).forEach(([key, item]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "stage-btn" + (key === state.stage ? " active" : "");
+        btn.innerHTML = `<strong>${item.short}</strong><span>${item.sub}</span>`;
+        btn.addEventListener("click", () => {
+          state.stage = key;
+          state.gradeId = STAGE_DATA[key].grades[0].id;
+          renderStages();
+          renderGrades(true);
+          updateAll();
+        });
+        els.stageGrid.appendChild(btn);
       });
-      els.levelSelect.value = state.level;
+    }
+
+    function renderGrades(applyAutoTTS = false) {
+      const grades = STAGE_DATA[state.stage].grades;
+      if (!grades.some((g) => g.id === state.gradeId)) {
+        state.gradeId = grades[0].id;
+      }
+
+      els.gradePills.innerHTML = "";
+      grades.forEach((g) => {
+        const pill = document.createElement("button");
+        pill.type = "button";
+        pill.className = "grade-pill" + (g.id === state.gradeId ? " active" : "");
+        pill.textContent = g.label;
+        pill.addEventListener("click", () => {
+          state.gradeId = g.id;
+          renderGrades(true);
+          updateAll();
+        });
+        els.gradePills.appendChild(pill);
+      });
+
+      const currentGrade = getCurrentGradeObj();
+      const profile = COGNITIVE_PROFILES[currentGrade.profile];
+      els.levelBadge.textContent = profile.badge;
+      if (applyAutoTTS) {
+        els.optTTS.checked = profile.autoTTS;
+      }
+    }
+
+    function renderSubjects() {
+      els.subjectGrid.innerHTML = "";
+      Object.entries(SUBJECT_DATA).forEach(([key, item]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "subject-card" + (key === state.subject ? " active" : "");
+        btn.innerHTML = `
+          <div class="subject-code">${item.code}</div>
+          <div class="subject-info">
+            <strong>${item.name}</strong>
+            <span>${item.sub}</span>
+          </div>
+        `;
+        btn.addEventListener("click", () => {
+          state.subject = key;
+          renderSubjects();
+          renderInteractivities();
+          updateAll();
+        });
+        els.subjectGrid.appendChild(btn);
+      });
     }
 
     function renderInteractivities() {
-      const list = SUBJECT_DATA[state.subject].interactivities;
+      const subj = SUBJECT_DATA[state.subject];
+      const list = subj.interactivities;
+      els.interactivitySubLabel.textContent = `Pilihan Interaktivitas Khusus ${subj.name}`;
+
       if (!list.some((item) => item.id === state.interactivityId)) {
         state.interactivityId = list[0].id;
       }
+
       els.interactivityGrid.innerHTML = "";
       list.forEach((item) => {
         const card = document.createElement("label");
@@ -1217,16 +1560,21 @@
       });
     }
 
-    function updateLevelBadge(applyAutoTTS = false) {
-      const lv = LEVEL_DATA[state.level];
-      els.levelBadge.textContent = lv.badge;
-      if (applyAutoTTS) {
-        els.optTTS.checked = lv.autoTTS;
-      }
+    function renderActiveChips() {
+      const stageObj = STAGE_DATA[state.stage];
+      const gradeObj = getCurrentGradeObj();
+      const subj = SUBJECT_DATA[state.subject];
+      const inter = subj.interactivities.find((i) => i.id === state.interactivityId) || subj.interactivities[0];
+
+      els.activeChips.innerHTML = `
+        <span class="chip">${stageObj.short} &bull; ${gradeObj.label}</span>
+        <span class="chip">${subj.name}</span>
+        <span class="chip">${inter.label}</span>
+      `;
     }
 
     /* =========================================================================
-       4. LOGIKA PERAKITAN PROMPT & METERAN PRESISI
+       5. PERAKITAN PROMPT & METERAN PRESISI
        ========================================================================= */
 
     function getTechnicalGuardrails() {
@@ -1245,7 +1593,7 @@
         rules.push("Sertakan fitur pembaca teks otomatis/klik (Text-to-Speech Bahasa Indonesia via Web Speech API) pada instruksi dan kartu materi agar ramah bagi siswa yang membutuhkan dukungan baca.");
       }
       if (els.optScoreCopy.checked) {
-        rules.push("Pada layar akhir/rangkuman, sediakan tombol 'Salin Bukti Belajar' ke clipboard (dengan fallback execCommand agar bekerja di sandbox Google Sites) berisi nama topik, jenjang, perolehan bintang/skor, dan kode validasi unik untuk ditempel siswa ke Google Form.");
+        rules.push("Pada layar akhir/rangkuman, sediakan tombol 'Salin Bukti Belajar' ke clipboard (dengan fallback execCommand agar bekerja di sandbox Google Sites) berisi nama topik, jenjang/kelas, perolehan bintang/skor, dan kode validasi unik untuk ditempel siswa ke Google Form.");
       }
       if (els.optA11y.checked) {
         rules.push("Sediakan bilah atas ringkas berisi tombol Layar Penuh (Fullscreen Toggle) dan tombol pengatur ukuran huruf (A- / A+).");
@@ -1260,11 +1608,14 @@
     }
 
     function buildPromptBundle() {
+      const stageObj = STAGE_DATA[state.stage];
+      const gradeObj = getCurrentGradeObj();
+      const profile = COGNITIVE_PROFILES[gradeObj.profile];
       const subj = SUBJECT_DATA[state.subject];
-      const level = LEVEL_DATA[state.level];
       const inter = subj.interactivities.find((i) => i.id === state.interactivityId) || subj.interactivities[0];
       const format = FORMAT_DATA[state.formatId];
 
+      const fullLevelLabel = `${stageObj.short} — ${gradeObj.label}`;
       const topic = els.topicInput.value.trim() || "[ISI TOPIK MATERI DI SINI]";
       const objective = els.objectiveInput.value.trim() || "[ISI TUJUAN PEMBELAJARAN DI SINI]";
       const detail = els.mechanicDetail.value.trim();
@@ -1273,13 +1624,13 @@
 
       const headerContext = [
         `KONTEKS KURIKULUM:`,
+        `- Jenjang & Kelas: ${fullLevelLabel}`,
         `- Mata Pelajaran: ${subj.name}`,
-        `- Jenjang / Fase: ${level.label}`,
         `- Topik Materi: ${topic}`,
         `- Tujuan Pembelajaran: ${objective}`
       ].join("\n");
 
-      const levelRulesText = level.promptSpec.map((r) => `- ${r}`).join("\n");
+      const levelRulesText = profile.promptSpec.map((r) => `- ${r}`).join("\n");
       const formatRulesText = format.spec.map((r) => `- ${r}`).join("\n");
       const techRulesText = techRules.map((r) => `- ${r}`).join("\n");
 
@@ -1290,13 +1641,12 @@
         misconception ? `- Akurasi Konsep & Pencegahan Miskonsepsi (WAJIB DIPATUHI): ${misconception}` : `- Pastikan seluruh rumus, fakta keilmuan, urutan prosedural, dan kunci jawaban 100% akurat sesuai kurikulum Indonesia.`
       ].join("\n");
 
-      // Mode 1: Single Prompt Lengkap
       const single = [
         `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web (HTML5/SVG/JS) dan desainer instruksional profesional. Buatkan media pembelajaran interaktif yang siap langsung disematkan di fitur "Sematkan Kode" (Embed HTML) Google Sites dengan spesifikasi berikut:`,
         ``,
         headerContext,
         ``,
-        `PENYESUAIAN KARAKTERISTIK JENJANG (${level.label}):`,
+        `PENYESUAIAN KARAKTERISTIK JENJANG (${fullLevelLabel}):`,
         levelRulesText,
         ``,
         mechanicBlock,
@@ -1312,7 +1662,6 @@
         `- Pastikan tidak ada error konsol JavaScript dan seluruh tombol bekerja sejak klik pertama.`
       ].join("\n");
 
-      // Mode 2: 3 Putaran Bertahap (Anti-Terpotong untuk Simulasi Kompleks)
       const p1 = [
         `[PUTARAN 1 DARI 3 — KERANGKA & MEKANIKA INTI]`,
         `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web dan desainer instruksional. Kita akan membangun media pembelajaran interaktif mandiri (1 file HTML tunggal) untuk disematkan langsung di Google Sites secara bertahap agar kode rapi dan bebas bug.`,
@@ -1322,7 +1671,7 @@
         `Pada Putaran 1 ini, fokuslah membangun antarmuka utama dan MEKANIKA INTERAKTIVITAS INTI terlebih dahulu sampai akurat dan mulus:`,
         mechanicBlock,
         ``,
-        `PENYESUAIAN JENJANG (${level.label}):`,
+        `PENYESUAIAN JENJANG (${fullLevelLabel}):`,
         levelRulesText,
         ``,
         `ATURAN DASAR PUTARAN 1:`,
@@ -1359,32 +1708,20 @@
     }
 
     function updatePrecisionMeter() {
-      let score = 20; // Dasar dari mapel, jenjang, interaktivitas, format
+      let score = 20;
       const missing = [];
 
-      if (els.topicInput.value.trim().length >= 4) {
-        score += 25;
-      } else {
-        missing.push("Topik Materi");
-      }
+      if (els.topicInput.value.trim().length >= 4) score += 25;
+      else missing.push("Topik Materi");
 
-      if (els.objectiveInput.value.trim().length >= 15) {
-        score += 25;
-      } else {
-        missing.push("Tujuan Pembelajaran");
-      }
+      if (els.objectiveInput.value.trim().length >= 15) score += 25;
+      else missing.push("Tujuan Pembelajaran");
 
-      if (els.mechanicDetail.value.trim().length >= 15) {
-        score += 20;
-      } else {
-        missing.push("Detail Variabel/Skenario");
-      }
+      if (els.mechanicDetail.value.trim().length >= 15) score += 20;
+      else missing.push("Detail Variabel/Skenario");
 
-      if (els.misconceptionInput.value.trim().length >= 10) {
-        score += 10;
-      } else {
-        missing.push("Kunci Materi/Miskonsepsi");
-      }
+      if (els.misconceptionInput.value.trim().length >= 10) score += 10;
+      else missing.push("Kunci Materi/Miskonsepsi");
 
       els.precisionScoreText.textContent = `${score}%`;
       els.precisionBarFill.style.width = `${score}%`;
@@ -1402,6 +1739,7 @@
     }
 
     function updateAll() {
+      renderActiveChips();
       const bundle = buildPromptBundle();
       const text = state.mode === "single" ? bundle.single : bundle.iterative[state.iterStep];
       els.promptOutput.value = text;
@@ -1410,7 +1748,7 @@
     }
 
     /* =========================================================================
-       5. UTILITAS SALIN, UNDUH, PRESET, DAN RIWAYAT LOKAL (SANDBOX-SAFE)
+       6. UTILITAS SALIN, UNDUH, PRESET, DAN RIWAYAT LOKAL
        ========================================================================= */
 
     let toastTimer;
@@ -1427,9 +1765,7 @@
           await navigator.clipboard.writeText(text);
           return true;
         }
-      } catch (e) {
-        // Fallback di bawah
-      }
+      } catch (e) {}
       const temp = document.createElement("textarea");
       temp.value = text;
       temp.style.position = "fixed";
@@ -1462,6 +1798,14 @@
       } catch (e) {
         return false;
       }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
     }
 
     function renderHistory() {
@@ -1507,29 +1851,19 @@
       });
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+    function loadPresetForCurrentSubject() {
+      const preset = SUBJECT_DATA[state.subject].preset;
+      els.topicInput.value = preset.topic;
+      els.objectiveInput.value = preset.objective;
+      els.mechanicDetail.value = preset.detail;
+      els.misconceptionInput.value = preset.misconception;
+      updateAll();
+      showToast(`Contoh ${SUBJECT_DATA[state.subject].name} dimuat.`);
     }
 
     /* =========================================================================
-       6. EVENT LISTENERS
+       7. EVENT LISTENERS
        ========================================================================= */
-
-    els.subjectSelect.addEventListener("change", (e) => {
-      state.subject = e.target.value;
-      renderInteractivities();
-      updateAll();
-    });
-
-    els.levelSelect.addEventListener("change", (e) => {
-      state.level = e.target.value;
-      updateLevelBadge(true);
-      updateAll();
-    });
 
     [
       els.topicInput,
@@ -1579,11 +1913,13 @@
     els.btnSaveHistory.addEventListener("click", () => {
       const topic = els.topicInput.value.trim() || "Tanpa Judul";
       const list = safeStorageGet(HISTORY_KEY);
+      const stageObj = STAGE_DATA[state.stage];
+      const gradeObj = getCurrentGradeObj();
       const entry = {
         id: "h_" + Date.now(),
         topic,
         subjectName: SUBJECT_DATA[state.subject].name,
-        levelLabel: LEVEL_DATA[state.level].label,
+        levelLabel: `${stageObj.short} ${gradeObj.label}`,
         date: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short" }),
         promptText: els.promptOutput.value
       };
@@ -1614,15 +1950,8 @@
       showToast("Berkas .txt berhasil diunduh.");
     });
 
-    els.btnLoadPreset.addEventListener("click", () => {
-      const preset = SUBJECT_DATA[state.subject].preset;
-      els.topicInput.value = preset.topic;
-      els.objectiveInput.value = preset.objective;
-      els.mechanicDetail.value = preset.detail;
-      els.misconceptionInput.value = preset.misconception;
-      updateAll();
-      showToast(`Contoh ${SUBJECT_DATA[state.subject].name} dimuat.`);
-    });
+    els.btnLoadPreset.addEventListener("click", loadPresetForCurrentSubject);
+    els.btnLoadPresetInline.addEventListener("click", loadPresetForCurrentSubject);
 
     els.btnResetForm.addEventListener("click", () => {
       els.topicInput.value = "";
@@ -1639,11 +1968,12 @@
       showToast("Semua riwayat dihapus.");
     });
 
-    // Jalankan inisialisasi
-    initSelects();
+    // Inisialisasi Awal
+    renderStages();
+    renderGrades(false);
+    renderSubjects();
     renderInteractivities();
     renderFormats();
-    updateLevelBadge(false);
     renderHistory();
     updateAll();
   </script>
