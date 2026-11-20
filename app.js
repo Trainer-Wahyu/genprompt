@@ -3,44 +3,64 @@
    ========================================================================= */
 
 const state = {
-  generatorType: "simulasi", // "simulasi" | "game" | "skenario"
+  generatorType: "simulasi", // "simulasi" | "game" | "skenario" | "custom_gen"
   stage: "sma",
-  gradeId: "sma10",
-  subject: "fisika",
-  mechanicId: "simulasi_mekanika",
-  subOptionId: "alur_4_tahap",
-  promptMode: "single",      // "single" | "iterative"
+  gradeId: "sma10",         // bisa berisi ID kelas atau "__manual__"
+  subject: "fisika",         // bisa berisi key mapel atau "__manual__"
+  mechanicId: "simulasi_mekanika", // bisa berisi ID mekanika atau "__manual__"
+  subOptionId: "alur_4_tahap",     // bisa berisi key sub-opsi atau "__manual__"
+  promptMode: "single",
   iterStep: 0,
   featureStates: {}
 };
 
-// Inisialisasi status default checkbox fitur
 EXTRA_FEATURES.forEach((f) => {
   state.featureStates[f.id] = f.checked;
 });
 
-const HISTORY_KEY = "gp_edu_unified_history_v1";
+const HISTORY_KEY = "gp_edu_manual_history_v1";
 
 const els = {
   generatorTypeGrid: document.getElementById("generatorTypeGrid"),
+  customGenWrap: document.getElementById("customGenWrap"),
+  customGenInput: document.getElementById("customGenInput"),
+
   stageGrid: document.getElementById("stageGrid"),
+  customStageWrap: document.getElementById("customStageWrap"),
+  customStageInput: document.getElementById("customStageInput"),
+
   gradePills: document.getElementById("gradePills"),
+  customGradeWrap: document.getElementById("customGradeWrap"),
+  customGradeInput: document.getElementById("customGradeInput"),
   levelBadge: document.getElementById("levelBadge"),
+
   subjectStageTag: document.getElementById("subjectStageTag"),
   subjectGrid: document.getElementById("subjectGrid"),
   customSubjectWrap: document.getElementById("customSubjectWrap"),
+  customSubjectLabel: document.getElementById("customSubjectLabel"),
   customSubjectInput: document.getElementById("customSubjectInput"),
+
   topicInput: document.getElementById("topicInput"),
   objectiveInput: document.getElementById("objectiveInput"),
+
   step5Title: document.getElementById("step5Title"),
   mechanicSubLabel: document.getElementById("mechanicSubLabel"),
   mechanicGrid: document.getElementById("mechanicGrid"),
+  customMechanicWrap: document.getElementById("customMechanicWrap"),
+  customMechanicInput: document.getElementById("customMechanicInput"),
+
   detailLabel: document.getElementById("detailLabel"),
   mechanicDetail: document.getElementById("mechanicDetail"),
+
   subOptionLabel: document.getElementById("subOptionLabel"),
   subOptionGrid: document.getElementById("subOptionGrid"),
+  customSubOptionWrap: document.getElementById("customSubOptionWrap"),
+  customSubOptionInput: document.getElementById("customSubOptionInput"),
+
   misconceptionInput: document.getElementById("misconceptionInput"),
   featureToggles: document.getElementById("featureToggles"),
+  customFeatureInput: document.getElementById("customFeatureInput"),
+
   activeChips: document.getElementById("activeChips"),
   precisionScoreText: document.getElementById("precisionScoreText"),
   precisionBarFill: document.getElementById("precisionBarFill"),
@@ -48,6 +68,7 @@ const els = {
   iterTabs: document.getElementById("iterTabs"),
   promptOutput: document.getElementById("promptOutput"),
   charCount: document.getElementById("charCount"),
+
   btnCopyPrompt: document.getElementById("btnCopyPrompt"),
   btnSaveHistory: document.getElementById("btnSaveHistory"),
   btnDownloadTxt: document.getElementById("btnDownloadTxt"),
@@ -60,15 +81,49 @@ const els = {
 };
 
 /* =========================================================================
-   HELPER GETTERS
+   HELPER GETTERS (MENGAKOMODASI PILIHAN PRESET MAUPUN MANUAL)
    ========================================================================= */
 
-function getCurrentGradeObj() {
+function getDisplayGenTitle() {
+  const gt = GENERATOR_TYPES[state.generatorType];
+  if (gt.isManual) {
+    const manual = els.customGenInput.value.trim();
+    return manual || "Media Pembelajaran Interaktif Kustom";
+  }
+  return gt.title;
+}
+
+function getDisplayStageAndGrade() {
   const stageObj = STAGE_DATA[state.stage];
-  return stageObj.grades.find((g) => g.id === state.gradeId) || stageObj.grades[0];
+  const stageText = stageObj.isManual
+    ? (els.customStageInput.value.trim() || "Jenjang Kustom")
+    : stageObj.short;
+
+  let gradeText = "";
+  if (state.gradeId === "__manual__") {
+    gradeText = els.customGradeInput.value.trim() || "Kelas/Tingkat Manual";
+  } else {
+    const found = stageObj.grades.find((g) => g.id === state.gradeId) || stageObj.grades[0];
+    gradeText = found.label;
+  }
+
+  return `${stageText} — ${gradeText}`;
+}
+
+function getCurrentCognitiveProfile() {
+  if (state.stage === "lainnya" || state.gradeId === "__manual__") {
+    return COGNITIVE_PROFILES.umum_manual;
+  }
+  const stageObj = STAGE_DATA[state.stage];
+  const found = stageObj.grades.find((g) => g.id === state.gradeId) || stageObj.grades[0];
+  return COGNITIVE_PROFILES[found.profile] || COGNITIVE_PROFILES.umum_manual;
 }
 
 function getDisplaySubjectName() {
+  if (state.subject === "__manual__") {
+    const manual = els.customSubjectInput.value.trim();
+    return manual || "Mata Pelajaran Manual";
+  }
   const subj = SUBJECT_CATALOG[state.subject];
   if (subj.isCustomVocational) {
     const custom = els.customSubjectInput.value.trim();
@@ -81,11 +136,26 @@ function getAvailableMechanics() {
   if (state.generatorType === "game") {
     return GAME_MECHANICS;
   }
-  const subjMechanics = SUBJECT_CATALOG[state.subject].interactivities;
+  const baseList = state.subject === "__manual__"
+    ? [
+        {
+          id: "eksplorasi_visual",
+          label: "Eksplorasi Visual & Hotspot Interaktif",
+          desc: "Diagram/ilustrasi interaktif yang dapat diklik, digeser, atau diubah parameternya.",
+          spec: "Bangun visualisasi interaktif berbasis SVG/Canvas dengan kontrol parameter dan titik informasi yang merespons tindakan siswa secara real-time."
+        },
+        {
+          id: "klasifikasi_kartu",
+          label: "Papan Sortir & Klasifikasi (Drag & Drop)",
+          desc: "Mengelompokkan kartu konsep/kasus ke kategori yang tepat dengan umpan balik instan.",
+          spec: "Bangun papan kategorisasi drag-and-drop kartu materi ke dalam kolom kategori yang sesuai lengkap dengan alasan umpan balik otomatis."
+        }
+      ]
+    : SUBJECT_CATALOG[state.subject].interactivities;
+
   if (state.generatorType === "skenario") {
-    // Gabungkan mekanika skenario/prosedur mapel + opsi universal skenario
     return [
-      ...subjMechanics,
+      ...baseList,
       {
         id: "dilema_universal",
         label: "Studi Kasus Dilema & Pengambilan Keputusan",
@@ -94,7 +164,7 @@ function getAvailableMechanics() {
       }
     ];
   }
-  return subjMechanics;
+  return baseList;
 }
 
 /* =========================================================================
@@ -106,7 +176,10 @@ function renderGeneratorTypes() {
   Object.values(GENERATOR_TYPES).forEach((gt) => {
     const card = document.createElement("button");
     card.type = "button";
-    card.className = "gen-type-card" + (gt.id === state.generatorType ? " active" : "");
+    card.className =
+      "gen-type-card" +
+      (gt.isManual ? " is-manual" : "") +
+      (gt.id === state.generatorType ? " active" : "");
     card.innerHTML = `
       <span class="gen-type-badge">${gt.badge}</span>
       <strong>${gt.title}</strong>
@@ -115,7 +188,9 @@ function renderGeneratorTypes() {
     card.addEventListener("click", () => {
       state.generatorType = gt.id;
       const subKeys = Object.keys(gt.subOptions);
-      state.subOptionId = subKeys[0];
+      if (state.subOptionId !== "__manual__") {
+        state.subOptionId = subKeys[0];
+      }
       renderGeneratorTypes();
       renderStep5Section();
       renderFeatureToggles();
@@ -123,6 +198,8 @@ function renderGeneratorTypes() {
     });
     els.generatorTypeGrid.appendChild(card);
   });
+
+  els.customGenWrap.classList.toggle("show", Boolean(GENERATOR_TYPES[state.generatorType].isManual));
 }
 
 function renderStages() {
@@ -130,13 +207,16 @@ function renderStages() {
   Object.entries(STAGE_DATA).forEach(([key, item]) => {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "stage-btn" + (key === state.stage ? " active" : "");
+    btn.className =
+      "stage-btn" +
+      (item.isManual ? " is-manual" : "") +
+      (key === state.stage ? " active" : "");
     btn.innerHTML = `<strong>${item.short}</strong><span>${item.sub}</span>`;
     btn.addEventListener("click", () => {
       state.stage = key;
       state.gradeId = STAGE_DATA[key].grades[0].id;
       const availableSubjects = STAGE_DATA[key].subjects;
-      if (!availableSubjects.includes(state.subject)) {
+      if (state.subject !== "__manual__" && !availableSubjects.includes(state.subject)) {
         state.subject = availableSubjects[0];
       }
       renderStages();
@@ -147,11 +227,13 @@ function renderStages() {
     });
     els.stageGrid.appendChild(btn);
   });
+
+  els.customStageWrap.classList.toggle("show", Boolean(STAGE_DATA[state.stage].isManual));
 }
 
 function renderGrades(applyAutoTTS = false) {
   const grades = STAGE_DATA[state.stage].grades;
-  if (!grades.some((g) => g.id === state.gradeId)) {
+  if (state.gradeId !== "__manual__" && !grades.some((g) => g.id === state.gradeId)) {
     state.gradeId = grades[0].id;
   }
 
@@ -169,8 +251,21 @@ function renderGrades(applyAutoTTS = false) {
     els.gradePills.appendChild(pill);
   });
 
-  const currentGrade = getCurrentGradeObj();
-  const profile = COGNITIVE_PROFILES[currentGrade.profile];
+  // Tambah Pil Manual
+  const manualPill = document.createElement("button");
+  manualPill.type = "button";
+  manualPill.className = "grade-pill is-manual" + (state.gradeId === "__manual__" ? " active" : "");
+  manualPill.textContent = "+ Isi Kelas Manual";
+  manualPill.addEventListener("click", () => {
+    state.gradeId = "__manual__";
+    renderGrades(false);
+    updateAll();
+  });
+  els.gradePills.appendChild(manualPill);
+
+  els.customGradeWrap.classList.toggle("show", state.gradeId === "__manual__");
+
+  const profile = getCurrentCognitiveProfile();
   els.levelBadge.textContent = profile.badge;
   if (applyAutoTTS) {
     state.featureStates.optTTS = profile.autoTTS;
@@ -181,11 +276,13 @@ function renderGrades(applyAutoTTS = false) {
 function renderSubjects() {
   const stageObj = STAGE_DATA[state.stage];
   const availableKeys = stageObj.subjects;
-  if (!availableKeys.includes(state.subject)) {
+  if (state.subject !== "__manual__" && !availableKeys.includes(state.subject)) {
     state.subject = availableKeys[0];
   }
 
-  els.subjectStageTag.textContent = `Daftar Mapel Jenjang ${stageObj.short} (${availableKeys.length} Mapel)`;
+  els.subjectStageTag.textContent = stageObj.isManual
+    ? "Pilih Mapel atau Isi Manual"
+    : `Kurikulum ${stageObj.short}`;
   els.subjectGrid.innerHTML = "";
 
   availableKeys.forEach((key) => {
@@ -209,26 +306,55 @@ function renderSubjects() {
     els.subjectGrid.appendChild(btn);
   });
 
-  const isCustom = Boolean(SUBJECT_CATALOG[state.subject].isCustomVocational);
-  els.customSubjectWrap.classList.toggle("show", isCustom);
+  // Kartu Tambah Mapel Manual di setiap jenjang
+  const manualBtn = document.createElement("button");
+  manualBtn.type = "button";
+  manualBtn.className = "subject-card is-manual" + (state.subject === "__manual__" ? " active" : "");
+  manualBtn.innerHTML = `
+    <div class="subject-code">+</div>
+    <div class="subject-info">
+      <strong>Mapel Lainnya (Manual)</strong>
+      <span>Ketik nama mapel sendiri</span>
+    </div>
+  `;
+  manualBtn.addEventListener("click", () => {
+    state.subject = "__manual__";
+    renderSubjects();
+    renderStep5Section();
+    updateAll();
+  });
+  els.subjectGrid.appendChild(manualBtn);
+
+  const isManualSubj = state.subject === "__manual__";
+  const isVocational = !isManualSubj && Boolean(SUBJECT_CATALOG[state.subject].isCustomVocational);
+
+  if (isVocational) {
+    els.customSubjectLabel.textContent = "Nama Konsentrasi Keahlian / Mapel Produktif SMK";
+    els.customSubjectInput.placeholder = "Contoh: Teknik Kendaraan Ringan, Akuntansi, TJKT, atau Tata Boga";
+  } else {
+    els.customSubjectLabel.textContent = "Tulis Nama Mata Pelajaran / Bidang Kajian Secara Manual";
+    els.customSubjectInput.placeholder = "Contoh: Bahasa Daerah, Bahasa Arab, Antropologi, atau Bimbingan Konseling";
+  }
+
+  els.customSubjectWrap.classList.toggle("show", isManualSubj || isVocational);
 }
 
 function renderStep5Section() {
   const gt = GENERATOR_TYPES[state.generatorType];
-  const subj = SUBJECT_CATALOG[state.subject];
+  const subjName = getDisplaySubjectName();
 
   els.step5Title.innerHTML = `<span class="step-badge">5</span>${gt.step5Title}`;
   els.mechanicSubLabel.textContent =
     state.generatorType === "game"
       ? gt.mechanicLabel
-      : `${gt.mechanicLabel} (${subj.name})`;
+      : `${gt.mechanicLabel} (${subjName})`;
   els.detailLabel.textContent = gt.detailLabel;
   els.mechanicDetail.placeholder = gt.detailPlaceholder;
   els.subOptionLabel.textContent = gt.subOptionLabel;
 
-  // Render Mekanika
+  // Render Mekanika + Opsi Manual
   const mechanics = getAvailableMechanics();
-  if (!mechanics.some((m) => m.id === state.mechanicId)) {
+  if (state.mechanicId !== "__manual__" && !mechanics.some((m) => m.id === state.mechanicId)) {
     state.mechanicId = mechanics[0].id;
   }
 
@@ -251,9 +377,27 @@ function renderStep5Section() {
     els.mechanicGrid.appendChild(card);
   });
 
-  // Render Sub-Opsi (Format / Mode Main)
+  // Kartu Mekanika Manual
+  const manualMechCard = document.createElement("label");
+  manualMechCard.className = "option-card is-manual" + (state.mechanicId === "__manual__" ? " active" : "");
+  manualMechCard.innerHTML = `
+    <input type="radio" name="mechanic" value="__manual__" ${state.mechanicId === "__manual__" ? "checked" : ""} />
+    <div>
+      <strong>+ Mekanika Interaksi Manual</strong>
+      <span>Tulis sendiri cara siswa berinteraksi atau bermain.</span>
+    </div>
+  `;
+  manualMechCard.addEventListener("click", () => {
+    state.mechanicId = "__manual__";
+    renderStep5Section();
+    updateAll();
+  });
+  els.mechanicGrid.appendChild(manualMechCard);
+  els.customMechanicWrap.classList.toggle("show", state.mechanicId === "__manual__");
+
+  // Render Sub-Opsi + Opsi Manual
   const subKeys = Object.keys(gt.subOptions);
-  if (!subKeys.includes(state.subOptionId)) {
+  if (state.subOptionId !== "__manual__" && !subKeys.includes(state.subOptionId)) {
     state.subOptionId = subKeys[0];
   }
 
@@ -275,6 +419,24 @@ function renderStep5Section() {
     });
     els.subOptionGrid.appendChild(card);
   });
+
+  // Kartu Format Manual
+  const manualSubCard = document.createElement("label");
+  manualSubCard.className = "option-card is-manual" + (state.subOptionId === "__manual__" ? " active" : "");
+  manualSubCard.innerHTML = `
+    <input type="radio" name="subOption" value="__manual__" ${state.subOptionId === "__manual__" ? "checked" : ""} />
+    <div>
+      <strong>+ Format Alur / Tata Letak Manual</strong>
+      <span>Tulis sendiri pembagian layar atau mode permainannya.</span>
+    </div>
+  `;
+  manualSubCard.addEventListener("click", () => {
+    state.subOptionId = "__manual__";
+    renderStep5Section();
+    updateAll();
+  });
+  els.subOptionGrid.appendChild(manualSubCard);
+  els.customSubOptionWrap.classList.toggle("show", state.subOptionId === "__manual__");
 }
 
 function renderFeatureToggles() {
@@ -299,17 +461,16 @@ function renderFeatureToggles() {
 }
 
 function renderActiveChips() {
-  const gt = GENERATOR_TYPES[state.generatorType];
-  const stageObj = STAGE_DATA[state.stage];
-  const gradeObj = getCurrentGradeObj();
-  const mechanics = getAvailableMechanics();
-  const mech = mechanics.find((m) => m.id === state.mechanicId) || mechanics[0];
+  const mechLabel =
+    state.mechanicId === "__manual__"
+      ? "Mekanika Manual"
+      : (getAvailableMechanics().find((m) => m.id === state.mechanicId) || getAvailableMechanics()[0]).label;
 
   els.activeChips.innerHTML = `
-    <span class="chip chip-dark">${gt.title}</span>
-    <span class="chip">${stageObj.short} &bull; ${gradeObj.label}</span>
+    <span class="chip chip-dark">${escapeHtml(getDisplayGenTitle())}</span>
+    <span class="chip">${escapeHtml(getDisplayStageAndGrade())}</span>
     <span class="chip">${escapeHtml(getDisplaySubjectName())}</span>
-    <span class="chip">${mech.label}</span>
+    <span class="chip">${escapeHtml(mechLabel)}</span>
   `;
 }
 
@@ -326,7 +487,6 @@ function getTechnicalGuardrails() {
     "Gunakan penyimpanan memori sesi (in-memory state) dengan cadangan try-catch aman agar aplikasi tidak macet jika LocalStorage diblokir oleh sandbox iframe Google Sites."
   ];
 
-  // Aturan khusus untuk mode Game Edukasi agar guru mudah mengedit soal
   if (state.generatorType === "game") {
     rules.push("WAJIB letakkan seluruh data soal/tantangan dalam satu variabel konstanta Array of Objects bernama `const BANK_SOAL = [...]` (minimal 12–15 butir soal bervariasi) di bagian paling atas tag `<script>` dengan komentar panduan singkat agar guru mudah mengganti atau menambah soal sendiri.");
   }
@@ -337,28 +497,54 @@ function getTechnicalGuardrails() {
     }
   });
 
+  const customFeat = els.customFeatureInput.value.trim();
+  if (customFeat) {
+    rules.push(`Instruksi Khusus Tambahan dari Guru: ${customFeat}`);
+  }
+
   return rules;
 }
 
 function buildPromptBundle() {
   const gt = GENERATOR_TYPES[state.generatorType];
-  const stageObj = STAGE_DATA[state.stage];
-  const gradeObj = getCurrentGradeObj();
-  const profile = COGNITIVE_PROFILES[gradeObj.profile];
-  const mechanics = getAvailableMechanics();
-  const mech = mechanics.find((m) => m.id === state.mechanicId) || mechanics[0];
-  const subOpt = gt.subOptions[state.subOptionId] || Object.values(gt.subOptions)[0];
-
-  const fullLevelLabel = `${stageObj.short} — ${gradeObj.label}`;
+  const profile = getCurrentCognitiveProfile();
+  const displayGenTitle = getDisplayGenTitle();
+  const fullLevelLabel = getDisplayStageAndGrade();
   const displaySubject = getDisplaySubjectName();
+
   const topic = els.topicInput.value.trim() || "[ISI TOPIK MATERI DI SINI]";
   const objective = els.objectiveInput.value.trim() || "[ISI TUJUAN PEMBELAJARAN DI SINI]";
   const detail = els.mechanicDetail.value.trim();
   const misconception = els.misconceptionInput.value.trim();
   const techRules = getTechnicalGuardrails();
 
+  // Mekanika (Preset atau Manual)
+  let mechLabel = "";
+  let mechSpec = "";
+  if (state.mechanicId === "__manual__") {
+    mechLabel = "Mekanika Interaksi Kustom";
+    mechSpec = els.customMechanicInput.value.trim() || "[ISI DESKRIPSI INTERAKTIVITAS MANUAL DI SINI]";
+  } else {
+    const foundMech = getAvailableMechanics().find((m) => m.id === state.mechanicId) || getAvailableMechanics()[0];
+    mechLabel = foundMech.label;
+    mechSpec = foundMech.spec;
+  }
+
+  // Format / Sub-Opsi (Preset atau Manual)
+  let subOptLabel = "";
+  let subOptionRulesText = "";
+  if (state.subOptionId === "__manual__") {
+    subOptLabel = "Format Tata Letak & Alur Kustom";
+    const manualFormatText = els.customSubOptionInput.value.trim() || "[ISI FORMAT TATA LETAK & ALUR BELAJAR MANUAL DI SINI]";
+    subOptionRulesText = `- Bangun struktur tampilan dan alur interaksi sesuai rancangan khusus guru berikut di dalam satu viewport (100vh): ${manualFormatText}`;
+  } else {
+    const subOpt = gt.subOptions[state.subOptionId] || Object.values(gt.subOptions)[0];
+    subOptLabel = subOpt.label;
+    subOptionRulesText = subOpt.spec.map((r) => `- ${r}`).join("\n");
+  }
+
   const headerContext = [
-    `JENIS MEDIA: ${gt.title}`,
+    `JENIS MEDIA: ${displayGenTitle}`,
     `KONTEKS KURIKULUM:`,
     `- Jenjang & Kelas: ${fullLevelLabel}`,
     `- Mata Pelajaran: ${displaySubject}`,
@@ -367,18 +553,17 @@ function buildPromptBundle() {
   ].join("\n");
 
   const levelRulesText = profile.promptSpec.map((r) => `- ${r}`).join("\n");
-  const subOptionRulesText = subOpt.spec.map((r) => `- ${r}`).join("\n");
   const techRulesText = techRules.map((r) => `- ${r}`).join("\n");
 
   const mechanicBlock = [
-    `SPESIFIKASI MEKANIKA UTAMA (${mech.label}):`,
-    `- Konsep Interaksi: ${mech.spec}`,
-    detail ? `- Detail Khusus dari Guru: ${detail}` : `- Rancang variabel, objek visual, dan konten soal/skenario yang paling representatif untuk topik "${topic}".`,
+    `SPESIFIKASI MEKANIKA UTAMA (${mechLabel}):`,
+    `- Konsep Interaksi: ${mechSpec}`,
+    detail ? `- Detail Variabel / Objek / Aturan Guru: ${detail}` : `- Rancang variabel, objek visual, dan konten soal/skenario yang paling representatif untuk topik "${topic}".`,
     misconception ? `- Akurasi Konsep & Pencegahan Miskonsepsi (WAJIB DIPATUHI): ${misconception}` : `- Pastikan seluruh rumus, fakta keilmuan, urutan prosedural, dan kunci jawaban 100% akurat sesuai kurikulum Indonesia.`
   ].join("\n");
 
   const single = [
-    `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web (HTML5/SVG/JS) dan desainer instruksional profesional. Buatkan "${gt.title}" yang siap langsung disematkan di fitur "Sematkan Kode" (Embed HTML) Google Sites dengan spesifikasi berikut:`,
+    `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web (HTML5/SVG/JS) dan desainer instruksional profesional. Buatkan "${displayGenTitle}" yang siap langsung disematkan di fitur "Sematkan Kode" (Embed HTML) Google Sites dengan spesifikasi berikut:`,
     ``,
     headerContext,
     ``,
@@ -387,7 +572,7 @@ function buildPromptBundle() {
     ``,
     mechanicBlock,
     ``,
-    `STRUKTUR & FORMAT (${subOpt.label}):`,
+    `STRUKTUR & FORMAT (${subOptLabel}):`,
     subOptionRulesText,
     ``,
     `BATASAN TEKNIS SANDBOX GOOGLE SITES (WAJIB):`,
@@ -400,7 +585,7 @@ function buildPromptBundle() {
 
   const p1 = [
     `[PUTARAN 1 DARI 3 — KERANGKA & MEKANIKA INTI]`,
-    `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web dan desainer instruksional. Kita akan membangun "${gt.title}" mandiri (1 file HTML tunggal) untuk disematkan langsung di Google Sites secara bertahap agar kode rapi dan bebas bug.`,
+    `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web dan desainer instruksional. Kita akan membangun "${displayGenTitle}" mandiri (1 file HTML tunggal) untuk disematkan langsung di Google Sites secara bertahap agar kode rapi dan bebas bug.`,
     ``,
     headerContext,
     ``,
@@ -418,7 +603,7 @@ function buildPromptBundle() {
 
   const p2 = [
     `[PUTARAN 2 DARI 3 — STRUKTUR ALUR & SISTEM UMPAN BALIK]`,
-    `Bagus! Sekarang kembangkan kode dari Putaran 1 dengan membungkus mekanika inti tersebut ke dalam struktur utuh (${subOpt.label}):`,
+    `Bagus! Sekarang kembangkan kode dari Putaran 1 dengan membungkus mekanika inti tersebut ke dalam struktur utuh (${subOptLabel}):`,
     ``,
     subOptionRulesText,
     ``,
@@ -447,8 +632,23 @@ function updatePrecisionMeter() {
   let score = 20;
   const missing = [];
 
-  if (SUBJECT_CATALOG[state.subject].isCustomVocational && els.customSubjectInput.value.trim().length < 3) {
-    missing.push("Nama Konsentrasi Keahlian SMK");
+  if (GENERATOR_TYPES[state.generatorType].isManual && els.customGenInput.value.trim().length < 3) {
+    missing.push("Jenis Media Manual");
+  }
+  if (STAGE_DATA[state.stage].isManual && els.customStageInput.value.trim().length < 2) {
+    missing.push("Nama Jenjang Manual");
+  }
+  if (state.gradeId === "__manual__" && els.customGradeInput.value.trim().length < 2) {
+    missing.push("Kelas/Fase Manual");
+  }
+  if ((state.subject === "__manual__" || SUBJECT_CATALOG[state.subject]?.isCustomVocational) && els.customSubjectInput.value.trim().length < 3) {
+    missing.push("Nama Mata Pelajaran/Kejuruan");
+  }
+  if (state.mechanicId === "__manual__" && els.customMechanicInput.value.trim().length < 8) {
+    missing.push("Deskripsi Mekanika Manual");
+  }
+  if (state.subOptionId === "__manual__" && els.customSubOptionInput.value.trim().length < 8) {
+    missing.push("Format Tata Letak Manual");
   }
 
   if (els.topicInput.value.trim().length >= 4) score += 25;
@@ -457,8 +657,11 @@ function updatePrecisionMeter() {
   if (els.objectiveInput.value.trim().length >= 15) score += 25;
   else missing.push("Tujuan Pembelajaran");
 
-  if (els.mechanicDetail.value.trim().length >= 15) score += 20;
-  else missing.push("Detail Variabel/Aturan");
+  if (els.mechanicDetail.value.trim().length >= 15 || (state.mechanicId === "__manual__" && els.customMechanicInput.value.trim().length >= 15)) {
+    score += 20;
+  } else {
+    missing.push("Detail Variabel/Aturan");
+  }
 
   if (els.misconceptionInput.value.trim().length >= 10) score += 10;
   else missing.push("Kunci Materi/Miskonsepsi");
@@ -466,15 +669,17 @@ function updatePrecisionMeter() {
   els.precisionScoreText.textContent = `${score}%`;
   els.precisionBarFill.style.width = `${score}%`;
 
-  if (score >= 90) {
+  if (score >= 90 && missing.length === 0) {
     els.precisionBarFill.style.backgroundColor = "var(--success)";
-    els.precisionTip.textContent = "Sangat presisi! Prompt sudah sangat siap menghasilkan media yang akurat.";
+    els.precisionTip.textContent = "Sangat presisi! Prompt sudah lengkap dan siap menghasilkan media akurat.";
   } else if (score >= 70) {
     els.precisionBarFill.style.backgroundColor = "var(--primary)";
-    els.precisionTip.textContent = `Sudah baik. Lengkapi ${missing.join(", ")} untuk hasil maksimal.`;
+    els.precisionTip.textContent = missing.length
+      ? `Sudah baik. Lengkapi ${missing.slice(0, 2).join(", ")} untuk hasil maksimal.`
+      : "Sudah baik dan siap digunakan.";
   } else {
     els.precisionBarFill.style.backgroundColor = "var(--warning)";
-    els.precisionTip.textContent = `Perlu dilengkapi: ${missing.slice(0, 2).join(" & ")} agar hasil AI tidak terlalu umum.`;
+    els.precisionTip.textContent = `Perlu dilengkapi: ${missing.slice(0, 2).join(" & ")} agar hasil AI presisi.`;
   }
 }
 
@@ -592,6 +797,17 @@ function renderHistory() {
 }
 
 function loadPresetForCurrentSubject() {
+  if (state.subject === "__manual__") {
+    els.customSubjectInput.value = "Bahasa Daerah (Jawa)";
+    els.topicInput.value = "Mengenal Aksara Jawa Nglegena dan Sandhangan Swara";
+    els.objectiveInput.value = "Siswa mampu membaca dan menyusun kata sederhana menggunakan aksara Jawa nglegena serta sandhangan wulu, suku, taling, dan pepet.";
+    els.mechanicDetail.value = "Sediakan papan aksara Jawa klik-susun beserta pratinjau bunyi suku katanya secara otomatis.";
+    els.misconceptionInput.value = "Bedakan pengucapan taling (é) dengan pepet (ê).";
+    updateAll();
+    showToast("Contoh mapel manual dimuat.");
+    return;
+  }
+
   const subj = SUBJECT_CATALOG[state.subject];
   const preset = subj.preset;
   if (subj.isCustomVocational && preset.customName) {
@@ -610,11 +826,17 @@ function loadPresetForCurrentSubject() {
    ========================================================================= */
 
 [
+  els.customGenInput,
+  els.customStageInput,
+  els.customGradeInput,
   els.customSubjectInput,
   els.topicInput,
   els.objectiveInput,
+  els.customMechanicInput,
   els.mechanicDetail,
-  els.misconceptionInput
+  els.customSubOptionInput,
+  els.misconceptionInput,
+  els.customFeatureInput
 ].forEach((el) => {
   el.addEventListener("input", updateAll);
 });
@@ -656,7 +878,7 @@ els.btnSaveHistory.addEventListener("click", () => {
   const entry = {
     id: "h_" + Date.now(),
     topic,
-    genTitle: GENERATOR_TYPES[state.generatorType].badge,
+    genTitle: getDisplayGenTitle(),
     subjectName: getDisplaySubjectName(),
     date: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short" }),
     promptText: els.promptOutput.value
@@ -692,11 +914,17 @@ els.btnLoadPreset.addEventListener("click", loadPresetForCurrentSubject);
 els.btnLoadPresetInline.addEventListener("click", loadPresetForCurrentSubject);
 
 els.btnResetForm.addEventListener("click", () => {
+  els.customGenInput.value = "";
+  els.customStageInput.value = "";
+  els.customGradeInput.value = "";
   els.customSubjectInput.value = "";
   els.topicInput.value = "";
   els.objectiveInput.value = "";
+  els.customMechanicInput.value = "";
   els.mechanicDetail.value = "";
+  els.customSubOptionInput.value = "";
   els.misconceptionInput.value = "";
+  els.customFeatureInput.value = "";
   updateAll();
   showToast("Formulir dikosongkan.");
 });
