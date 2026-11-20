@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Prompt Media Pembelajaran Interaktif</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --border: #e2e8f0;
+      --border-focus: #4f46e5;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-soft: #eef2ff;
+      --success: #059669;
+      --success-soft: #ecfdf5;
+      --warning: #d97706;
+      --warning-soft: #fffbeb;
+      --danger: #dc2626;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 48px;
+    }
+
+    /* Header */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .brand p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Main Layout */
+    .container {
+      max-width: 1280px;
+      margin: 24px auto 0;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .card + .card {
+      margin-top: 18px;
+    }
+
+    .section-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--text);
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 4px;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 76px;
+    }
+
+    /* Level Cognitive Info Box */
+    .info-box {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      color: #312e81;
+      margin-top: 8px;
+    }
+
+    /* Option Cards (Interactivity & Format) */
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-card {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--surface-soft);
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+    }
+
+    .option-card:hover {
+      border-color: #a5b4fc;
+      background: #fff;
+    }
+
+    .option-card.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .option-card input {
+      margin-top: 3px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .option-card strong {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .option-card span {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Toggles */
+    .toggle-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .toggle-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.83rem;
+      font-weight: 500;
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      cursor: pointer;
+    }
+
+    .toggle-item input {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-soft);
+      border-color: #cbd5e1;
+    }
+
+    .btn-soft {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .btn-soft:hover {
+      background: #e0e7ff;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+    }
+
+    /* Right Panel (Sticky Preview) */
+    .preview-col {
+      position: sticky;
+      top: 84px;
+    }
+
+    /* Precision Meter */
+    .meter-wrap {
+      margin-bottom: 14px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .meter-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .meter-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width 0.25s ease, background-color 0.25s ease;
+    }
+
+    .meter-tip {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* Mode Switcher */
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--surface-soft);
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 10px;
+      border-radius: 7px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .mode-btn.active {
+      background: #fff;
+      color: var(--primary);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Step Tabs for Iterative Mode */
+    .iter-tabs {
+      display: none;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .iter-tabs.show {
+      display: flex;
+    }
+
+    .iter-tab {
+      flex: 1;
+      padding: 7px 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .iter-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Output Box */
+    .prompt-output {
+      width: 100%;
+      min-height: 330px;
+      max-height: 440px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.81rem;
+      line-height: 1.55;
+      background: #0f172a;
+      color: #e2e8f0;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px;
+      resize: vertical;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .action-row .btn-primary {
+      flex: 1;
+    }
+
+    /* Mini Guide */
+    .guide-steps {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: grid;
+      gap: 6px;
+    }
+
+    /* History List */
+    .history-list {
+      display: grid;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 11px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .history-meta strong {
+      display: block;
+      color: var(--text);
+    }
+
+    .history-meta span {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 100;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-icon">GP</div>
+        <div>
+          <h1>Generator Prompt Media Pembelajaran Interaktif</h1>
+          <p>Rakit prompt presisi untuk Gemini AI &bull; Siap semat langsung (Embed HTML) di Google Sites</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-soft btn-sm" id="btnLoadPreset">Muat Contoh Mapel</button>
+        <button type="button" class="btn btn-outline btn-sm" id="btnResetForm">Reset Form</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- KOLOM KIRI: FORMULIR GURU -->
+    <section>
+      <!-- Blok 1: Identitas Kurikulum -->
+      <div class="card">
+        <div class="section-title">
+          <span><span class="step-badge">1</span>Konteks Kurikulum &amp; Jenjang</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="subjectSelect">Mata Pelajaran</label>
+            <select id="subjectSelect"></select>
+          </div>
+          <div class="field">
+            <label for="levelSelect">Jenjang &amp; Fase</label>
+            <select id="levelSelect"></select>
+          </div>
+        </div>
+
+        <div id="levelBadge" class="info-box"></div>
+
+        <div class="field" style="margin-top: 14px;">
+          <label for="topicInput">Topik / Judul Materi</label>
+          <input type="text" id="topicInput" placeholder="Contoh: Perubahan Wujud Zat & Kalor" />
+        </div>
+
+        <div class="field">
+          <label for="objectiveInput">Tujuan Pembelajaran</label>
+          <textarea id="objectiveInput" placeholder="Contoh: Siswa mampu menganalisis pengaruh kenaikan suhu terhadap jarak dan gerak partikel zat padat, cair, dan gas."></textarea>
+        </div>
+      </div>
+
+      <!-- Blok 2: Interaktivitas Khusus Mapel -->
+      <div class="card">
+        <div class="section-title">
+          <span><span class="step-badge">2</span>Jenis Interaktivitas Sesuai Mapel</span>
+        </div>
+        <div id="interactivityGrid" class="option-grid"></div>
+
+        <div class="field" style="margin-top: 14px;">
+          <label for="mechanicDetail">Detail Variabel / Objek / Skenario Khusus (Opsional namun Disarankan)</label>
+          <textarea id="mechanicDetail" placeholder="Contoh: Sediakan 3 pilihan zat (Air, Besi, Oksigen) dan slider suhu dari -50°C hingga 150°C dengan tampilan partikel bergerak di kanvas."></textarea>
+          <div class="hint">Semakin spesifik objek, rentang angka, atau kasus yang ditulis, semakin presisi hasil kode Gemini AI.</div>
+        </div>
+      </div>
+
+      <!-- Blok 3: Format Struktur Media -->
+      <div class="card">
+        <div class="section-title">
+          <span><span class="step-badge">3</span>Format Alur Pembelajaran</span>
+        </div>
+        <div id="formatGrid" class="option-grid"></div>
+      </div>
+
+      <!-- Blok 4: Pengaman Presisi & Aksesibilitas Google Sites -->
+      <div class="card">
+        <div class="section-title">
+          <span><span class="step-badge">4</span>Pengaman Presisi, Materi Kunci &amp; Aksesibilitas</span>
+        </div>
+
+        <div class="field">
+          <label for="misconceptionInput">Kunci Materi / Miskonsepsi yang Harus Dihindari (Opsional)</label>
+          <textarea id="misconceptionInput" placeholder="Contoh: Pastikan titik didih air tepat 100°C pada tekanan 1 atm, dan jelaskan bahwa wujud gas tetap memiliki massa."></textarea>
+          <div class="hint">Mencegah AI melakukan kekeliruan konsep, rumus, hukum bacaan, atau urutan prosedural.</div>
+        </div>
+
+        <div class="field">
+          <label>Fitur Tambahan Media (Kompatibel Sandbox Google Sites)</label>
+          <div class="toggle-list">
+            <label class="toggle-item">
+              <input type="checkbox" id="optTTS" />
+              <span>Pembaca Teks Suara (TTS Indonesia)</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="optAudio" checked />
+              <span>Efek Suara Umpan Balik (Web Audio)</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="optScoreCopy" checked />
+              <span>Tombol Salin Bukti Skor (Google Form)</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="optA11y" checked />
+              <span>Tombol Layar Penuh &amp; Ukuran Teks</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="optHints" checked />
+              <span>Petunjuk Bertahap saat Siswa Salah</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="optHighContrast" />
+              <span>Dukungan Mode Kontras Tinggi</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KOLOM KANAN: PRATINJAU PROMPT & RIWAYAT -->
+    <aside class="preview-col">
+      <div class="card">
+        <div class="section-title">
+          <span>Hasil Prompt Siap Pakai</span>
+          <span id="charCount" style="font-size: 0.76rem; color: var(--text-muted); font-weight: 500;">0 karakter</span>
+        </div>
+
+        <!-- Meteran Presisi -->
+        <div class="meter-wrap">
+          <div class="meter-head">
+            <span>Skor Presisi Prompt</span>
+            <span id="precisionScoreText">0%</span>
+          </div>
+          <div class="meter-bar">
+            <div id="precisionBarFill" class="meter-fill"></div>
+          </div>
+          <div id="precisionTip" class="meter-tip"></div>
+        </div>
+
+        <!-- Mode Prompting -->
+        <div class="mode-switch">
+          <button type="button" class="mode-btn active" data-mode="single">Mode 1-Klik Lengkap</button>
+          <button type="button" class="mode-btn" data-mode="iterative">Mode 3 Putaran (Anti-Terpotong)</button>
+        </div>
+
+        <!-- Tab Putaran (Muncul hanya di Mode 3 Putaran) -->
+        <div id="iterTabs" class="iter-tabs">
+          <button type="button" class="iter-tab active" data-step="0">Putaran 1: Inti</button>
+          <button type="button" class="iter-tab" data-step="1">Putaran 2: Alur</button>
+          <button type="button" class="iter-tab" data-step="2">Putaran 3: Poles</button>
+        </div>
+
+        <textarea id="promptOutput" class="prompt-output" readonly></textarea>
+
+        <div class="action-row">
+          <button type="button" class="btn btn-primary" id="btnCopyPrompt">Salin Prompt</button>
+          <button type="button" class="btn btn-outline" id="btnSaveHistory">Simpan</button>
+          <button type="button" class="btn btn-outline" id="btnDownloadTxt">Unduh .txt</button>
+        </div>
+
+        <div class="guide-steps">
+          <div><strong>Cara Pakai Cepat:</strong></div>
+          <div>1. Klik <strong>Salin Prompt</strong> lalu tempelkan ke obrolan Gemini AI.</div>
+          <div>2. Uji hasilnya di pratinjau, lalu salin seluruh kode HTML dari Gemini.</div>
+          <div>3. Di Google Sites, pilih <em>Sematkan (Embed) &rarr; Sematkan Kode</em>, lalu tempel kode tersebut.</div>
+        </div>
+      </div>
+
+      <!-- Riwayat Prompt Lokal -->
+      <div class="card">
+        <div class="section-title">
+          <span>Riwayat Prompt Tersimpan</span>
+          <button type="button" class="btn btn-outline btn-sm" id="btnClearHistory">Hapus Semua</button>
+        </div>
+        <div id="historyList" class="history-list">
+          <div class="hint">Belum ada prompt tersimpan di perangkat ini.</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast">Berhasil disalin!</div>
+
+  <script>
+    /* =========================================================================
+       1. DATA REFERENSI MATA PELAJARAN, JENJANG, DAN FORMAT MEDIA
+       ========================================================================= */
+
+    const LEVEL_DATA = {
+      sd_rendah: {
+        label: "SD Kelas 1–3 (Fase A–B)",
+        badge: "Mode SD Awal: Tombol ekstra besar ramah sentuh, bahasa sangat sederhana (maks 8–10 kata/kartu), visual cerah, maksimal 2 kontrol interaksi, dan dukungan suara TTS disarankan aktif.",
+        autoTTS: true,
+        promptSpec: [
+          "Gunakan bahasa Indonesia sangat sederhana, ramah anak, maksimal 8–10 kata per kartu instruksi.",
+          "Gunakan ukuran tombol ekstra besar (minimal 52x52px), warna cerah kontras jelas, dan ikon visual dominan.",
+          "Batasi kompleksitas maksimal 1–2 kontrol interaksi sederhana (klik atau drag-and-drop dasar) agar bebas beban kognitif.",
+          "Berikan umpan balik ceria (animasi konfeti/bintang besar) saat siswa menjawab benar."
+        ]
+      },
+      sd_tinggi: {
+        label: "SD Kelas 4–6 (Fase C)",
+        badge: "Mode SD Atas: Bahasa komunikatif kontekstual, 2–3 kontrol interaksi terpandu, kartu langkah singkat, dan tantangan berbasis eksplorasi permainan.",
+        autoTTS: false,
+        promptSpec: [
+          "Gunakan bahasa Indonesia yang komunikatif, jelas, dan dekat dengan pengalaman sehari-hari siswa SD kelas atas.",
+          "Sediakan maksimal 2–3 kontrol interaksi (kombinasi tombol pilihan, drag-and-drop, atau slider sederhana).",
+          "Sertakan penjelasan sebab-akibat visual yang mudah ditangkap langsung pada kanvas."
+        ]
+      },
+      smp: {
+        label: "SMP Kelas 7–9 (Fase D)",
+        badge: "Mode SMP: Bahasa semi-formal dengan istilah kunci ber-glosarium, kombinasi 2–3 variabel interaktif, dan misi eksperimen berumpan balik konseptual.",
+        autoTTS: false,
+        promptSpec: [
+          "Gunakan bahasa Indonesia semi-formal yang terstruktur serta jelaskan istilah kunci secara ringkas saat diklik.",
+          "Sediakan 2–3 variabel kontrol yang saling memengaruhi dan tampilkan indikator perubahan nilai secara real-time.",
+          "Rancang tantangan berbentuk misi eksperimen atau studi kasus terstruktur dengan petunjuk bertahap."
+        ]
+      },
+      sma_smk: {
+        label: "SMA / SMK Kelas 10–12 (Fase E–F)",
+        badge: "Mode SMA/SMK: Tampilan laboratorium/analitis modern, dukungan multi-variabel presisi, grafik real-time, terminologi ilmiah/vokasi baku, dan penalaran HOTS.",
+        autoTTS: false,
+        promptSpec: [
+          "Gunakan terminologi ilmiah/vokasi yang baku, akurat, dan mendorong penalaran tingkat tinggi (HOTS).",
+          "Gunakan antarmuka bersih bergaya laboratorium/analitis modern yang mendukung multi-variabel presisi dan pembacaan data atau grafik real-time.",
+          "Rancang tantangan berbasis pemecahan masalah kompleks, optimasi parameter, atau analisis skenario bercabang."
+        ]
+      }
+    };
+
+    const SUBJECT_DATA = {
+      matematika: {
+        name: "Matematika",
+        interactivities: [
+          {
+            id: "manipulatif",
+            label: "Manipulatif Digital (Drag & Drop)",
+            desc: "Balok pecahan, ubin aljabar, atau keping nilai tempat yang menghitung otomatis.",
+            spec: "Bangun manipulatif digital berbasis drag-and-drop (seperti balok pecahan, ubin aljabar, atau keping bilangan) di mana setiap penempatan objek otomatis menghitung dan menampilkan representasi matematisnya secara real-time."
+          },
+          {
+            id: "slider_grafik",
+            label: "Penggeser Parameter & Grafik",
+            desc: "Slider koefisien yang langsung mengubah bentuk kurva/garis pada koordinat.",
+            spec: "Sediakan kanvas sistem koordinat Kartesius interaktif yang terhubung dengan slider parameter (misal koefisien, gradien, atau konstanta) sehingga perubahan nilai langsung memperbarui bentuk grafik dan persamaannya secara mulus (60fps)."
+          },
+          {
+            id: "geometri",
+            label: "Geometri Eksploratif",
+            desc: "Titik sudut yang bisa ditarik bebas atau jaring-jaring bangun yang bisa dibuka-tutup.",
+            spec: "Sediakan bangun geometri interaktif (SVG/Canvas) dengan titik sudut yang dapat ditarik bebas atau kontrol buka-tutup jaring-jaring bangun ruang, lengkap dengan pengukuran panjang sisi, sudut, luas, atau volume secara dinamis."
+          },
+          {
+            id: "scaffolded",
+            label: "Latihan Prosedural Bertahap",
+            desc: "Penyelesaian langkah demi langkah dengan bantuan visual otomatis.",
+            spec: "Sediakan papan pemecahan masalah bertahap (step-by-step solver) yang memvalidasi setiap langkah perhitungan siswa secara terpisah dan menampilkan bantuan visual spesifik jika langkahnya keliru."
+          }
+        ],
+        preset: {
+          topic: "Fungsi Kuadrat & Pengaruh Koefisien",
+          objective: "Siswa mampu menganalisis pengaruh nilai a, b, dan c pada fungsi f(x) = ax² + bx + c terhadap bentuk dan posisi kurva parabola.",
+          detail: "Tampilkan koordinat Kartesius (-10 sampai 10) dengan 3 slider untuk a (-5 s.d 5), b (-5 s.d 5), dan c (-5 s.d 5). Tampilkan titik puncak dan titik potong sumbu-Y secara dinamis.",
+          misconception: "Tegaskan bahwa jika a = 0, grafik bukan lagi parabola melainkan garis lurus; tanda negatif pada nilai a membuat kurva terbuka ke bawah."
+        }
+      },
+      ipa: {
+        name: "IPA (Fisika, Kimia, Biologi)",
+        interactivities: [
+          {
+            id: "lab_virtual",
+            label: "Simulasi Laboratorium Virtual",
+            desc: "Eksperimen atur variabel bebas dan amati alat ukur virtual secara langsung.",
+            spec: "Bangun simulasi laboratorium virtual interaktif di kanvas HTML5 di mana siswa mengatur variabel bebas melalui slider/tombol dan mengamati perubahan fenomena fisis serta pembacaan alat ukur virtual (stopwatch, termometer, voltmeter, dll.) secara real-time."
+          },
+          {
+            id: "anatomi_layer",
+            label: "Lapisan Anatomi & Hotspot",
+            desc: "Toggle transparansi lapisan struktur organ/bumi dengan titik info klik.",
+            spec: "Bangun ilustrasi vektor SVG berlapis (interactive layers) dengan slider transparansi atau tombol toggle untuk mengupas setiap lapisan struktur, dilengkapi hotspot interaktif yang menampilkan nama bagian dan fungsinya saat diklik."
+          },
+          {
+            id: "molekul_reaksi",
+            label: "Perakit Molekul & Reaksi",
+            desc: "Tarik-lepas atom/zat untuk melihat ikatan, perubahan warna, atau reaksi.",
+            spec: "Sediakan ruang rakit molekul atau wadah pencampuran zat berbasis drag-and-drop yang memberikan umpan balik visual otomatis (perubahan warna, gelembung, suhu, atau indikator kestabilan elektron/persamaan reaksi)."
+          },
+          {
+            id: "ekosistem",
+            label: "Simulasi Ekosistem & Siklus",
+            desc: "Ubah populasi organisme dan amati grafik keseimbangan alam.",
+            spec: "Sediakan kontrol populasi tiap tingkat trofik atau faktor lingkungan yang menjalankan simulasi time-lapse disertai grafik garis dinamis perubahan populasi dari waktu ke waktu."
+          }
+        ],
+        preset: {
+          topic: "Perubahan Wujud Zat dan Gerak Partikel",
+          objective: "Siswa mampu menganalisis hubungan kenaikan suhu terhadap jarak, gaya tarik, dan kecepatan gerak partikel zat padat, cair, dan gas.",
+          detail: "Sediakan wadah simulasi partikel di kanvas HTML5, tombol pilihan 3 zat (Air, Besi, Oksigen), dan slider suhu dari -50°C hingga 150°C disertai label wujud zat serta grafik kurva pemanasan.",
+          misconception: "Saat terjadi perubahan wujud (melebur atau mendidih), suhu zat tetap konstan karena kalor digunakan untuk memutus ikatan antarpartikel, bukan menaikkan suhu."
+        }
+      },
+      bahasa: {
+        name: "Bahasa (Indonesia, Inggris, Asing)",
+        interactivities: [
+          {
+            id: "teks_glosarium",
+            label: "Teks Interaktif & Glosarium Klik",
+            desc: "Paragraf bacaan dengan sorotan kalimat, audio pelafalan, dan arti kata.",
+            spec: "Tampilkan teks bacaan interaktif di mana setiap kalimat/kata kunci dapat diklik untuk memunculkan pop-up arti kontekstual, kelas kata, serta pelafalan suara menggunakan Web Speech API (TTS) dengan kontrol kecepatan."
+          },
+          {
+            id: "sintaksis",
+            label: "Penyusun Struktur Kalimat",
+            desc: "Kartu kata berkode warna (S-P-O-K) yang disusun menjadi kalimat tepat.",
+            spec: "Bangun papan penyusun kalimat (sentence builder) menggunakan kartu kata berkode warna berdasarkan fungsi/kelas kata yang dapat diklik atau diseret untuk membentuk kalimat benar, disertai validasi tata bahasa instan."
+          },
+          {
+            id: "roleplay_dialog",
+            label: "Percabangan Dialog (Roleplay)",
+            desc: "Simulasi percakapan kontekstual dengan pilihan respons bercabang.",
+            spec: "Bangun antarmuka simulasi percakapan interaktif (chat/dialog visual) di mana siswa memilih respons bahasa yang paling santun/tepat sesuai situasi, dan alur respons lawan bicara berubah sesuai pilihan siswa."
+          },
+          {
+            id: "menyimak",
+            label: "Latihan Menyimak & Analisis Bunyi",
+            desc: "Pemutar pelafalan berkecepatan variabel untuk latihan dikte/pemahaman.",
+            spec: "Sediakan pemutar pelafalan berbasis TTS peramban dengan pengatur kecepatan (0.75x dan 1.0x) yang dipadukan dengan latihan melengkapi kata rumpang atau mencocokkan makna tanpa memerlukan akses mikrofon."
+          }
+        ],
+        preset: {
+          topic: "Kalimat Aktif dan Pasif dalam Teks Prosedur",
+          objective: "Siswa mampu mengubah kalimat aktif transitif menjadi kalimat pasif dengan struktur S-P-O yang tepat.",
+          detail: "Sediakan kartu kata berkode warna (Subjek=Biru, Predikat=Hijau, Objek=Oranye) yang bisa disusun ulang, plus tombol 'Tukar Imbuhan me- / di-' untuk melihat transformasi kalimat secara visual.",
+          misconception: "Pastikan siswa memahami bahwa hanya kalimat aktif transitif (yang memiliki objek) yang dapat diubah menjadi kalimat pasif."
+        }
+      },
+      ips: {
+        name: "IPS (Sejarah, Geografi, Ekonomi, Sosiologi)",
+        interactivities: [
+          {
+            id: "timeline",
+            label: "Lini Masa Kronologis Interaktif",
+            desc: "Garis waktu geser dengan filter periode dan perbandingan peristiwa.",
+            spec: "Bangun lini masa (timeline) horizontal interaktif yang dapat digeser dan difilter berdasarkan tema/era, di mana setiap titik tahun membuka kartu peristiwa lengkap dengan sebab-akibat historisnya."
+          },
+          {
+            id: "peta_gis",
+            label: "Peta Tematik Berlapis (GIS-Lite)",
+            desc: "Peta vektor SVG dengan tombol lapis data (iklim, penduduk, jalur sejarah).",
+            spec: "Bangun peta vektor SVG interaktif dengan kontrol toggle lapis data (layer switcher) agar siswa dapat menumpuk atau membandingkan berbagai data spasial sekaligus serta mengklik wilayah untuk melihat statistik detail."
+          },
+          {
+            id: "simulasi_ekonomi",
+            label: "Simulasi Kebijakan & Ekonomi",
+            desc: "Kelola variabel pasar/anggaran dan lihat dampaknya pada grafik kesejahteraan.",
+            spec: "Bangun simulator pengambilan keputusan sosial-ekonomi dengan panel indikator (misal harga, permintaan, penawaran, atau kesejahteraan masyarakat) yang langsung berubah melalui kurva/meteran visual saat siswa mengubah kebijakan atau parameter."
+          }
+        ],
+        preset: {
+          topic: "Hukum Permintaan, Penawaran, dan Harga Keseimbangan",
+          objective: "Siswa mampu menganalisis pergeseran kurva permintaan dan penawaran serta menentukan titik harga keseimbangan pasar.",
+          detail: "Tampilkan grafik kurva D dan S di kanvas, dengan slider tingkat harga, pendapatan konsumen, dan biaya produksi. Tampilkan status pasar (Surplus, Defisit, atau Ekuilibrium) secara otomatis.",
+          misconception: "Bedakan dengan tegas antara pergerakan sepanjang kurva (akibat perubahan harga barang itu sendiri) dan pergeseran kurva (akibat faktor non-harga)."
+        }
+      },
+      ppkn: {
+        name: "Pendidikan Pancasila & Kewarganegaraan (PPKn)",
+        interactivities: [
+          {
+            id: "dilema_etika",
+            label: "Simulasi Dilema Etika Bercabang",
+            desc: "Studi kasus nyata dengan pilihan tindakan dan analisis dampak nilai Pancasila.",
+            spec: "Bangun skenario studi kasus bercabang (choose-your-own-path) yang menempatkan siswa pada dilema nyata di sekolah/masyarakat; setiap pilihan menampilkan konsekuensi sosial-hukum serta indikator kesesuaian dengan sila Pancasila."
+          },
+          {
+            id: "hierarki_hukum",
+            label: "Peta Hierarki Hukum & Lembaga",
+            desc: "Diagram interaktif tata urutan peraturan atau hubungan lembaga negara.",
+            spec: "Bangun diagram struktural/piramida interaktif yang dapat diklik pada tiap tingkatan untuk melihat wewenang, contoh nyata di masyarakat, serta hubungan timbal balik antar-lembaga atau peraturan."
+          },
+          {
+            id: "klasifikasi_norma",
+            label: "Papan Klasifikasi Norma & Hak-Kewajiban",
+            desc: "Drag-and-drop kartu kasus perilaku ke kategori norma/hak/kewajiban.",
+            spec: "Sediakan papan kategorisasi drag-and-drop kartu studi kasus perilaku sehari-hari ke dalam kolom kategori (misal Norma Agama, Kesusilaan, Kesopanan, Hukum) lengkap dengan penjelasan sanksi dan alasannya saat dijatuhkan."
+          },
+          {
+            id: "musyawarah",
+            label: "Simulator Musyawarah & Konsensus",
+            desc: "Pilih argumen penengah untuk mencapai mufakat antar karakter berbeda pandangan.",
+            spec: "Bangun ruang simulasi musyawarah dengan 3–4 tokoh berpendapat berbeda dan meteran 'Tingkat Mufakat & Empati'; siswa memilih pernyataan mediasi untuk mencapai keputusan adil tanpa memaksakan kehendak."
+          }
+        ],
+        preset: {
+          topic: "Penerapan Norma dalam Kehidupan Bermasyarakat",
+          objective: "Siswa mampu membedakan empat macam norma (agama, kesusilaan, kesopanan, hukum) beserta sumber dan sanksinya melalui studi kasus nyata.",
+          detail: "Sediakan 8 kartu situasi nyata remaja yang dapat diseret ke 4 kolom norma, plus 1 skenario dilema etika tentang antrean dan aturan lalu lintas.",
+          misconception: "Tegaskan bahwa satu perbuatan (seperti mencuri) dapat melanggar lebih dari satu norma sekaligus, namun sanksi tegas dan memaksa dari negara hanya berasal dari norma hukum."
+        }
+      },
+      agama: {
+        name: "Pendidikan Agama & Budi Pekerti",
+        interactivities: [
+          {
+            id: "urutan_ibadah",
+            label: "Panduan Tata Cara Ibadah Bertahap",
+            desc: "Simulasi urutan langkah ibadah dengan penanda rukun/sunah & validasi urutan.",
+            spec: "Bangun panduan visual bertahap (step-by-step sequence) untuk tata cara ibadah dengan tombol navigasi langkah, label pembeda rukun/wajib vs sunah, serta mode tantangan menyusun ulang urutan langkah yang diacak."
+          },
+          {
+            id: "eksplorator_teks",
+            label: "Eksplorator Teks Suci & Kaidah Bacaan",
+            desc: "Klik per frasa untuk melihat arti kata, konteks, dan sorotan warna kaidah bacaan.",
+            spec: "Tampilkan teks/ayat dengan pewarnaan semantik pada kaidah bacaan (misal tajwid atau struktur ayat); saat tiap potongan frasa diklik, tampilkan penjelasan kaidah, terjemahan per kata, dan konteks pesannya."
+          },
+          {
+            id: "jurnal_akhlak",
+            label: "Refleksi Akhlak & Simulasi Teladan",
+            desc: "Ceklis pembiasaan baik privat (lokal) atau skenario keteladanan sikap.",
+            spec: "Bangun simulasi penerapan nilai akhlak mulia dalam keseharian remaja disertai lembar refleksi diri interaktif yang bersifat privat (hanya tersimpan di memori sesi/perangkat siswa tanpa kirim ke server)."
+          },
+          {
+            id: "peta_sejarah_agama",
+            label: "Peta Jejak Sejarah & Tokoh Teladan",
+            desc: "Peta vektor rute sejarah peradaban dan kartu nilai keteladanan tokoh.",
+            spec: "Bangun peta rute sejarah berbasis SVG interaktif dengan titik-titik persinggahan berurutan yang menampilkan kisah singkat dan nilai keteladanan yang relevan bagi kehidupan modern."
+          }
+        ],
+        preset: {
+          topic: "Ketentuan dan Tata Cara Wudu yang Sah",
+          objective: "Siswa mampu mengurutkan rukun wudu secara tertib serta membedakan antara rukun dan sunah wudu.",
+          detail: "Sediakan ilustrasi vektor tiap gerakan wudu dengan label warna berbeda untuk Rukun dan Sunah, lalu pada tahap tantangan acak kartu gerakan agar siswa menyusunnya secara tertib.",
+          misconception: "Tegaskan bahwa 'tertib' (berurutan) adalah bagian dari rukun wudu, dan membasuh sebagian kepala termasuk rukun sedangkan berkumur dan membasuh telinga termasuk sunah."
+        }
+      },
+      seni: {
+        name: "Seni Budaya & Prakarya",
+        interactivities: [
+          {
+            id: "warna_komposisi",
+            label: "Kanvas Warna & Komposisi",
+            desc: "Pencampur warna digital dan panduan grid komposisi (Rule of Thirds).",
+            spec: "Bangun studio warna dan komposisi interaktif berbasis kanvas/SVG dengan pencampur warna primer-sekunder-tersier, pemilih harmoni warna (komplementer/analogus), serta toggle grid panduan komposisi."
+          },
+          {
+            id: "studio_ritme",
+            label: "Studio Ritme & Nada (Web Audio)",
+            desc: "Papan ketuk/bilah nada virtual untuk menyusun pola ritme dan melodi.",
+            spec: "Bangun sequencer ritme atau bilah nada interaktif menggunakan Web Audio API murni (tanpa file audio luar) agar siswa dapat mengklik ketukan, mengatur tempo (BPM), dan mendengarkan langsung pola irama buatannya."
+          },
+          {
+            id: "galeri_anotasi",
+            label: "Inspektor Karya & Motif Beranotasi",
+            desc: "Eksplorasi detail motif budaya/karya seni dengan titik sorotan makna.",
+            spec: "Tampilkan ilustrasi vektor motif/karya seni dengan fitur zoom kontrol serta titik anotasi (hotspot) yang menjelaskan teknik pembuatan, unsur rupa, dan filosofi budaya di balik tiap bagian motif."
+          }
+        ],
+        preset: {
+          topic: "Teori Warna & Harmoni Komposisi Seni Rupa",
+          objective: "Siswa mampu membedakan warna primer, sekunder, tersier serta menyusun skema warna komplementer dan analogus.",
+          detail: "Sediakan roda warna interaktif 12 segmen, wadah pencampur 2 warna, dan pratinjau poster mini yang warnanya langsung berubah mengikuti skema warna pilihan siswa.",
+          misconception: "Bedakan pencampuran warna pigmen/cat (RYB: Merah-Kuning-Biru) pada seni rupa dengan warna cahaya layar (RGB)."
+        }
+      },
+      pjok: {
+        name: "PJOK (Olahraga & Kesehatan)",
+        interactivities: [
+          {
+            id: "papan_taktik",
+            label: "Papan Taktik Lapangan Interaktif",
+            desc: "Geser ikon pemain dan gambar rute pergerakan strategi tim.",
+            spec: "Bangun papan taktik lapangan olahraga berbasis SVG/Canvas dengan ikon pemain yang dapat digeser bebas, tombol preset formasi, serta mode menggambar panah arah umpan/pergerakan."
+          },
+          {
+            id: "gerakan_slowmo",
+            label: "Pemutar Fase Gerakan (Slow-Motion)",
+            desc: "Kontrol frame-by-frame teknik dasar olahraga dengan indikator sudut tubuh.",
+            spec: "Bangun animasi vektor teknik gerak olahraga yang dapat dikontrol dengan slider fase (awal, pelaksanaan, lanjutan) atau tombol slow-motion, lengkap dengan penanda titik tumpu dan posisi sendi yang benar."
+          },
+          {
+            id: "kalkulator_bugar",
+            label: "Simulasi & Kalkulator Kebugaran",
+            desc: "Hitung IMT, zona detak jantung latihan, dan simulasi keseimbangan kalori.",
+            spec: "Bangun alat hitung dan simulator kebugaran interaktif (seperti zona detak jantung latihan, IMT, atau keseimbangan asupan-aktivitas) dengan meteran visual real-time dan rekomendasi latihan aman sesuai usia."
+          }
+        ],
+        preset: {
+          topic: "Formasi dan Pola Penyerangan Bola Basket",
+          objective: "Siswa mampu memahami peran 5 posisi pemain bola basket dan merancang pola pergerakan dasar saat menyerang.",
+          detail: "Sediakan setengah lapangan basket SVG, 5 pion penyerang (PG, SG, SF, PF, C) dan 5 pion bertahan yang bisa digeser, tombol preset formasi (1-2-2 dan 1-3-1), serta tombol animasi jalur operan.",
+          misconception: "Pastikan siswa memahami aturan area 3 detik (paint area) dan perbedaan tugas Point Guard sebagai pengatur serangan dengan Center di bawah ring."
+        }
+      }
+    };
+
+    const FORMAT_DATA = {
+      alur_4_tahap: {
+        label: "Alur Lengkap 4 Tahap (Rekomendasi)",
+        desc: "Apersepsi → Eksplorasi Split-Screen → Mini-Game Bintang → Rangkuman.",
+        spec: [
+          "Bangun menggunakan navigasi layar bertahap (4 Tahap Micro-Learning Loop) di dalam satu viewport tanpa scroll panjang:",
+          "1) Layar Apersepsi: 1 ilustrasi vektor kontekstual, 1 pertanyaan pemantik dunia nyata, dan tombol besar 'Mulai Eksplorasi' (yang sekaligus membuka kunci audio Web Audio API).",
+          "2) Layar Eksplorasi (Split-Screen 70:30 desktop / atas-bawah ponsel): Area utama berisi simulasi/interaksi inti; panel samping berisi 3–4 kartu konsep mikro berurutan yang memandu siswa bereksperimen.",
+          "3) Layar Tantangan (Mini-Game): Ubah simulasi menjadi 3 misi tantangan berbasis tindakan (bukan sekadar pilihan ganda teks biasa) dengan umpan balik benar/salah instan dan sistem skor 1–3 bintang.",
+          "4) Layar Rangkuman: Tampilkan 3 poin kesimpulan inti materi, perolehan bintang, serta tombol ulangi latihan."
+        ]
+      },
+      sandbox_fokus: {
+        label: "Fokus Lab / Eksplorasi Langsung",
+        desc: "Langsung ke kanvas interaktif + kartu panduan mikro (cocok untuk demo kelas).",
+        spec: [
+          "Bangun dengan tata letak langsung menuju ruang eksperimen (Split-Screen 72:28) agar guru dan siswa dapat langsung melakukan demonstrasi atau eksplorasi:",
+          "1) Area Utama: Kanvas/simulasi interaktif penuh dengan tombol Reset dan Preset Pengaturan Cepat.",
+          "2) Panel Samping: Tab 'Kontrol & Variabel' serta tab 'Panduan Eksplorasi' berisi 3 misi pengamatan singkat dan kesimpulan konsep.",
+          "3) Sediakan tombol mini 'Uji Cepat (3 Soal)' dalam bentuk modal pop-up agar siswa tetap dapat memeriksa pemahamannya."
+        ]
+      },
+      minigame_evaluasi: {
+        label: "Fokus Mini-Game & Tantangan",
+        desc: "Permainan edukatif berlevel dengan skor, bintang, dan umpan balik cepat.",
+        spec: [
+          "Bangun sebagai media latihan bergamifikasi (Game-Based Learning) dengan alur ringkas:",
+          "1) Layar Mulai: Judul misi, aturan main singkat (3 poin), dan tombol 'Mulai Tantangan'.",
+          "2) Arena Permainan (5 Level/Tantangan Bertingkat): Misi interaktif berbasis manipulasi langsung (drag-drop, atur variabel, susun urutan, atau pilih keputusan) dengan indikator progres, skor, dan umpan balik konseptual instan tiap jawaban.",
+          "3) Layar Hasil: Menampilkan perolehan 1–3 bintang, ringkasan konsep yang perlu diperkuat berdasarkan kesalahan siswa, dan tombol main lagi."
+        ]
+      },
+      studi_kasus: {
+        label: "Simulasi Skenario & Studi Kasus",
+        desc: "Alur cerita bercabang dengan indikator dampak keputusan secara visual.",
+        spec: [
+          "Bangun sebagai simulator studi kasus interaktif bercabang (Branching Scenario):",
+          "1) Layar Pengantar Peran: Menjelaskan peran siswa, konteks masalah nyata, dan 2–3 indikator keberhasilan (meteran visual) yang harus dijaga.",
+          "2) Layar Keputusan (4–5 Babak Skenario): Setiap babak menampilkan ilustrasi vektor situasi, narasi singkat padat, dan 3 pilihan tindakan yang langsung mengubah nilai meteran indikator serta memunculkan dampak logisnya.",
+          "3) Layar Evaluasi Akhir: Analisis karakter keputusan siswa berdasarkan hasil meteran akhir, poin pembelajaran kunci, dan opsi mencoba jalur keputusan lain."
+        ]
+      }
+    };
+
+    /* =========================================================================
+       2. STATE APLIKASI & ELEMEN DOM
+       ========================================================================= */
+
+    const state = {
+      subject: "ipa",
+      level: "smp",
+      interactivityId: "lab_virtual",
+      formatId: "alur_4_tahap",
+      mode: "single", // "single" | "iterative"
+      iterStep: 0     // 0, 1, 2
+    };
+
+    const HISTORY_KEY = "gp_edu_prompt_history_v1";
+
+    const els = {
+      subjectSelect: document.getElementById("subjectSelect"),
+      levelSelect: document.getElementById("levelSelect"),
+      levelBadge: document.getElementById("levelBadge"),
+      topicInput: document.getElementById("topicInput"),
+      objectiveInput: document.getElementById("objectiveInput"),
+      interactivityGrid: document.getElementById("interactivityGrid"),
+      mechanicDetail: document.getElementById("mechanicDetail"),
+      formatGrid: document.getElementById("formatGrid"),
+      misconceptionInput: document.getElementById("misconceptionInput"),
+      optTTS: document.getElementById("optTTS"),
+      optAudio: document.getElementById("optAudio"),
+      optScoreCopy: document.getElementById("optScoreCopy"),
+      optA11y: document.getElementById("optA11y"),
+      optHints: document.getElementById("optHints"),
+      optHighContrast: document.getElementById("optHighContrast"),
+      precisionScoreText: document.getElementById("precisionScoreText"),
+      precisionBarFill: document.getElementById("precisionBarFill"),
+      precisionTip: document.getElementById("precisionTip"),
+      iterTabs: document.getElementById("iterTabs"),
+      promptOutput: document.getElementById("promptOutput"),
+      charCount: document.getElementById("charCount"),
+      btnCopyPrompt: document.getElementById("btnCopyPrompt"),
+      btnSaveHistory: document.getElementById("btnSaveHistory"),
+      btnDownloadTxt: document.getElementById("btnDownloadTxt"),
+      btnLoadPreset: document.getElementById("btnLoadPreset"),
+      btnResetForm: document.getElementById("btnResetForm"),
+      btnClearHistory: document.getElementById("btnClearHistory"),
+      historyList: document.getElementById("historyList"),
+      toast: document.getElementById("toast")
+    };
+
+    /* =========================================================================
+       3. INISIALISASI ANTARMUKA
+       ========================================================================= */
+
+    function initSelects() {
+      Object.entries(SUBJECT_DATA).forEach(([key, val]) => {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = val.name;
+        els.subjectSelect.appendChild(opt);
+      });
+      els.subjectSelect.value = state.subject;
+
+      Object.entries(LEVEL_DATA).forEach(([key, val]) => {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = val.label;
+        els.levelSelect.appendChild(opt);
+      });
+      els.levelSelect.value = state.level;
+    }
+
+    function renderInteractivities() {
+      const list = SUBJECT_DATA[state.subject].interactivities;
+      if (!list.some((item) => item.id === state.interactivityId)) {
+        state.interactivityId = list[0].id;
+      }
+      els.interactivityGrid.innerHTML = "";
+      list.forEach((item) => {
+        const card = document.createElement("label");
+        card.className = "option-card" + (item.id === state.interactivityId ? " active" : "");
+        card.innerHTML = `
+          <input type="radio" name="interactivity" value="${item.id}" ${item.id === state.interactivityId ? "checked" : ""} />
+          <div>
+            <strong>${item.label}</strong>
+            <span>${item.desc}</span>
+          </div>
+        `;
+        card.addEventListener("click", () => {
+          state.interactivityId = item.id;
+          renderInteractivities();
+          updateAll();
+        });
+        els.interactivityGrid.appendChild(card);
+      });
+    }
+
+    function renderFormats() {
+      els.formatGrid.innerHTML = "";
+      Object.entries(FORMAT_DATA).forEach(([key, item]) => {
+        const card = document.createElement("label");
+        card.className = "option-card" + (key === state.formatId ? " active" : "");
+        card.innerHTML = `
+          <input type="radio" name="format" value="${key}" ${key === state.formatId ? "checked" : ""} />
+          <div>
+            <strong>${item.label}</strong>
+            <span>${item.desc}</span>
+          </div>
+        `;
+        card.addEventListener("click", () => {
+          state.formatId = key;
+          renderFormats();
+          updateAll();
+        });
+        els.formatGrid.appendChild(card);
+      });
+    }
+
+    function updateLevelBadge(applyAutoTTS = false) {
+      const lv = LEVEL_DATA[state.level];
+      els.levelBadge.textContent = lv.badge;
+      if (applyAutoTTS) {
+        els.optTTS.checked = lv.autoTTS;
+      }
+    }
+
+    /* =========================================================================
+       4. LOGIKA PERAKITAN PROMPT & METERAN PRESISI
+       ========================================================================= */
+
+    function getTechnicalGuardrails() {
+      const rules = [
+        "Hasilkan dalam SATU berkas HTML tunggal mandiri (HTML, CSS, dan Vanilla JavaScript digabung) tanpa pustaka eksternal, tanpa link CDN, tanpa file gambar/audio luar.",
+        "Kunci tinggi tata letak pas satu layar (100vh) tanpa scrollbar vertikal agar tidak terjadi double-scrollbar saat disematkan di fitur 'Sematkan Kode' Google Sites, serta responsif penuh (menyamping di layar lebar/Chromebook, menumpuk rapi di layar ponsel).",
+        "Bangun seluruh ilustrasi, ikon, dan visualisasi menggunakan SVG internal atau Kanvas HTML5 yang tajam dan bersih dengan tema warna cerah netral agar menyatu dengan tampilan Google Sites.",
+        "Pastikan seluruh interaksi (klik, slider, drag-and-drop) mendukung penuh Pointer/Touch Events untuk layar sentuh ponsel dengan ukuran target sentuh minimal 44x44px.",
+        "Gunakan penyimpanan memori sesi (in-memory state) dengan cadangan try-catch aman agar aplikasi tidak macet jika LocalStorage diblokir oleh sandbox iframe Google Sites."
+      ];
+
+      if (els.optAudio.checked) {
+        rules.push("Sertakan efek suara umpan balik halus (klik, benar, salah, selesai) menggunakan Web Audio API murni bawaan peramban yang aktif setelah interaksi klik pertama siswa, dilengkapi tombol mute.");
+      }
+      if (els.optTTS.checked) {
+        rules.push("Sertakan fitur pembaca teks otomatis/klik (Text-to-Speech Bahasa Indonesia via Web Speech API) pada instruksi dan kartu materi agar ramah bagi siswa yang membutuhkan dukungan baca.");
+      }
+      if (els.optScoreCopy.checked) {
+        rules.push("Pada layar akhir/rangkuman, sediakan tombol 'Salin Bukti Belajar' ke clipboard (dengan fallback execCommand agar bekerja di sandbox Google Sites) berisi nama topik, jenjang, perolehan bintang/skor, dan kode validasi unik untuk ditempel siswa ke Google Form.");
+      }
+      if (els.optA11y.checked) {
+        rules.push("Sediakan bilah atas ringkas berisi tombol Layar Penuh (Fullscreen Toggle) dan tombol pengatur ukuran huruf (A- / A+).");
+      }
+      if (els.optHints.checked) {
+        rules.push("Sediakan sistem petunjuk bertahap (progressive hints) yang muncul otomatis saat siswa melakukan kesalahan berulang pada misi tantangan.");
+      }
+      if (els.optHighContrast.checked) {
+        rules.push("Sediakan tombol pengalih Mode Kontras Tinggi untuk meningkatkan keterbacaan teks bagi siswa berkebutuhan khusus penglihatan.");
+      }
+      return rules;
+    }
+
+    function buildPromptBundle() {
+      const subj = SUBJECT_DATA[state.subject];
+      const level = LEVEL_DATA[state.level];
+      const inter = subj.interactivities.find((i) => i.id === state.interactivityId) || subj.interactivities[0];
+      const format = FORMAT_DATA[state.formatId];
+
+      const topic = els.topicInput.value.trim() || "[ISI TOPIK MATERI DI SINI]";
+      const objective = els.objectiveInput.value.trim() || "[ISI TUJUAN PEMBELAJARAN DI SINI]";
+      const detail = els.mechanicDetail.value.trim();
+      const misconception = els.misconceptionInput.value.trim();
+      const techRules = getTechnicalGuardrails();
+
+      const headerContext = [
+        `KONTEKS KURIKULUM:`,
+        `- Mata Pelajaran: ${subj.name}`,
+        `- Jenjang / Fase: ${level.label}`,
+        `- Topik Materi: ${topic}`,
+        `- Tujuan Pembelajaran: ${objective}`
+      ].join("\n");
+
+      const levelRulesText = level.promptSpec.map((r) => `- ${r}`).join("\n");
+      const formatRulesText = format.spec.map((r) => `- ${r}`).join("\n");
+      const techRulesText = techRules.map((r) => `- ${r}`).join("\n");
+
+      const mechanicBlock = [
+        `SPESIFIKASI INTERAKTIVITAS (${inter.label}):`,
+        `- Mekanika Utama: ${inter.spec}`,
+        detail ? `- Detail Variabel / Objek / Skenario Guru: ${detail}` : `- Rancang variabel, objek visual, dan nilai simulasi yang paling representatif untuk topik "${topic}".`,
+        misconception ? `- Akurasi Konsep & Pencegahan Miskonsepsi (WAJIB DIPATUHI): ${misconception}` : `- Pastikan seluruh rumus, fakta keilmuan, urutan prosedural, dan kunci jawaban 100% akurat sesuai kurikulum Indonesia.`
+      ].join("\n");
+
+      // Mode 1: Single Prompt Lengkap
+      const single = [
+        `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web (HTML5/SVG/JS) dan desainer instruksional profesional. Buatkan media pembelajaran interaktif yang siap langsung disematkan di fitur "Sematkan Kode" (Embed HTML) Google Sites dengan spesifikasi berikut:`,
+        ``,
+        headerContext,
+        ``,
+        `PENYESUAIAN KARAKTERISTIK JENJANG (${level.label}):`,
+        levelRulesText,
+        ``,
+        mechanicBlock,
+        ``,
+        `STRUKTUR & FORMAT ALUR BELAJAR (${format.label}):`,
+        formatRulesText,
+        ``,
+        `BATASAN TEKNIS SANDBOX GOOGLE SITES (WAJIB):`,
+        techRulesText,
+        ``,
+        `INSTRUKSI OUTPUT:`,
+        `- Berikan kode HTML lengkap dari <!DOCTYPE html> hingga </html> dalam satu blok kode yang langsung dapat dijalankan tanpa potongan atau placeholder "// lanjutkan di sini".`,
+        `- Pastikan tidak ada error konsol JavaScript dan seluruh tombol bekerja sejak klik pertama.`
+      ].join("\n");
+
+      // Mode 2: 3 Putaran Bertahap (Anti-Terpotong untuk Simulasi Kompleks)
+      const p1 = [
+        `[PUTARAN 1 DARI 3 — KERANGKA & MEKANIKA INTI]`,
+        `Bertindaklah sebagai ahli pengembang media pembelajaran interaktif berbasis web dan desainer instruksional. Kita akan membangun media pembelajaran interaktif mandiri (1 file HTML tunggal) untuk disematkan langsung di Google Sites secara bertahap agar kode rapi dan bebas bug.`,
+        ``,
+        headerContext,
+        ``,
+        `Pada Putaran 1 ini, fokuslah membangun antarmuka utama dan MEKANIKA INTERAKTIVITAS INTI terlebih dahulu sampai akurat dan mulus:`,
+        mechanicBlock,
+        ``,
+        `PENYESUAIAN JENJANG (${level.label}):`,
+        levelRulesText,
+        ``,
+        `ATURAN DASAR PUTARAN 1:`,
+        `- Gunakan 1 file HTML tunggal (Vanilla HTML/CSS/JS, tanpa pustaka luar, ilustrasi SVG/Canvas internal).`,
+        `- Kunci tinggi kontainer pas 100vh tanpa scrollbar vertikal dan responsif desktop/ponsel.`,
+        `- Jangan buat layar apersepsi atau mini-game dulu; fokus pastikan simulasi/manipulasi utamanya bekerja 100% akurat secara konsep.`
+      ].join("\n");
+
+      const p2 = [
+        `[PUTARAN 2 DARI 3 — ALUR PEMBELAJARAN & MINI-GAME]`,
+        `Bagus! Sekarang kembangkan kode dari Putaran 1 dengan membungkus mekanika inti tersebut ke dalam struktur alur pembelajaran utuh (${format.label}):`,
+        ``,
+        formatRulesText,
+        ``,
+        `TAMBAHAN PUTARAN 2:`,
+        els.optHints.checked ? `- Tambahkan petunjuk bertahap (progressive hints) yang muncul jika siswa salah pada tahap tantangan.` : `- Berikan umpan balik singkat dan jelas (benar/salah beserta alasan) pada setiap aksi tantangan.`,
+        misconception ? `- Pastikan soal tantangan dan kartu rangkuman menguji pemahaman terkait hal ini: ${misconception}` : `- Pastikan soal tantangan benar-benar menguji tujuan pembelajaran: ${objective}`,
+        `- Berikan kode HTML utuh terbaru yang sudah menggabungkan Putaran 1 dan Putaran 2 tanpa menyingkat kode.`
+      ].join("\n");
+
+      const p3 = [
+        `[PUTARAN 3 DARI 3 — POLES AKSESIBILITAS & KETAHANAN SANDBOX GOOGLE SITES]`,
+        `Sebagai tahap penyempurnaan akhir, audit dan tingkatkan kode utuh dari Putaran 2 agar 100% tangguh saat ditempel di fitur "Sematkan Kode" (Embed HTML) Google Sites:`,
+        ``,
+        techRulesText,
+        ``,
+        `PEMERIKSAAN AKHIR:`,
+        `- Pastikan tidak ada elemen yang terpotong (overflow) pada layar kecil 360x640px maupun bingkai iframe 16:9.`,
+        `- Pastikan seluruh interaksi drag/slider bekerja lancar di layar sentuh ponsel (touch/pointer events).`,
+        `- Berikan versi final kode HTML lengkap dari <!DOCTYPE html> sampai </html> yang siap langsung disalin-tempel ke Google Sites.`
+      ].join("\n");
+
+      return { single, iterative: [p1, p2, p3] };
+    }
+
+    function updatePrecisionMeter() {
+      let score = 20; // Dasar dari mapel, jenjang, interaktivitas, format
+      const missing = [];
+
+      if (els.topicInput.value.trim().length >= 4) {
+        score += 25;
+      } else {
+        missing.push("Topik Materi");
+      }
+
+      if (els.objectiveInput.value.trim().length >= 15) {
+        score += 25;
+      } else {
+        missing.push("Tujuan Pembelajaran");
+      }
+
+      if (els.mechanicDetail.value.trim().length >= 15) {
+        score += 20;
+      } else {
+        missing.push("Detail Variabel/Skenario");
+      }
+
+      if (els.misconceptionInput.value.trim().length >= 10) {
+        score += 10;
+      } else {
+        missing.push("Kunci Materi/Miskonsepsi");
+      }
+
+      els.precisionScoreText.textContent = `${score}%`;
+      els.precisionBarFill.style.width = `${score}%`;
+
+      if (score >= 90) {
+        els.precisionBarFill.style.backgroundColor = "var(--success)";
+        els.precisionTip.textContent = "Sangat presisi! Prompt sudah sangat siap menghasilkan media yang akurat.";
+      } else if (score >= 70) {
+        els.precisionBarFill.style.backgroundColor = "var(--primary)";
+        els.precisionTip.textContent = `Sudah baik. Lengkapi ${missing.join(", ")} untuk hasil maksimal.`;
+      } else {
+        els.precisionBarFill.style.backgroundColor = "var(--warning)";
+        els.precisionTip.textContent = `Perlu dilengkapi: ${missing.slice(0, 2).join(" & ")} agar hasil AI tidak terlalu umum.`;
+      }
+    }
+
+    function updateAll() {
+      const bundle = buildPromptBundle();
+      const text = state.mode === "single" ? bundle.single : bundle.iterative[state.iterStep];
+      els.promptOutput.value = text;
+      els.charCount.textContent = `${text.length.toLocaleString("id-ID")} karakter`;
+      updatePrecisionMeter();
+    }
+
+    /* =========================================================================
+       5. UTILITAS SALIN, UNDUH, PRESET, DAN RIWAYAT LOKAL (SANDBOX-SAFE)
+       ========================================================================= */
+
+    let toastTimer;
+    function showToast(msg) {
+      els.toast.textContent = msg;
+      els.toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => els.toast.classList.remove("show"), 2600);
+    }
+
+    async function copyText(text) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) {
+        // Fallback di bawah
+      }
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      temp.style.position = "fixed";
+      temp.style.opacity = "0";
+      document.body.appendChild(temp);
+      temp.select();
+      let ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      document.body.removeChild(temp);
+      return ok;
+    }
+
+    function safeStorageGet(key) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function safeStorageSet(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function renderHistory() {
+      const list = safeStorageGet(HISTORY_KEY);
+      if (!list.length) {
+        els.historyList.innerHTML = `<div class="hint">Belum ada prompt tersimpan di perangkat ini.</div>`;
+        return;
+      }
+      els.historyList.innerHTML = "";
+      list.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML = `
+          <div class="history-meta">
+            <strong>${escapeHtml(item.topic)}</strong>
+            <span>${escapeHtml(item.subjectName)} &bull; ${escapeHtml(item.levelLabel)} &bull; ${escapeHtml(item.date)}</span>
+          </div>
+          <div class="history-actions">
+            <button type="button" class="btn btn-soft btn-sm" data-copy-id="${item.id}">Salin</button>
+            <button type="button" class="btn btn-outline btn-sm" data-del-id="${item.id}">Hapus</button>
+          </div>
+        `;
+        els.historyList.appendChild(div);
+      });
+
+      els.historyList.querySelectorAll("[data-copy-id]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const found = safeStorageGet(HISTORY_KEY).find((x) => x.id === btn.dataset.copyId);
+          if (found) {
+            await copyText(found.promptText);
+            showToast("Prompt dari riwayat disalin!");
+          }
+        });
+      });
+
+      els.historyList.querySelectorAll("[data-del-id]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const filtered = safeStorageGet(HISTORY_KEY).filter((x) => x.id !== btn.dataset.delId);
+          safeStorageSet(HISTORY_KEY, filtered);
+          renderHistory();
+          showToast("Riwayat dihapus.");
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /* =========================================================================
+       6. EVENT LISTENERS
+       ========================================================================= */
+
+    els.subjectSelect.addEventListener("change", (e) => {
+      state.subject = e.target.value;
+      renderInteractivities();
+      updateAll();
+    });
+
+    els.levelSelect.addEventListener("change", (e) => {
+      state.level = e.target.value;
+      updateLevelBadge(true);
+      updateAll();
+    });
+
+    [
+      els.topicInput,
+      els.objectiveInput,
+      els.mechanicDetail,
+      els.misconceptionInput,
+      els.optTTS,
+      els.optAudio,
+      els.optScoreCopy,
+      els.optA11y,
+      els.optHints,
+      els.optHighContrast
+    ].forEach((el) => {
+      el.addEventListener("input", updateAll);
+      el.addEventListener("change", updateAll);
+    });
+
+    document.querySelectorAll(".mode-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.mode = btn.dataset.mode;
+        document.querySelectorAll(".mode-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        els.iterTabs.classList.toggle("show", state.mode === "iterative");
+        updateAll();
+      });
+    });
+
+    document.querySelectorAll(".iter-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        state.iterStep = Number(tab.dataset.step);
+        document.querySelectorAll(".iter-tab").forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        updateAll();
+      });
+    });
+
+    els.btnCopyPrompt.addEventListener("click", async () => {
+      const ok = await copyText(els.promptOutput.value);
+      if (ok) {
+        const label = state.mode === "single" ? "Prompt berhasil disalin! Tempel di Gemini AI." : `Prompt Putaran ${state.iterStep + 1} disalin!`;
+        showToast(label);
+      } else {
+        showToast("Gagal menyalin otomatis. Silakan blok teks dan tekan Ctrl+C.");
+      }
+    });
+
+    els.btnSaveHistory.addEventListener("click", () => {
+      const topic = els.topicInput.value.trim() || "Tanpa Judul";
+      const list = safeStorageGet(HISTORY_KEY);
+      const entry = {
+        id: "h_" + Date.now(),
+        topic,
+        subjectName: SUBJECT_DATA[state.subject].name,
+        levelLabel: LEVEL_DATA[state.level].label,
+        date: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short" }),
+        promptText: els.promptOutput.value
+      };
+      list.unshift(entry);
+      const saved = safeStorageSet(HISTORY_KEY, list.slice(0, 15));
+      if (saved) {
+        renderHistory();
+        showToast("Prompt disimpan ke riwayat lokal.");
+      } else {
+        showToast("Penyimpanan lokal dibatasi peramban; gunakan tombol Unduh .txt.");
+      }
+    });
+
+    els.btnDownloadTxt.addEventListener("click", () => {
+      const topicSlug = (els.topicInput.value.trim() || "prompt-media")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      const blob = new Blob([els.promptOutput.value], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${topicSlug || "prompt-media"}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Berkas .txt berhasil diunduh.");
+    });
+
+    els.btnLoadPreset.addEventListener("click", () => {
+      const preset = SUBJECT_DATA[state.subject].preset;
+      els.topicInput.value = preset.topic;
+      els.objectiveInput.value = preset.objective;
+      els.mechanicDetail.value = preset.detail;
+      els.misconceptionInput.value = preset.misconception;
+      updateAll();
+      showToast(`Contoh ${SUBJECT_DATA[state.subject].name} dimuat.`);
+    });
+
+    els.btnResetForm.addEventListener("click", () => {
+      els.topicInput.value = "";
+      els.objectiveInput.value = "";
+      els.mechanicDetail.value = "";
+      els.misconceptionInput.value = "";
+      updateAll();
+      showToast("Formulir dikosongkan.");
+    });
+
+    els.btnClearHistory.addEventListener("click", () => {
+      safeStorageSet(HISTORY_KEY, []);
+      renderHistory();
+      showToast("Semua riwayat dihapus.");
+    });
+
+    // Jalankan inisialisasi
+    initSelects();
+    renderInteractivities();
+    renderFormats();
+    updateLevelBadge(false);
+    renderHistory();
+    updateAll();
+  </script>
+</body>
+</html>
