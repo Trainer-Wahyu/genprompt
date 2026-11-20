@@ -9,6 +9,8 @@
   --primary: #4f46e5;
   --primary-hover: #4338ca;
   --primary-soft: #eef2ff;
+  --manual-bg: #fffbeb;
+  --manual-border: #f59e0b;
   --success: #059669;
   --warning: #d97706;
   --radius: 12px;
@@ -91,7 +93,7 @@ body {
   margin: 24px auto 0;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: 1.12fr 0.88fr;
+  grid-template-columns: 1.14fr 0.86fr;
   gap: 24px;
   align-items: start;
 }
@@ -162,14 +164,39 @@ body {
   display: block;
 }
 
-/* Generator Type Selector (3 Cards) */
+/* Kotak Input Manual (Muncul saat opsi Manual dipilih) */
+.manual-box {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--manual-bg);
+  border: 1.5px dashed var(--manual-border);
+  animation: fadeIn 0.2s ease;
+}
+
+.manual-box.show {
+  display: block;
+}
+
+.manual-box label {
+  color: #92400e;
+  font-size: 0.82rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Generator Type Selector (4 Cards: 3 Preset + 1 Manual) */
 .gen-type-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 600px) {
   .gen-type-grid {
     grid-template-columns: 1fr;
   }
@@ -179,7 +206,7 @@ body {
   border: 1.5px solid var(--border);
   background: var(--surface-soft);
   border-radius: 10px;
-  padding: 13px 12px;
+  padding: 12px;
   cursor: pointer;
   text-align: left;
   transition: all 0.15s ease;
@@ -194,6 +221,10 @@ body {
   border-color: var(--primary);
   background: var(--primary-soft);
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.14);
+}
+
+.gen-type-card.is-manual {
+  border-style: dashed;
 }
 
 .gen-type-badge {
@@ -218,7 +249,7 @@ body {
   display: block;
   font-size: 0.88rem;
   color: var(--text);
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .gen-type-card span {
@@ -228,15 +259,21 @@ body {
   line-height: 1.35;
 }
 
-/* Jenjang Selector */
+/* Jenjang Selector (5 Kolom: SD, SMP, SMA, SMK, Lainnya) */
 .stage-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
   margin-bottom: 14px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 680px) {
+  .stage-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 440px) {
   .stage-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -246,7 +283,7 @@ body {
   border: 1.5px solid var(--border);
   background: var(--surface-soft);
   border-radius: 10px;
-  padding: 11px 10px;
+  padding: 10px 8px;
   cursor: pointer;
   text-align: center;
   transition: all 0.15s ease;
@@ -263,15 +300,19 @@ body {
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.12);
 }
 
+.stage-btn.is-manual {
+  border-style: dashed;
+}
+
 .stage-btn strong {
   display: block;
-  font-size: 0.96rem;
+  font-size: 0.92rem;
   color: var(--text);
 }
 
 .stage-btn span {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -294,7 +335,7 @@ body {
   color: var(--text);
   padding: 7px 13px;
   border-radius: 99px;
-  font-size: 0.82rem;
+  font-size: 0.81rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -305,10 +346,18 @@ body {
   background: var(--surface-soft);
 }
 
+.grade-pill.is-manual {
+  border-style: dashed;
+  color: #92400e;
+  border-color: #fbbf24;
+  background: #fffbeb;
+}
+
 .grade-pill.active {
   background: var(--primary);
   color: #fff;
   border-color: var(--primary);
+  border-style: solid;
 }
 
 .info-box {
@@ -357,9 +406,15 @@ body {
   background: #fff;
 }
 
+.subject-card.is-manual {
+  border-style: dashed;
+  background: #fffbeb;
+}
+
 .subject-card.active {
   border-color: var(--primary);
   background: var(--primary-soft);
+  border-style: solid;
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.12);
 }
 
@@ -374,6 +429,11 @@ body {
   display: grid;
   place-items: center;
   flex-shrink: 0;
+}
+
+.subject-card.is-manual .subject-code {
+  background: #fde68a;
+  color: #92400e;
 }
 
 .subject-card.active .subject-code {
@@ -394,19 +454,6 @@ body {
   color: var(--text-muted);
   margin-top: 1px;
   line-height: 1.2;
-}
-
-.custom-subject-wrap {
-  display: none;
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 10px;
-  background: var(--surface-soft);
-  border: 1px dashed #a5b4fc;
-}
-
-.custom-subject-wrap.show {
-  display: block;
 }
 
 /* Form Controls */
@@ -455,7 +502,7 @@ textarea:focus {
 
 textarea {
   resize: vertical;
-  min-height: 76px;
+  min-height: 74px;
 }
 
 /* Option Cards */
@@ -488,9 +535,15 @@ textarea {
   background: #fff;
 }
 
+.option-card.is-manual {
+  border-style: dashed;
+  background: #fffbeb;
+}
+
 .option-card.active {
   border-color: var(--primary);
   background: var(--primary-soft);
+  border-style: solid;
 }
 
 .option-card input {
