@@ -98,7 +98,7 @@
       margin: 24px auto 0;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.12fr 0.88fr;
       gap: 24px;
       align-items: start;
     }
@@ -129,6 +129,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 8px;
       color: var(--text);
     }
@@ -145,6 +146,15 @@
       font-size: 0.78rem;
       font-weight: 700;
       margin-right: 8px;
+    }
+
+    .stage-tag {
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: var(--primary-soft);
+      color: var(--primary);
     }
 
     .sub-label {
@@ -248,14 +258,14 @@
       color: #312e81;
     }
 
-    /* Subject Grid (Terpisah) */
+    /* Subject Grid (Langsung per Mapel sesuai Jenjang) */
     .subject-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 9px;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 720px) {
       .subject-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -271,12 +281,12 @@
       border: 1.5px solid var(--border);
       background: var(--surface-soft);
       border-radius: 10px;
-      padding: 11px 12px;
+      padding: 10px 11px;
       cursor: pointer;
       text-align: left;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
       transition: all 0.15s ease;
     }
 
@@ -292,12 +302,12 @@
     }
 
     .subject-code {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 8px;
       background: #e2e8f0;
       color: #334155;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 800;
       display: grid;
       place-items: center;
@@ -311,17 +321,30 @@
 
     .subject-info strong {
       display: block;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       color: var(--text);
       line-height: 1.25;
     }
 
     .subject-info span {
       display: block;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
-      margin-top: 2px;
-      line-height: 1.25;
+      margin-top: 1px;
+      line-height: 1.2;
+    }
+
+    .custom-subject-wrap {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--surface-soft);
+      border: 1px dashed #a5b4fc;
+    }
+
+    .custom-subject-wrap.show {
+      display: block;
     }
 
     /* Form Controls */
@@ -516,7 +539,6 @@
       top: 84px;
     }
 
-    /* Active Selection Summary Chips */
     .active-chips {
       display: flex;
       flex-wrap: wrap;
@@ -602,7 +624,6 @@
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     }
 
-    /* Step Tabs for Iterative Mode */
     .iter-tabs {
       display: none;
       gap: 6px;
@@ -658,7 +679,6 @@
       flex: 1;
     }
 
-    /* Mini Guide */
     .guide-steps {
       margin-top: 14px;
       padding-top: 12px;
@@ -749,9 +769,9 @@
   </header>
 
   <main class="container">
-    <!-- KOLOM KIRI: FORMULIR TERPISAH PER LANGKAH -->
+    <!-- KOLOM KIRI: FORMULIR TERPISAH -->
     <section>
-      <!-- LANGKAH 1: JENJANG & KELAS (TERPISAH) -->
+      <!-- LANGKAH 1: JENJANG & KELAS -->
       <div class="card">
         <div class="section-title">
           <span><span class="step-badge">1</span>Pilih Jenjang &amp; Kelas</span>
@@ -766,12 +786,20 @@
         <div id="levelBadge" class="info-box"></div>
       </div>
 
-      <!-- LANGKAH 2: MATA PELAJARAN (TERPISAH) -->
+      <!-- LANGKAH 2: MATA PELAJARAN LANGSUNG SESUAI JENJANG -->
       <div class="card">
         <div class="section-title">
           <span><span class="step-badge">2</span>Pilih Mata Pelajaran</span>
+          <span id="subjectStageTag" class="stage-tag">Kurikulum SMP</span>
         </div>
         <div id="subjectGrid" class="subject-grid"></div>
+
+        <!-- Input Tambahan Khusus Kejuruan SMK -->
+        <div id="customSubjectWrap" class="custom-subject-wrap">
+          <label for="customSubjectInput">Nama Konsentrasi Keahlian / Mata Pelajaran Produktif SMK</label>
+          <input type="text" id="customSubjectInput" placeholder="Contoh: Teknik Kendaraan Ringan, Akuntansi Keuangan, TJKT, atau Tata Boga" />
+          <div class="hint">Isi agar simulasi, alat ukur, dan istilah vokasi yang dibuat Gemini AI tepat sasaran.</div>
+        </div>
       </div>
 
       <!-- LANGKAH 3: TOPIK & TUJUAN PEMBELAJARAN -->
@@ -783,12 +811,12 @@
 
         <div class="field">
           <label for="topicInput">Topik / Judul Materi</label>
-          <input type="text" id="topicInput" placeholder="Contoh: Perubahan Wujud Zat & Kalor" />
+          <input type="text" id="topicInput" placeholder="Ketik topik materi yang akan diajarkan..." />
         </div>
 
         <div class="field">
           <label for="objectiveInput">Tujuan Pembelajaran</label>
-          <textarea id="objectiveInput" placeholder="Contoh: Siswa mampu menganalisis pengaruh kenaikan suhu terhadap jarak dan gerak partikel zat padat, cair, dan gas."></textarea>
+          <textarea id="objectiveInput" placeholder="Contoh: Siswa mampu menganalisis..."></textarea>
         </div>
       </div>
 
@@ -798,12 +826,12 @@
           <span><span class="step-badge">4</span>Jenis Interaktivitas &amp; Format Alur</span>
         </div>
 
-        <span class="sub-label" id="interactivitySubLabel">Pilihan Interaktivitas Sesuai Mapel</span>
+        <span class="sub-label" id="interactivitySubLabel">Pilihan Interaktivitas</span>
         <div id="interactivityGrid" class="option-grid"></div>
 
         <div class="field" style="margin-top: 14px;">
           <label for="mechanicDetail">Detail Variabel / Objek / Skenario Khusus (Opsional namun Disarankan)</label>
-          <textarea id="mechanicDetail" placeholder="Contoh: Sediakan 3 pilihan zat (Air, Besi, Oksigen) dan slider suhu dari -50°C hingga 150°C dengan tampilan partikel bergerak di kanvas."></textarea>
+          <textarea id="mechanicDetail" placeholder="Tuliskan rentang angka, daftar objek, atau skenario spesifik yang ingin ditampilkan di layar..."></textarea>
           <div class="hint">Semakin spesifik objek, rentang angka, atau kasus yang ditulis, semakin presisi hasil kode Gemini AI.</div>
         </div>
 
@@ -821,7 +849,7 @@
 
         <div class="field">
           <label for="misconceptionInput">Kunci Materi / Miskonsepsi yang Harus Dihindari (Opsional)</label>
-          <textarea id="misconceptionInput" placeholder="Contoh: Pastikan titik didih air tepat 100°C pada tekanan 1 atm, dan jelaskan bahwa wujud gas tetap memiliki massa."></textarea>
+          <textarea id="misconceptionInput" placeholder="Contoh: Pastikan rumus baku, urutan langkah, atau konsep kunci tertentu tidak keliru..."></textarea>
           <div class="hint">Mencegah AI melakukan kekeliruan konsep, rumus, hukum bacaan, atau urutan prosedural.</div>
         </div>
 
@@ -865,7 +893,6 @@
           <span id="charCount" style="font-size: 0.76rem; color: var(--text-muted); font-weight: 500;">0 karakter</span>
         </div>
 
-        <!-- Ringkasan Pilihan Aktif -->
         <div id="activeChips" class="active-chips"></div>
 
         <!-- Meteran Presisi -->
@@ -886,7 +913,6 @@
           <button type="button" class="mode-btn" data-mode="iterative">Mode 3 Putaran (Anti-Terpotong)</button>
         </div>
 
-        <!-- Tab Putaran -->
         <div id="iterTabs" class="iter-tabs">
           <button type="button" class="iter-tab active" data-step="0">Putaran 1: Inti</button>
           <button type="button" class="iter-tab" data-step="1">Putaran 2: Alur</button>
@@ -926,12 +952,12 @@
 
   <script>
     /* =========================================================================
-       1. DATA JENJANG & KELAS (TERPISAH) SERTA PROFIL KOGNITIF
+       1. PROFIL KOGNITIF & KONFIGURASI JENJANG + DAFTAR MAPEL PER JENJANG
        ========================================================================= */
 
     const COGNITIVE_PROFILES = {
       sd_rendah: {
-        badge: "Mode SD Awal: Tombol ekstra besar ramah sentuh (52px+), bahasa sangat sederhana (maks 8–10 kata/kartu), visual cerah, maksimal 2 kontrol interaksi, dan suara TTS otomatis diaktifkan.",
+        badge: "Mode SD Awal (Kelas 1–3): Tombol ekstra besar ramah sentuh (52px+), bahasa sangat sederhana (maks 8–10 kata/kartu), visual cerah, maksimal 2 kontrol interaksi, dan suara TTS otomatis diaktifkan.",
         autoTTS: true,
         promptSpec: [
           "Gunakan bahasa Indonesia sangat sederhana, ramah anak, maksimal 8–10 kata per kartu instruksi.",
@@ -941,7 +967,7 @@
         ]
       },
       sd_tinggi: {
-        badge: "Mode SD Atas: Bahasa komunikatif kontekstual, 2–3 kontrol interaksi terpandu, kartu langkah singkat, dan tantangan berbasis eksplorasi permainan.",
+        badge: "Mode SD Atas (Kelas 4–6): Bahasa komunikatif kontekstual, 2–3 kontrol interaksi terpandu, kartu langkah singkat, dan tantangan berbasis eksplorasi permainan.",
         autoTTS: false,
         promptSpec: [
           "Gunakan bahasa Indonesia yang komunikatif, jelas, dan dekat dengan pengalaman sehari-hari siswa SD kelas atas.",
@@ -950,7 +976,7 @@
         ]
       },
       smp: {
-        badge: "Mode SMP: Bahasa semi-formal dengan istilah kunci ber-glosarium, kombinasi 2–3 variabel interaktif, dan misi eksperimen berumpan balik konseptual.",
+        badge: "Mode SMP (Kelas 7–9): Bahasa semi-formal dengan istilah kunci ber-glosarium, kombinasi 2–3 variabel interaktif, dan misi eksperimen berumpan balik konseptual.",
         autoTTS: false,
         promptSpec: [
           "Gunakan bahasa Indonesia semi-formal yang terstruktur serta jelaskan istilah kunci secara ringkas saat diklik.",
@@ -959,7 +985,7 @@
         ]
       },
       sma: {
-        badge: "Mode SMA: Antarmuka bergaya laboratorium/analitis modern, dukungan multi-variabel presisi, grafik real-time, terminologi ilmiah baku, dan penalaran HOTS.",
+        badge: "Mode SMA (Kelas 10–12): Antarmuka bergaya laboratorium/analitis modern, dukungan multi-variabel presisi, grafik real-time, terminologi ilmiah baku, dan penalaran HOTS.",
         autoTTS: false,
         promptSpec: [
           "Gunakan terminologi ilmiah yang baku, akurat, dan mendorong penalaran tingkat tinggi (HOTS).",
@@ -989,6 +1015,16 @@
           { id: "sd4", label: "Kelas 4 (Fase B)", profile: "sd_tinggi" },
           { id: "sd5", label: "Kelas 5 (Fase C)", profile: "sd_tinggi" },
           { id: "sd6", label: "Kelas 6 (Fase C)", profile: "sd_tinggi" }
+        ],
+        subjects: [
+          "matematika",
+          "bahasa_indonesia",
+          "ipas",
+          "pendidikan_pancasila",
+          "pendidikan_agama",
+          "bahasa_inggris",
+          "seni_budaya",
+          "pjok"
         ]
       },
       smp: {
@@ -998,6 +1034,18 @@
           { id: "smp7", label: "Kelas 7 (Fase D)", profile: "smp" },
           { id: "smp8", label: "Kelas 8 (Fase D)", profile: "smp" },
           { id: "smp9", label: "Kelas 9 (Fase D)", profile: "smp" }
+        ],
+        subjects: [
+          "matematika",
+          "ipa",
+          "ips",
+          "bahasa_indonesia",
+          "bahasa_inggris",
+          "informatika",
+          "pendidikan_pancasila",
+          "pendidikan_agama",
+          "seni_budaya",
+          "pjok"
         ]
       },
       sma: {
@@ -1007,6 +1055,23 @@
           { id: "sma10", label: "Kelas 10 (Fase E)", profile: "sma" },
           { id: "sma11", label: "Kelas 11 (Fase F)", profile: "sma" },
           { id: "sma12", label: "Kelas 12 (Fase F)", profile: "sma" }
+        ],
+        subjects: [
+          "matematika",
+          "fisika",
+          "kimia",
+          "biologi",
+          "ekonomi",
+          "geografi",
+          "sejarah",
+          "sosiologi",
+          "bahasa_indonesia",
+          "bahasa_inggris",
+          "informatika",
+          "pendidikan_pancasila",
+          "pendidikan_agama",
+          "seni_budaya",
+          "pjok"
         ]
       },
       smk: {
@@ -1016,262 +1081,556 @@
           { id: "smk10", label: "Kelas 10 (Fase E)", profile: "smk" },
           { id: "smk11", label: "Kelas 11 (Fase F)", profile: "smk" },
           { id: "smk12", label: "Kelas 12 (Fase F)", profile: "smk" }
+        ],
+        subjects: [
+          "kejuruan_smk",
+          "matematika",
+          "projek_ipas",
+          "informatika",
+          "bahasa_indonesia",
+          "bahasa_inggris",
+          "sejarah",
+          "pendidikan_pancasila",
+          "pendidikan_agama",
+          "seni_budaya",
+          "pjok"
         ]
       }
     };
 
     /* =========================================================================
-       2. DATA MATA PELAJARAN (TERPISAH) & FORMAT MEDIA
+       2. KATALOG MATA PELAJARAN INDIVIDUAL (TIDAK DIKELOMPOKKAN)
        ========================================================================= */
 
-    const SUBJECT_DATA = {
+    const SUBJECT_CATALOG = {
       matematika: {
         code: "MTK",
         name: "Matematika",
-        sub: "Numerasi, Aljabar, Geometri",
+        sub: "Bilangan, Aljabar, Geometri",
         interactivities: [
           {
             id: "manipulatif",
             label: "Manipulatif Digital (Drag & Drop)",
             desc: "Balok pecahan, ubin aljabar, atau keping nilai tempat yang menghitung otomatis.",
-            spec: "Bangun manipulatif digital berbasis drag-and-drop (seperti balok pecahan, ubin aljabar, atau keping bilangan) di mana setiap penempatan objek otomatis menghitung dan menampilkan representasi matematisnya secara real-time."
+            spec: "Bangun manipulatif digital berbasis drag-and-drop (balok pecahan, ubin aljabar, atau keping bilangan) di mana setiap penempatan objek otomatis menghitung dan menampilkan representasi matematisnya secara real-time."
           },
           {
             id: "slider_grafik",
             label: "Penggeser Parameter & Grafik",
             desc: "Slider koefisien yang langsung mengubah bentuk kurva/garis pada koordinat.",
-            spec: "Sediakan kanvas sistem koordinat Kartesius interaktif yang terhubung dengan slider parameter (misal koefisien, gradien, atau konstanta) sehingga perubahan nilai langsung memperbarui bentuk grafik dan persamaannya secara mulus (60fps)."
+            spec: "Sediakan kanvas sistem koordinat Kartesius interaktif yang terhubung dengan slider parameter (koefisien, gradien, atau konstanta) sehingga perubahan nilai langsung memperbarui bentuk grafik dan persamaannya secara mulus."
           },
           {
             id: "geometri",
             label: "Geometri Eksploratif",
-            desc: "Titik sudut yang bisa ditarik bebas atau jaring-jaring bangun yang bisa dibuka-tutup.",
-            spec: "Sediakan bangun geometri interaktif (SVG/Canvas) dengan titik sudut yang dapat ditarik bebas atau kontrol buka-tutup jaring-jaring bangun ruang, lengkap dengan pengukuran panjang sisi, sudut, luas, atau volume secara dinamis."
+            desc: "Titik sudut yang dapat ditarik bebas atau jaring-jaring bangun ruang buka-tutup.",
+            spec: "Sediakan bangun geometri interaktif (SVG/Canvas) dengan titik sudut yang dapat ditarik bebas atau kontrol buka-tutup jaring-jaring bangun ruang, lengkap dengan pengukuran sisi, sudut, luas, atau volume secara dinamis."
           },
           {
             id: "scaffolded",
             label: "Latihan Prosedural Bertahap",
             desc: "Penyelesaian langkah demi langkah dengan bantuan visual otomatis.",
-            spec: "Sediakan papan pemecahan masalah bertahap (step-by-step solver) yang memvalidasi setiap langkah perhitungan siswa secara terpisah dan menampilkan bantuan visual spesifik jika langkahnya keliru."
+            spec: "Sediakan papan pemecahan masalah bertahap (step-by-step solver) yang memvalidasi setiap langkah perhitungan siswa secara terpisah dan menampilkan bantuan visual spesifik saat keliru."
           }
         ],
         preset: {
-          topic: "Fungsi Kuadrat & Pengaruh Koefisien",
-          objective: "Siswa mampu menganalisis pengaruh nilai a, b, dan c pada fungsi f(x) = ax² + bx + c terhadap bentuk dan posisi kurva parabola.",
-          detail: "Tampilkan koordinat Kartesius (-10 sampai 10) dengan 3 slider untuk a (-5 s.d 5), b (-5 s.d 5), dan c (-5 s.d 5). Tampilkan titik puncak dan titik potong sumbu-Y secara dinamis.",
-          misconception: "Tegaskan bahwa jika a = 0, grafik bukan lagi parabola melainkan garis lurus; tanda negatif pada nilai a membuat kurva terbuka ke bawah."
+          topic: "Pecahan Senilai dan Operasi Pecahan",
+          objective: "Siswa mampu membandingkan pecahan senilai dan menjumlahkan pecahan berpenyebut berbeda melalui representasi visual balok pecahan.",
+          detail: "Sediakan 2 batang pecahan interaktif yang dapat dibagi menjadi 2 hingga 12 bagian dengan slider penyebut dan pembilang, serta indikator visual saat kedua pecahan bernilai sama.",
+          misconception: "Tegaskan bahwa semakin besar angka penyebut, ukuran tiap potongan justru semakin kecil; penjumlahan pecahan tidak boleh langsung menjumlahkan penyebutnya."
         }
       },
-      ipa: {
-        code: "IPA",
-        name: "IPA / IPAS",
-        sub: "Fisika, Kimia, Biologi",
+
+      bahasa_indonesia: {
+        code: "BIN",
+        name: "Bahasa Indonesia",
+        sub: "Literasi, Struktur, Teks",
         interactivities: [
           {
-            id: "lab_virtual",
-            label: "Simulasi Laboratorium Virtual",
-            desc: "Eksperimen atur variabel bebas dan amati alat ukur virtual secara langsung.",
-            spec: "Bangun simulasi laboratorium virtual interaktif di kanvas HTML5 di mana siswa mengatur variabel bebas melalui slider/tombol dan mengamati perubahan fenomena fisis serta pembacaan alat ukur virtual (stopwatch, termometer, voltmeter, dll.) secara real-time."
+            id: "sintaksis",
+            label: "Penyusun Struktur Kalimat (S-P-O-K)",
+            desc: "Kartu kata berkode warna untuk menyusun kalimat efektif atau aktif-pasif.",
+            spec: "Bangun papan penyusun kalimat menggunakan kartu kata berkode warna berdasarkan fungsi kalimat (Subjek, Predikat, Objek, Keterangan) yang dapat disusun ulang disertai validasi kaidah bahasa Indonesia secara instan."
           },
           {
-            id: "anatomi_layer",
-            label: "Lapisan Anatomi & Hotspot",
-            desc: "Toggle transparansi lapisan struktur organ/bumi dengan titik info klik.",
-            spec: "Bangun ilustrasi vektor SVG berlapis (interactive layers) dengan slider transparansi atau tombol toggle untuk mengupas setiap lapisan struktur, dilengkapi hotspot interaktif yang menampilkan nama bagian dan fungsinya saat diklik."
+            id: "bedah_teks",
+            label: "Bedah Struktur Teks & Ide Pokok",
+            desc: "Sorot bagian paragraf untuk mengidentifikasi struktur teks dan kata baku.",
+            spec: "Tampilkan teks bacaan interaktif di mana siswa dapat menyorot atau mengklik kalimat untuk memetakan struktur teks (misal orientasi, komplikasi, resolusi / tesis, argumen) serta mengecek arti kosakata baku."
           },
           {
-            id: "molekul_reaksi",
-            label: "Perakit Molekul & Reaksi",
-            desc: "Tarik-lepas atom/zat untuk melihat ikatan, perubahan warna, atau reaksi.",
-            spec: "Sediakan ruang rakit molekul atau wadah pencampuran zat berbasis drag-and-drop yang memberikan umpan balik visual otomatis (perubahan warna, gelembung, suhu, atau indikator kestabilan elektron/persamaan reaksi)."
+            id: "dialog_bahasa",
+            label: "Simulasi Dialog & Negosiasi",
+            desc: "Percabangan percakapan untuk melatih bahasa santun, wawancara, atau negosiasi.",
+            spec: "Bangun simulasi percakapan interaktif bercabang di mana siswa memilih respons berbahasa Indonesia yang efektif dan santun sesuai konteks, lalu melihat reaksi lawan bicara dan skor kesantunan."
+          }
+        ],
+        preset: {
+          topic: "Kalimat Aktif dan Pasif dalam Teks Prosedur",
+          objective: "Siswa mampu mengubah kalimat aktif transitif menjadi kalimat pasif dengan struktur S-P-O dan imbuhan yang tepat.",
+          detail: "Sediakan kartu kata berkode warna (Subjek=Biru, Predikat=Hijau, Objek=Oranye) yang bisa disusun ulang, plus tombol 'Ubah Imbuhan me- / di-' untuk melihat transformasi posisi kata.",
+          misconception: "Hanya kalimat aktif transitif (memiliki objek) yang dapat diubah menjadi kalimat pasif."
+        }
+      },
+
+      bahasa_inggris: {
+        code: "BIG",
+        name: "Bahasa Inggris",
+        sub: "Reading, Grammar, Listening",
+        interactivities: [
+          {
+            id: "reading_tts",
+            label: "Interactive Reading & Pronunciation",
+            desc: "Teks bahasa Inggris klik-per-kalimat dengan TTS pelafalan & glosarium.",
+            spec: "Tampilkan teks bahasa Inggris interaktif di mana setiap kalimat atau kosakata kunci dapat diklik untuk mendengar pelafalan bahasa Inggris (Web Speech API en-US/en-GB dengan kontrol kecepatan 0.75x/1.0x) dan melihat terjemahan kontekstual."
           },
           {
-            id: "ekosistem",
-            label: "Simulasi Ekosistem & Siklus",
-            desc: "Ubah populasi organisme dan amati grafik keseimbangan alam.",
-            spec: "Sediakan kontrol populasi tiap tingkat trofik atau faktor lingkungan yang menjalankan simulasi time-lapse disertai grafik garis dinamis perubahan populasi dari waktu ke waktu."
+            id: "grammar_builder",
+            label: "Sentence & Tenses Builder",
+            desc: "Susun kartu kata untuk melatih tenses, subject-verb agreement, dan struktur.",
+            spec: "Bangun papan penyusun kalimat bahasa Inggris berbasis kartu berkode warna (Subject, Auxiliary, Verb 1/2/3, Time Signal) yang memvalidasi tata bahasa dan menampilkan aturan tenses secara instan."
+          },
+          {
+            id: "roleplay_en",
+            label: "Branching Conversation Roleplay",
+            desc: "Simulasi percakapan nyata (asking direction, ordering, interview) bercabang.",
+            spec: "Bangun simulasi dialog bahasa Inggris bercabang dalam konteks kehidupan sehari-hari di mana pilihan respons siswa menentukan kelanjutan percakapan, dilengkapi tombol dengarkan pelafalan."
+          }
+        ],
+        preset: {
+          topic: "Simple Past Tense in Recount Text",
+          objective: "Siswa mampu menyusun kalimat positif, negatif, dan interogatif menggunakan Verb 2 dan auxiliary 'did' dengan tepat.",
+          detail: "Sediakan pemilih bentuk kalimat (+ / - / ?), kartu kata acak berkode warna, dan indikator perubahan otomatis antara Verb 2 (went, ate) dan Verb 1 saat memakai 'did'.",
+          misconception: "Setelah kata bantu 'did' atau 'didn't', kata kerja harus kembali ke bentuk dasar (Verb 1), bukan tetap menggunakan Verb 2."
+        }
+      },
+
+      ipas: {
+        code: "IPAS",
+        name: "IPAS",
+        sub: "Alam & Sosial (SD)",
+        interactivities: [
+          {
+            id: "eksperimen_mini",
+            label: "Eksperimen Alam Sederhana",
+            desc: "Simulasi fenomena alam sehari-hari (siklus air, gaya, magnet, tumbuhan).",
+            spec: "Bangun simulasi visual sederhana dan ceria di kanvas/SVG di mana siswa mengubah 1–2 kondisi lingkungan (misal cahaya matahari, air, atau posisi magnet) dan langsung melihat perubahan yang terjadi pada objek."
+          },
+          {
+            id: "eksplorasi_hotspot",
+            label: "Gambar Interaktif & Titik Info",
+            desc: "Klik bagian tumbuhan, peta daerah, atau panca indra untuk melihat fungsinya.",
+            spec: "Bangun ilustrasi SVG berwarna cerah dengan titik hotspot bernomor yang dapat diklik siswa untuk memunculkan kartu penjelasan singkat beserta suara pembaca teks."
+          },
+          {
+            id: "klasifikasi_ipas",
+            label: "Papan Sortir & Pengelompokan",
+            desc: "Tarik-lepas objek ke keranjang kategori (makhluk hidup, sumber energi, dll.).",
+            spec: "Bangun aktivitas drag-and-drop mengelompokkan kartu gambar vektor ke dalam 2–3 kategori dengan umpan balik ceria dan alasan singkat saat kartu ditempatkan."
+          }
+        ],
+        preset: {
+          topic: "Siklus Air dan Perubahan Wujud di Alam",
+          objective: "Siswa mampu mengurutkan tahapan evaporasi, kondensasi, dan presipitasi serta melihat pengaruh panas matahari.",
+          detail: "Tampilkan ilustrasi SVG gunung, laut, awan, dan matahari dengan slider intensitas panas matahari; saat panas dinaikkan, animasi uap air, pembentukan awan, dan hujan bergerak lebih cepat.",
+          misconception: "Awan bukan terbuat dari gas tak terlihat, melainkan kumpulan titik-titik air atau kristal es sangat kecil hasil pengembunan (kondensasi)."
+        }
+      },
+
+      projek_ipas: {
+        code: "PIPS",
+        name: "Projek IPAS",
+        sub: "Sains & Sosial Terapan (SMK)",
+        interactivities: [
+          {
+            id: "simulasi_terapan",
+            label: "Simulasi Energi & Lingkungan Kerja",
+            desc: "Uji efisiensi energi, limbah, atau fenomena fisis dalam konteks industri.",
+            spec: "Bangun simulasi terapan berbasis kanvas/SVG di mana siswa mengatur parameter operasional (efisiensi daya, pengolahan limbah, atau keselamatan kerja) dan mengamati dampaknya pada meteran biaya dan kelestarian lingkungan."
+          },
+          {
+            id: "studi_kasus_ipas",
+            label: "Analisis Kasus Sosial-Ekonomi",
+            desc: "Simulasi pengambilan keputusan usaha ramah lingkungan dan interaksi sosial.",
+            spec: "Bangun studi kasus interaktif bercabang terkait proyek kewirausahaan/lingkungan di mana siswa menyeimbangkan indikator ekonomi, sosial, dan ekologi."
+          }
+        ],
+        preset: {
+          topic: "Konversi Energi dan Efisiensi Daya Listrik Bengkel",
+          objective: "Siswa mampu menghitung konsumsi daya peralatan kerja dan merancang strategi penghematan energi listrik.",
+          detail: "Sediakan panel simulasi 4 peralatan listrik (lampu LED/pijar, AC, mesin bor, komputer) dengan sakelar nyala/mati, pengatur jam pemakaian, serta meteran kWh dan estimasi biaya bulanan real-time.",
+          misconception: "Bedakan satuan daya listrik (Watt) dengan satuan energi listrik terpakai (kWh)."
+        }
+      },
+
+      ipa: {
+        code: "IPA",
+        name: "IPA Terpadu",
+        sub: "Sains Terpadu (SMP)",
+        interactivities: [
+          {
+            id: "lab_smp",
+            label: "Laboratorium Virtual Terpadu",
+            desc: "Atur variabel bebas (suhu, gaya, rangkaian) dan baca alat ukur virtual.",
+            spec: "Bangun simulasi laboratorium virtual di kanvas HTML5 di mana siswa mengatur 2–3 variabel bebas melalui slider/tombol dan mengamati fenomena serta pembacaan alat ukur virtual secara real-time."
+          },
+          {
+            id: "anatomi_smp",
+            label: "Lapisan Struktur & Anatomi",
+            desc: "Kupas lapisan organ tubuh, sel, atau struktur bumi dengan hotspot info.",
+            spec: "Bangun ilustrasi SVG berlapis dengan kontrol transparansi/toggle lapisan serta titik klik (hotspot) yang menampilkan nama bagian dan fungsinya."
+          },
+          {
+            id: "ekosistem_smp",
+            label: "Simulasi Ekosistem & Zat",
+            desc: "Ubah komponen ekosistem atau pencampuran zat dan lihat grafik dampaknya.",
+            spec: "Sediakan kontrol variabel populasi/zat yang menjalankan animasi simulasi disertai grafik perubahan dari waktu ke waktu."
           }
         ],
         preset: {
           topic: "Perubahan Wujud Zat dan Gerak Partikel",
           objective: "Siswa mampu menganalisis hubungan kenaikan suhu terhadap jarak, gaya tarik, dan kecepatan gerak partikel zat padat, cair, dan gas.",
-          detail: "Sediakan wadah simulasi partikel di kanvas HTML5, tombol pilihan 3 zat (Air, Besi, Oksigen), dan slider suhu dari -50°C hingga 150°C disertai label wujud zat serta grafik kurva pemanasan.",
-          misconception: "Saat terjadi perubahan wujud (melebur atau mendidih), suhu zat tetap konstan karena kalor digunakan untuk memutus ikatan antarpartikel, bukan menaikkan suhu."
+          detail: "Sediakan wadah partikel di kanvas HTML5, tombol pilihan 3 zat (Air, Besi, Oksigen), dan slider suhu dari -50°C hingga 150°C disertai label wujud zat dan grafik kurva pemanasan.",
+          misconception: "Saat terjadi perubahan wujud (melebur atau mendidih), suhu zat tetap konstan karena kalor digunakan untuk memutus ikatan antarpartikel."
         }
       },
-      bahasa: {
-        code: "BHS",
-        name: "Bahasa",
-        sub: "Indonesia, Inggris, Asing",
+
+      ips: {
+        code: "IPS",
+        name: "IPS Terpadu",
+        sub: "Sejarah, Geografi, Ekonomi (SMP)",
         interactivities: [
           {
-            id: "teks_glosarium",
-            label: "Teks Interaktif & Glosarium Klik",
-            desc: "Paragraf bacaan dengan sorotan kalimat, audio pelafalan, dan arti kata.",
-            spec: "Tampilkan teks bacaan interaktif di mana setiap kalimat/kata kunci dapat diklik untuk memunculkan pop-up arti kontekstual, kelas kata, serta pelafalan suara menggunakan Web Speech API (TTS) dengan kontrol kecepatan."
+            id: "peta_ips",
+            label: "Peta Tematik Interaktif",
+            desc: "Peta vektor dengan toggle lapis data (iklim, penduduk, sumber daya).",
+            spec: "Bangun peta vektor SVG interaktif dengan tombol lapis data (layer switcher) dan wilayah yang dapat diklik untuk menampilkan data kependudukan, sumber daya, atau jalur perdagangan."
           },
           {
-            id: "sintaksis",
-            label: "Penyusun Struktur Kalimat",
-            desc: "Kartu kata berkode warna (S-P-O-K) yang disusun menjadi kalimat tepat.",
-            spec: "Bangun papan penyusun kalimat (sentence builder) menggunakan kartu kata berkode warna berdasarkan fungsi/kelas kata yang dapat diklik atau diseret untuk membentuk kalimat benar, disertai validasi tata bahasa instan."
+            id: "timeline_ips",
+            label: "Lini Masa & Interaksi Sosial",
+            desc: "Garis waktu peristiwa sejarah dan simulasi dinamika interaksi masyarakat.",
+            spec: "Bangun lini masa kronologis yang dapat digeser dan difilter, dilengkapi kartu sebab-akibat peristiwa serta studi kasus interaksi sosial."
           },
           {
-            id: "roleplay_dialog",
-            label: "Percabangan Dialog (Roleplay)",
-            desc: "Simulasi percakapan kontekstual dengan pilihan respons bercabang.",
-            spec: "Bangun antarmuka simulasi percakapan interaktif (chat/dialog visual) di mana siswa memilih respons bahasa yang paling santun/tepat sesuai situasi, dan alur respons lawan bicara berubah sesuai pilihan siswa."
-          },
-          {
-            id: "menyimak",
-            label: "Latihan Menyimak & Analisis Bunyi",
-            desc: "Pemutar pelafalan berkecepatan variabel untuk latihan dikte/pemahaman.",
-            spec: "Sediakan pemutar pelafalan berbasis TTS peramban dengan pengatur kecepatan (0.75x dan 1.0x) yang dipadukan dengan latihan melengkapi kata rumpang atau mencocokkan makna tanpa memerlukan akses mikrofon."
+            id: "pasar_ips",
+            label: "Simulasi Kegiatan Ekonomi",
+            desc: "Atur produksi, distribusi, dan harga untuk melihat keseimbangan pasar.",
+            spec: "Bangun simulator kegiatan ekonomi dengan penggeser harga/persediaan serta meteran permintaan-penawaran visual."
           }
         ],
         preset: {
-          topic: "Kalimat Aktif dan Pasif dalam Teks Prosedur",
-          objective: "Siswa mampu mengubah kalimat aktif transitif menjadi kalimat pasif dengan struktur S-P-O yang tepat.",
-          detail: "Sediakan kartu kata berkode warna (Subjek=Biru, Predikat=Hijau, Objek=Oranye) yang bisa disusun ulang, plus tombol 'Tukar Imbuhan me- / di-' untuk melihat transformasi kalimat secara visual.",
-          misconception: "Pastikan siswa memahami bahwa hanya kalimat aktif transitif (yang memiliki objek) yang dapat diubah menjadi kalimat pasif."
+          topic: "Kondisi Geografis dan Persebaran Sumber Daya Alam Indonesia",
+          objective: "Siswa mampu memetakan potensi sumber daya alam tiap pulau utama Indonesia dan mengaitkannya dengan aktivitas ekonomi penduduk.",
+          detail: "Sediakan peta vektor Indonesia dengan 3 toggle lapisan (Pertambangan, Pertanian/Perkebunan, Kemaritiman) dan klik pulau untuk membuka kartu profil ekonomi daerah.",
+          misconception: "Persebaran sumber daya alam tidak merata karena dipengaruhi kondisi geologis, jenis tanah, dan iklim tiap wilayah."
         }
       },
-      ips: {
-        code: "IPS",
-        name: "IPS",
-        sub: "Sejarah, Geografi, Ekonomi",
+
+      fisika: {
+        code: "FIS",
+        name: "Fisika",
+        sub: "Mekanika, Listrik, Gelombang",
         interactivities: [
           {
-            id: "timeline",
-            label: "Lini Masa Kronologis Interaktif",
-            desc: "Garis waktu geser dengan filter periode dan perbandingan peristiwa.",
-            spec: "Bangun lini masa (timeline) horizontal interaktif yang dapat digeser dan difilter berdasarkan tema/era, di mana setiap titik tahun membuka kartu peristiwa lengkap dengan sebab-akibat historisnya."
+            id: "simulasi_mekanika",
+            label: "Lab Virtual Mekanika & Vektor",
+            desc: "Simulasi gerak, gaya, tumbukan, atau bidang miring lengkap dengan vektor & grafik.",
+            spec: "Bangun simulasi fisika real-time 60fps di kanvas HTML5 dengan panah vektor gaya/kecepatan dinamis, kontrol slider parameter presisi (massa, sudut, gaya gesek, kecepatan awal), stopwatch virtual, serta grafik (s-t / v-t) secara bersamaan."
           },
+          {
+            id: "rangkaian_listrik",
+            label: "Simulator Rangkaian & Gelombang",
+            desc: "Atur tegangan, hambatan, frekuensi, atau panjang gelombang dan amati alat ukur.",
+            spec: "Bangun simulator rangkaian listrik atau gelombang/optik berbasis kanvas/SVG dengan pembacaan voltmeter/amperemeter atau osiloskop virtual yang langsung berubah mengikuti hukum fisika."
+          }
+        ],
+        preset: {
+          topic: "Gerak Parabola dan Vektor Kecepatan",
+          objective: "Siswa mampu menganalisis pengaruh sudut elevasi dan kecepatan awal terhadap tinggi maksimum serta jarak tempuh horizontal.",
+          detail: "Sediakan pelontar proyektil di kanvas, slider kecepatan awal (10–50 m/s), slider sudut elevasi (15°–85°), tombol toggle panah vektor Vx & Vy, jejak lintasan, dan panel pembacaan H_max, X_max, serta waktu tempuh.",
+          misconception: "Di titik tertinggi lintasan parabola, kecepatan vertikal (Vy) bernilai nol, tetapi kecepatan horizontal (Vx) tetap konstan dan percepatan gravitasi tetap bekerja ke bawah."
+        }
+      },
+
+      kimia: {
+        code: "KIM",
+        name: "Kimia",
+        sub: "Atom, Ikatan, Stoikiometri, Larutan",
+        interactivities: [
+          {
+            id: "perakit_molekul",
+            label: "Perakit Atom & Ikatan Kimia",
+            desc: "Susun elektron valensi atau pasangkan atom membentuk ikatan ionik/kovalen.",
+            spec: "Bangun antarmuka interaktif berbasis SVG/Canvas untuk merakit konfigurasi elektron atau memasangkan atom membentuk ikatan ionik/kovalen, lengkap dengan indikator kaidah oktet/duplet dan struktur Lewis."
+          },
+          {
+            id: "lab_titrasi",
+            label: "Lab Virtual Larutan, pH & Reaksi",
+            desc: "Simulasi pencampuran pereaksi, titrasi asam-basa, atau kesetimbangan reaksi.",
+            spec: "Bangun simulasi wadah reaksi kimia dengan kontrol konsentrasi, volume, suhu, atau tetesan titran yang langsung mengubah warna indikator larutan, nilai pH meter digital, dan grafik kurva titrasi."
+          }
+        ],
+        preset: {
+          topic: "Titrasi Asam Kuat dan Basa Kuat serta Kurva pH",
+          objective: "Siswa mampu mengamati perubahan pH selama titrasi HCl oleh NaOH dan menentukan titik ekuivalen melalui indikator warna.",
+          detail: "Sediakan buret dan labu Erlenmeyer SVG dengan tombol tetes/slider volume NaOH (0–50 mL), pilihan indikator (Fenolftalein, Metil Merah), pH meter digital, dan grafik kurva pH terhadap volume titran.",
+          misconception: "Titik ekuivalen adalah saat mol H+ tepat sama dengan mol OH- (pH = 7 untuk asam kuat-basa kuat), sedangkan titik akhir titrasi ditandai oleh perubahan warna indikator."
+        }
+      },
+
+      biologi: {
+        code: "BIO",
+        name: "Biologi",
+        sub: "Sel, Anatomi, Genetika, Ekologi",
+        interactivities: [
+          {
+            id: "lapisan_anatomi",
+            label: "Inspektor Sel & Anatomi Berlapis",
+            desc: "Kupas lapisan organ/sel dengan toggle transparansi dan hotspot fungsi.",
+            spec: "Bangun ilustrasi vektor SVG anatomi organ atau struktur sel prokariotik/eukariotik berlapis dengan kontrol transparansi, zoom, dan titik hotspot yang menjelaskan struktur serta mekanisme fisiologisnya."
+          },
+          {
+            id: "simulasi_genetika",
+            label: "Simulator Genetika & Proses Hayati",
+            desc: "Persilangan Mendel (Punnett Square), sintesis protein, atau fotosintesis.",
+            spec: "Bangun simulator proses biologis interaktif (seperti papan persilangan alel, transkripsi-translasi DNA, atau laju fotosintesis terhadap intensitas cahaya/CO2) dengan visualisasi hasil fenotipe/grafik otomatis."
+          }
+        ],
+        preset: {
+          topic: "Persilangan Dihibrid Hukum Mendel II",
+          objective: "Siswa mampu menentukan gamet, menyusun diagram Punnett 4x4, dan menganalisis rasio fenotipe 9:3:3:1.",
+          detail: "Sediakan pemilih genotipe induk (misal BbKk x BbKk), generator gamet otomatis, kotak Punnett interaktif yang menampilkan ilustrasi biji (Bulat/Keriput, Kuning/Hijau) saat diklik, serta diagram batang rasio fenotipe.",
+          misconception: "Rasio 9:3:3:1 hanya berlaku untuk persilangan dihibrid antara dua individu heterozigot (BbKk x BbKk) dengan dominansi penuh tanpa pautan gen."
+        }
+      },
+
+      sejarah: {
+        code: "SEJ",
+        name: "Sejarah",
+        sub: "Kronologi, Sumber, Peristiwa",
+        interactivities: [
+          {
+            id: "timeline_sejarah",
+            label: "Lini Masa Kronologis Interaktif",
+            desc: "Garis waktu geser dengan filter era, perbandingan peristiwa, dan kausalitas.",
+            spec: "Bangun lini masa (timeline) horizontal interaktif yang dapat digeser dan difilter berdasarkan periode/tema; setiap titik peristiwa membuka kartu detail berisi tanggal, tokoh, latar belakang, serta dampaknya."
+          },
+          {
+            id: "peta_historis",
+            label: "Peta Jalur & Skenario Historis",
+            desc: "Peta rute peristiwa/perdagangan sejarah atau analisis sumber primer.",
+            spec: "Bangun peta vektor SVG rute historis dengan kontrol tahun (time slider) untuk melihat pergeseran wilayah/jalur perdagangan, dilengkapi kartu analisis sumber sejarah."
+          }
+        ],
+        preset: {
+          topic: "Peristiwa Sekitar Proklamasi Kemerdekaan Indonesia 1945",
+          objective: "Siswa mampu menganalisis kronologi dan keterkaitan sebab-akibat peristiwa sejak kekalahan Jepang hingga 17 Agustus 1945.",
+          detail: "Sediakan lini masa interaktif 6–18 Agustus 1945 (Hiroshima-Nagasaki, Rengasdengklok, Perumusan Teks, Proklamasi, Sidang PPKI) dengan filter sudut pandang Golongan Tua vs Golongan Muda.",
+          misconception: "Peristiwa Rengasdengklok bukan penculikan untuk mencelakai Soekarno-Hatta, melainkan upaya golongan muda menjauhkan mereka dari pengaruh Jepang agar segera memproklamasikan kemerdekaan."
+        }
+      },
+
+      geografi: {
+        code: "GEO",
+        name: "Geografi",
+        sub: "Spasial, Litosfer, Atmosfer, SIG",
+        interactivities: [
           {
             id: "peta_gis",
             label: "Peta Tematik Berlapis (GIS-Lite)",
-            desc: "Peta vektor SVG dengan tombol lapis data (iklim, penduduk, jalur sejarah).",
-            spec: "Bangun peta vektor SVG interaktif dengan kontrol toggle lapis data (layer switcher) agar siswa dapat menumpuk atau membandingkan berbagai data spasial sekaligus serta mengklik wilayah untuk melihat statistik detail."
+            desc: "Overlay lapisan data spasial (lempeng tektonik, curah hujan, kepadatan).",
+            spec: "Bangun peta vektor SVG bergaya SIG (Sistem Informasi Geografis) dengan kontrol toggle lapis data (layer overlay), legenda dinamis, dan fitur klik wilayah untuk membaca profil spasial."
           },
           {
-            id: "simulasi_ekonomi",
-            label: "Simulasi Kebijakan & Ekonomi",
-            desc: "Kelola variabel pasar/anggaran dan lihat dampaknya pada grafik kesejahteraan.",
-            spec: "Bangun simulator pengambilan keputusan sosial-ekonomi dengan panel indikator (misal harga, permintaan, penawaran, atau kesejahteraan masyarakat) yang langsung berubah melalui kurva/meteran visual saat siswa mengubah kebijakan atau parameter."
+            id: "simulasi_geosfer",
+            label: "Simulasi Fenomena Geosfer",
+            desc: "Simulasi pergerakan lempeng tektonik, siklus batuan, atau dinamika atmosfer.",
+            spec: "Bangun animasi penampang melintang bumi/atmosfer berbasis kanvas/SVG dengan pengatur parameter (arah gerak lempeng, suhu, ketinggian) yang langsung menunjukkan fenomena bentang alam atau cuaca."
+          }
+        ],
+        preset: {
+          topic: "Pergerakan Lempeng Tektonik dan Bentuk Muka Bumi",
+          objective: "Siswa mampu membedakan gerak konvergen, divergen, dan transform serta mengidentifikasi bentang alam dan potensi bencananya.",
+          detail: "Sediakan penampang melintang kerak samudra & benua SVG, tombol pilihan 3 jenis gerak lempeng, slider kecepatan/waktu (jutaan tahun), dan indikator zona subduksi, palung, atau gunung api.",
+          misconception: "Gerak lempeng tektonik terjadi karena arus konveksi magma di lapisan astenosfer (mantel atas), bukan karena rotasi bumi semata."
+        }
+      },
+
+      ekonomi: {
+        code: "EKO",
+        name: "Ekonomi",
+        sub: "Pasar, Makro, Akuntansi",
+        interactivities: [
+          {
+            id: "kurva_pasar",
+            label: "Simulator Kurva & Keseimbangan Pasar",
+            desc: "Geser variabel harga/pendapatan dan amati pergeseran kurva D-S serta ekuilibrium.",
+            spec: "Bangun grafik kurva ekonomi interaktif di kanvas HTML5 yang terhubung dengan slider faktor harga dan non-harga, otomatis menghitung titik keseimbangan, surplus/defisit, dan elastisitas."
+          },
+          {
+            id: "simulasi_kebijakan",
+            label: "Simulator APBN / Kebijakan / Akuntansi",
+            desc: "Kelola anggaran, suku bunga, atau persamaan dasar akuntansi secara real-time.",
+            spec: "Bangun papan simulasi transaksi keuangan atau kebijakan moneter/fiskal di mana setiap input siswa langsung memperbarui neraca keseimbangan (Harta = Utang + Modal) atau meteran inflasi-pertumbuhan."
           }
         ],
         preset: {
           topic: "Hukum Permintaan, Penawaran, dan Harga Keseimbangan",
           objective: "Siswa mampu menganalisis pergeseran kurva permintaan dan penawaran serta menentukan titik harga keseimbangan pasar.",
-          detail: "Tampilkan grafik kurva D dan S di kanvas, dengan slider tingkat harga, pendapatan konsumen, dan biaya produksi. Tampilkan status pasar (Surplus, Defisit, atau Ekuilibrium) secara otomatis.",
-          misconception: "Bedakan dengan tegas antara pergerakan sepanjang kurva (akibat perubahan harga barang itu sendiri) dan pergeseran kurva (akibat faktor non-harga)."
+          detail: "Tampilkan grafik kurva D dan S di kanvas dengan slider harga barang, pendapatan konsumen, dan biaya produksi. Tampilkan status pasar (Surplus, Defisit, Ekuilibrium) secara otomatis.",
+          misconception: "Bedakan pergerakan sepanjang kurva (akibat perubahan harga barang itu sendiri) dengan pergeseran seluruh kurva (akibat faktor non-harga)."
         }
       },
-      ppkn: {
-        code: "PKN",
-        name: "PPKn / Pancasila",
-        sub: "Norma, Hukum, Kewarganegaraan",
+
+      sosiologi: {
+        code: "SOS",
+        name: "Sosiologi",
+        sub: "Interaksi, Kelompok, Konflik Sosial",
+        interactivities: [
+          {
+            id: "simulasi_sosial",
+            label: "Simulasi Dinamika & Konflik Sosial",
+            desc: "Studi kasus bercabang untuk menganalisis resolusi konflik dan integrasi sosial.",
+            spec: "Bangun simulator studi kasus sosiologis bercabang dengan meteran kohesi sosial dan kesenjangan; siswa memilih pendekatan mediasi, arbitrase, atau konsiliasi lalu melihat dampaknya pada masyarakat."
+          },
+          {
+            id: "klasifikasi_sosial",
+            label: "Pemetaan Stratifikasi & Lembaga Sosial",
+            desc: "Klasifikasikan fenomena mobilitas sosial, kelompok sosial, atau penyimpangan.",
+            spec: "Sediakan papan klasifikasi drag-and-drop fenomena sosial aktual ke dalam konsep sosiologi yang tepat, dilengkapi umpan balik analisis teori sosiologis secara ringkas."
+          }
+        ],
+        preset: {
+          topic: "Bentuk-Bentuk Mobilitas Sosial dalam Masyarakat",
+          objective: "Siswa mampu membedakan mobilitas vertikal naik/turun, horizontal, dan antargenerasi melalui analisis kasus kehidupan.",
+          detail: "Sediakan 8 kartu kisah perjalanan profesi/status sosial yang dapat diseret ke diagram tangga mobilitas sosial, lengkap dengan indikator faktor pendorong dan penghambatnya.",
+          misconception: "Pindah pekerjaan ke jabatan setara di tempat lain termasuk mobilitas horizontal, bukan mobilitas vertikal."
+        }
+      },
+
+      informatika: {
+        code: "INF",
+        name: "Informatika",
+        sub: "Algoritma, Logika, Jaringan, Data",
+        interactivities: [
+          {
+            id: "algoritma_step",
+            label: "Visualisasi Algoritma & Logika",
+            desc: "Jalankan langkah algoritma/gerbang logika/sorting per tahap (step-by-step).",
+            spec: "Bangun simulator eksekusi algoritma (sorting, flowchart, atau gerbang logika) dengan tombol 'Jalankan per Langkah (Step)' yang menyorot blok aktif, alur sinyal, serta perubahan isi variabel secara real-time."
+          },
+          {
+            id: "simulasi_jaringan",
+            label: "Simulator Jaringan & Representasi Data",
+            desc: "Konversi biner-desimal, topologi jaringan, atau simulasi paket data.",
+            spec: "Bangun papan simulasi interaktif (misal sakelar bit biner 8-bit, pengiriman paket IP antar-node, atau enkripsi sederhana) dengan umpan balik status sistem langsung."
+          }
+        ],
+        preset: {
+          topic: "Gerbang Logika Dasar (AND, OR, NOT) & Tabel Kebenaran",
+          objective: "Siswa mampu menguji kombinasi input biner (0 dan 1) pada gerbang logika dan memverifikasi outputnya.",
+          detail: "Sediakan 2 sakelar input biner (0/1), pemilih gerbang logika SVG, jalur kabel yang menyala saat bernilai 1, lampu output, serta tabel kebenaran yang otomatis menyorot baris aktif.",
+          misconception: "Gerbang OR menghasilkan output 1 meskipun kedua input bernilai 1 (berbeda dengan gerbang XOR)."
+        }
+      },
+
+      pendidikan_pancasila: {
+        code: "PP",
+        name: "Pendidikan Pancasila",
+        sub: "Norma, Hukum, UUD, Kewarganegaraan",
         interactivities: [
           {
             id: "dilema_etika",
             label: "Simulasi Dilema Etika Bercabang",
-            desc: "Studi kasus nyata dengan pilihan tindakan dan analisis dampak nilai Pancasila.",
-            spec: "Bangun skenario studi kasus bercabang (choose-your-own-path) yang menempatkan siswa pada dilema nyata di sekolah/masyarakat; setiap pilihan menampilkan konsekuensi sosial-hukum serta indikator kesesuaian dengan sila Pancasila."
+            desc: "Studi kasus nyata dengan pilihan tindakan dan refleksi nilai Pancasila.",
+            spec: "Bangun skenario studi kasus bercabang (choose-your-own-path) dalam konteks sekolah/masyarakat; setiap pilihan menampilkan konsekuensi sosial-hukum serta indikator kesesuaian dengan nilai Pancasila."
           },
           {
             id: "hierarki_hukum",
-            label: "Peta Hierarki Hukum & Lembaga",
-            desc: "Diagram interaktif tata urutan peraturan atau hubungan lembaga negara.",
-            spec: "Bangun diagram struktural/piramida interaktif yang dapat diklik pada tiap tingkatan untuk melihat wewenang, contoh nyata di masyarakat, serta hubungan timbal balik antar-lembaga atau peraturan."
+            label: "Peta Hierarki Peraturan & Lembaga",
+            desc: "Diagram piramida tata urutan peraturan atau hubungan antar-lembaga negara.",
+            spec: "Bangun diagram struktural/piramida interaktif yang dapat diklik tiap tingkatannya untuk melihat dasar hukum, wewenang, dan contoh nyata penerapannya."
           },
           {
             id: "klasifikasi_norma",
-            label: "Papan Klasifikasi Norma & Hak",
-            desc: "Drag-and-drop kartu kasus perilaku ke kategori norma/hak/kewajiban.",
-            spec: "Sediakan papan kategorisasi drag-and-drop kartu studi kasus perilaku sehari-hari ke dalam kolom kategori (misal Norma Agama, Kesusilaan, Kesopanan, Hukum) lengkap dengan penjelasan sanksi dan alasannya saat dijatuhkan."
-          },
-          {
-            id: "musyawarah",
-            label: "Simulator Musyawarah & Konsensus",
-            desc: "Pilih argumen penengah untuk mencapai mufakat antar karakter berbeda pandangan.",
-            spec: "Bangun ruang simulasi musyawarah dengan 3–4 tokoh berpendapat berbeda dan meteran 'Tingkat Mufakat & Empati'; siswa memilih pernyataan mediasi untuk mencapai keputusan adil tanpa memaksakan kehendak."
+            label: "Papan Klasifikasi Norma & Hak-Kewajiban",
+            desc: "Drag-and-drop kartu perilaku ke kategori norma atau keseimbangan hak-kewajiban.",
+            spec: "Sediakan papan kategorisasi drag-and-drop kartu studi kasus perilaku ke kolom jenis norma (Agama, Kesusilaan, Kesopanan, Hukum) atau Hak vs Kewajiban dengan umpan balik sanksi dan alasannya."
           }
         ],
         preset: {
           topic: "Penerapan Norma dalam Kehidupan Bermasyarakat",
-          objective: "Siswa mampu membedakan empat macam norma (agama, kesusilaan, kesopanan, hukum) beserta sumber dan sanksinya melalui studi kasus nyata.",
-          detail: "Sediakan 8 kartu situasi nyata remaja yang dapat diseret ke 4 kolom norma, plus 1 skenario dilema etika tentang antrean dan aturan lalu lintas.",
-          misconception: "Tegaskan bahwa satu perbuatan (seperti mencuri) dapat melanggar lebih dari satu norma sekaligus, namun sanksi tegas dan memaksa dari negara hanya berasal dari norma hukum."
+          objective: "Siswa mampu membedakan empat macam norma (agama, kesusilaan, kesopanan, hukum) beserta sumber dan sanksinya.",
+          detail: "Sediakan 8 kartu situasi nyata remaja yang dapat diseret ke 4 kolom norma, ditambah 1 skenario dilema etika tentang antrean dan aturan lalu lintas.",
+          misconception: "Satu perbuatan (seperti mencuri) dapat melanggar lebih dari satu norma sekaligus, namun sanksi tegas yang memaksa dari negara hanya berasal dari norma hukum."
         }
       },
-      agama: {
+
+      pendidikan_agama: {
         code: "AGM",
         name: "Pendidikan Agama",
-        sub: "Ibadah, Kitab, Akhlak, Sejarah",
+        sub: "Ibadah, Kitab Suci, Akhlak",
         interactivities: [
           {
             id: "urutan_ibadah",
             label: "Panduan Tata Cara Ibadah Bertahap",
-            desc: "Simulasi urutan langkah ibadah dengan penanda rukun/sunah & validasi urutan.",
-            spec: "Bangun panduan visual bertahap (step-by-step sequence) untuk tata cara ibadah dengan tombol navigasi langkah, label pembeda rukun/wajib vs sunah, serta mode tantangan menyusun ulang urutan langkah yang diacak."
+            desc: "Simulasi urutan langkah ibadah, penanda rukun/sunah, dan susun urutan.",
+            spec: "Bangun panduan visual bertahap (step-by-step sequence) untuk tata cara ibadah dengan tombol navigasi langkah, label pembeda rukun/wajib vs sunah, serta mode tantangan menyusun ulang urutan langkah."
           },
           {
-            id: "eksplorator_teks",
-            label: "Eksplorator Teks Suci & Kaidah",
-            desc: "Klik per frasa untuk melihat arti kata, konteks, dan sorotan warna kaidah bacaan.",
-            spec: "Tampilkan teks/ayat dengan pewarnaan semantik pada kaidah bacaan (misal tajwid atau struktur ayat); saat tiap potongan frasa diklik, tampilkan penjelasan kaidah, terjemahan per kata, dan konteks pesannya."
+            id: "eksplorator_kitab",
+            label: "Eksplorator Teks Suci & Kaidah Bacaan",
+            desc: "Klik per frasa untuk melihat terjemahan kata, konteks, dan sorotan kaidah bacaan.",
+            spec: "Tampilkan kutipan ayat/teks suci dengan pewarnaan semantik pada kaidah bacaan (misal hukum tajwid); saat tiap frasa diklik, tampilkan penjelasan kaidah, arti per kata, dan pesan moralnya."
           },
           {
-            id: "jurnal_akhlak",
-            label: "Refleksi Akhlak & Simulasi Teladan",
-            desc: "Ceklis pembiasaan baik privat (lokal) atau skenario keteladanan sikap.",
-            spec: "Bangun simulasi penerapan nilai akhlak mulia dalam keseharian remaja disertai lembar refleksi diri interaktif yang bersifat privat (hanya tersimpan di memori sesi/perangkat siswa tanpa kirim ke server)."
-          },
-          {
-            id: "peta_sejarah_agama",
-            label: "Peta Jejak Sejarah & Tokoh",
-            desc: "Peta vektor rute sejarah peradaban dan kartu nilai keteladanan tokoh.",
-            spec: "Bangun peta rute sejarah berbasis SVG interaktif dengan titik-titik persinggahan berurutan yang menampilkan kisah singkat dan nilai keteladanan yang relevan bagi kehidupan modern."
+            id: "skenario_akhlak",
+            label: "Simulasi Keteladanan Akhlak & Refleksi",
+            desc: "Studi kasus akhlak mulia remaja dan ceklis refleksi pembiasaan privat.",
+            spec: "Bangun skenario pengambilan sikap berakhlak mulia dalam keseharian remaja disertai lembar refleksi diri interaktif yang bersifat privat (hanya di memori sesi tanpa kirim ke server)."
           }
         ],
         preset: {
           topic: "Ketentuan dan Tata Cara Wudu yang Sah",
           objective: "Siswa mampu mengurutkan rukun wudu secara tertib serta membedakan antara rukun dan sunah wudu.",
           detail: "Sediakan ilustrasi vektor tiap gerakan wudu dengan label warna berbeda untuk Rukun dan Sunah, lalu pada tahap tantangan acak kartu gerakan agar siswa menyusunnya secara tertib.",
-          misconception: "Tegaskan bahwa 'tertib' (berurutan) adalah bagian dari rukun wudu, dan membasuh sebagian kepala termasuk rukun sedangkan berkumur dan membasuh telinga termasuk sunah."
+          misconception: "'Tertib' (berurutan) adalah bagian dari rukun wudu, dan membasuh sebagian kepala termasuk rukun sedangkan berkumur dan membasuh telinga termasuk sunah."
         }
       },
-      seni: {
+
+      seni_budaya: {
         code: "SNI",
-        name: "Seni & Prakarya",
-        sub: "Rupa, Musik, Desain, Budaya",
+        name: "Seni Budaya & Prakarya",
+        sub: "Seni Rupa, Musik, Desain",
         interactivities: [
           {
             id: "warna_komposisi",
-            label: "Kanvas Warna & Komposisi",
+            label: "Kanvas Warna & Komposisi Visual",
             desc: "Pencampur warna digital dan panduan grid komposisi (Rule of Thirds).",
-            spec: "Bangun studio warna dan komposisi interaktif berbasis kanvas/SVG dengan pencampur warna primer-sekunder-tersier, pemilih harmoni warna (komplementer/analogus), serta toggle grid panduan komposisi."
+            spec: "Bangun studio warna dan komposisi berbasis kanvas/SVG dengan pencampur warna primer-sekunder-tersier, pemilih harmoni warna, serta toggle grid panduan komposisi."
           },
           {
             id: "studio_ritme",
             label: "Studio Ritme & Nada (Web Audio)",
             desc: "Papan ketuk/bilah nada virtual untuk menyusun pola ritme dan melodi.",
-            spec: "Bangun sequencer ritme atau bilah nada interaktif menggunakan Web Audio API murni (tanpa file audio luar) agar siswa dapat mengklik ketukan, mengatur tempo (BPM), dan mendengarkan langsung pola irama buatannya."
+            spec: "Bangun sequencer ritme atau bilah nada interaktif menggunakan Web Audio API murni agar siswa dapat mengklik ketukan, mengatur tempo (BPM), dan mendengar langsung karya ritmenya."
           },
           {
-            id: "galeri_anotasi",
+            id: "inspektor_motif",
             label: "Inspektor Karya & Motif Beranotasi",
             desc: "Eksplorasi detail motif budaya/karya seni dengan titik sorotan makna.",
-            spec: "Tampilkan ilustrasi vektor motif/karya seni dengan fitur zoom kontrol serta titik anotasi (hotspot) yang menjelaskan teknik pembuatan, unsur rupa, dan filosofi budaya di balik tiap bagian motif."
+            spec: "Tampilkan ilustrasi vektor motif budaya/karya seni dengan fitur zoom kontrol serta titik anotasi (hotspot) yang menjelaskan teknik, unsur rupa, dan makna filosofisnya."
           }
         ],
         preset: {
           topic: "Teori Warna & Harmoni Komposisi Seni Rupa",
           objective: "Siswa mampu membedakan warna primer, sekunder, tersier serta menyusun skema warna komplementer dan analogus.",
-          detail: "Sediakan roda warna interaktif 12 segmen, wadah pencampur 2 warna, dan pratinjau poster mini yang warnanya langsung berubah mengikuti skema warna pilihan siswa.",
+          detail: "Sediakan roda warna interaktif 12 segmen, wadah pencampur 2 warna, dan pratinjau poster mini yang warnanya langsung berubah mengikuti skema pilihan siswa.",
           misconception: "Bedakan pencampuran warna pigmen/cat (RYB: Merah-Kuning-Biru) pada seni rupa dengan warna cahaya layar (RGB)."
         }
       },
+
       pjok: {
         code: "PJK",
         name: "PJOK",
@@ -1280,58 +1639,61 @@
           {
             id: "papan_taktik",
             label: "Papan Taktik Lapangan Interaktif",
-            desc: "Geser ikon pemain dan gambar rute pergerakan strategi tim.",
+            desc: "Geser ikon pemain dan gambar rute pergerakan strategi permainan tim.",
             spec: "Bangun papan taktik lapangan olahraga berbasis SVG/Canvas dengan ikon pemain yang dapat digeser bebas, tombol preset formasi, serta mode menggambar panah arah umpan/pergerakan."
           },
           {
-            id: "gerakan_slowmo",
+            id: "fase_gerak",
             label: "Pemutar Fase Gerakan (Slow-Motion)",
             desc: "Kontrol frame-by-frame teknik dasar olahraga dengan indikator sudut tubuh.",
-            spec: "Bangun animasi vektor teknik gerak olahraga yang dapat dikontrol dengan slider fase (awal, pelaksanaan, lanjutan) atau tombol slow-motion, lengkap dengan penanda titik tumpu dan posisi sendi yang benar."
+            spec: "Bangun animasi vektor teknik gerak olahraga yang dapat dikontrol dengan slider fase (awalan, pelaksanaan, lanjutan) atau slow-motion, lengkap dengan penanda titik tumpu dan sudut sendi."
           },
           {
             id: "kalkulator_bugar",
             label: "Simulasi & Kalkulator Kebugaran",
-            desc: "Hitung IMT, zona detak jantung latihan, dan simulasi keseimbangan kalori.",
-            spec: "Bangun alat hitung dan simulator kebugaran interaktif (seperti zona detak jantung latihan, IMT, atau keseimbangan asupan-aktivitas) dengan meteran visual real-time dan rekomendasi latihan aman sesuai usia."
+            desc: "Hitung IMT, zona detak jantung latihan, dan keseimbangan kalori.",
+            spec: "Bangun simulator kebugaran interaktif (zona detak jantung latihan, IMT, atau keseimbangan kalori) dengan meteran visual real-time dan rekomendasi aktivitas fisik aman."
           }
         ],
         preset: {
           topic: "Formasi dan Pola Penyerangan Bola Basket",
           objective: "Siswa mampu memahami peran 5 posisi pemain bola basket dan merancang pola pergerakan dasar saat menyerang.",
-          detail: "Sediakan setengah lapangan basket SVG, 5 pion penyerang (PG, SG, SF, PF, C) dan 5 pion bertahan yang bisa digeser, tombol preset formasi (1-2-2 dan 1-3-1), serta tombol animasi jalur operan.",
-          misconception: "Pastikan siswa memahami aturan area 3 detik (paint area) dan perbedaan tugas Point Guard sebagai pengatur serangan dengan Center di bawah ring."
+          detail: "Sediakan setengah lapangan basket SVG, 5 pion penyerang (PG, SG, SF, PF, C) dan 5 pion bertahan yang bisa digeser, tombol preset formasi (1-2-2 dan 1-3-1), serta animasi jalur operan.",
+          misconception: "Pahami aturan area 3 detik (paint area) dan perbedaan peran Point Guard sebagai pengatur serangan dengan Center di bawah ring."
         }
       },
-      informatika: {
-        code: "TIK",
-        name: "Informatika / Kejuruan",
-        sub: "Logika, Jaringan, Simulasi Alat",
+
+      kejuruan_smk: {
+        code: "KJR",
+        name: "Kejuruan / Produktif",
+        sub: "Konsentrasi Keahlian SMK",
+        isCustomVocational: true,
         interactivities: [
           {
-            id: "algoritma_visual",
-            label: "Visualisasi Algoritma & Flowchart",
-            desc: "Jalankan blok perintah langkah demi langkah dan lihat perubahan variabel.",
-            spec: "Bangun simulator eksekusi algoritma/logika (seperti urutan blok perintah, gerbang logika, atau sorting) dengan tombol 'Jalankan per Langkah (Step)' yang menyorot alur aktif dan perubahan nilai variabel secara real-time."
+            id: "simulator_sop",
+            label: "Simulator Panel Alat & SOP Kerja",
+            desc: "Simulasi pengoperasian alat/panel/rangkaian sesuai prosedur keselamatan (K3).",
+            spec: "Bangun panel simulator alat/sistem kejuruan berbasis SVG/Canvas di mana siswa mengoperasikan sakelar, menyambungkan komponen, atau menjalankan urutan SOP kerja dengan indikator status alat dan peringatan K3 jika urutan salah."
           },
           {
-            id: "simulasi_alat",
-            label: "Simulator Panel Alat & Rangkaian",
-            desc: "Hubungkan komponen/kabel atau atur sakelar untuk menguji fungsi sistem.",
-            spec: "Bangun papan simulasi teknis (seperti topologi jaringan, rangkaian elektronika, atau panel mesin) di mana siswa menyambungkan komponen/mengatur sakelar dan mengamati indikator status sistem serta pesan error jika salah sambung."
-          },
-          {
-            id: "troubleshooting",
+            id: "troubleshooting_smk",
             label: "Misi Diagnosis & Troubleshooting",
-            desc: "Temukan sumber kerusakan sistem dari gejala yang muncul secara sistematis.",
-            spec: "Bangun skenario diagnosis kerusakan teknis di mana siswa memilih alat uji virtual untuk memeriksa tiap komponen, menemukan titik gangguan, dan menerapkan langkah perbaikan yang sesuai SOP."
+            desc: "Analisis gejala kerusakan dengan alat ukur virtual dan tentukan langkah perbaikan.",
+            spec: "Bangun skenario diagnosis gangguan kerja lapangan (troubleshooting) di mana siswa memeriksa titik uji dengan alat ukur virtual, mengidentifikasi komponen rusak, dan memilih tindakan perbaikan paling efisien."
+          },
+          {
+            id: "kalkulasi_produksi",
+            label: "Kalkulator & Optimasi Produksi/Jasa",
+            desc: "Hitung kebutuhan bahan, HPP, dimensi teknis, atau estimasi kerja real-time.",
+            spec: "Bangun alat simulasi perencanaan kerja vokasi (perhitungan HPP, komposisi bahan, toleransi ukur, atau penjadwalan produksi) dengan grafik/indikator kelayakan hasil secara real-time."
           }
         ],
         preset: {
-          topic: "Gerbang Logika Dasar (AND, OR, NOT) & Tabel Kebenaran",
-          objective: "Siswa mampu menguji kombinasi input biner (0 dan 1) pada gerbang logika AND, OR, dan NOT serta memverifikasi output lampunya.",
-          detail: "Sediakan 2 sakelar input biner (0/1), pemilih jenis gerbang logika SVG, jalur kabel yang menyala saat berarus (1), indikator lampu output, serta tabel kebenaran yang menyorot baris aktif secara otomatis.",
-          misconception: "Tegaskan bahwa gerbang OR menghasilkan output 1 meskipun kedua input bernilai 1 (berbeda dengan XOR)."
+          customName: "Teknik Jaringan Komputer & Telekomunikasi (TJKT)",
+          topic: "Pengalamatan IPv4 dan Subnetting Jaringan Lokal",
+          objective: "Siswa mampu menentukan Network ID, Broadcast ID, dan rentang IP Host valid pada prefix /24 hingga /28.",
+          detail: "Sediakan 4 komputer klien dan 1 router SVG, input/slider prefix CIDR (/24–/28), kalkulator biner visual 32-bit, serta tombol 'Uji Ping' yang menunjukkan koneksi berhasil atau gagal antar-perangkat.",
+          misconception: "Alamat Network ID (pertama) dan Broadcast ID (terakhir) dalam satu subnet tidak boleh digunakan sebagai alamat IP perangkat host/komputer."
         }
       }
     };
@@ -1385,22 +1747,25 @@
        ========================================================================= */
 
     const state = {
-      stage: "smp",
-      gradeId: "smp7",
-      subject: "ipa",
-      interactivityId: "lab_virtual",
+      stage: "sma",
+      gradeId: "sma10",
+      subject: "fisika",
+      interactivityId: "simulasi_mekanika",
       formatId: "alur_4_tahap",
       mode: "single",
       iterStep: 0
     };
 
-    const HISTORY_KEY = "gp_edu_prompt_history_v2";
+    const HISTORY_KEY = "gp_edu_prompt_history_v3";
 
     const els = {
       stageGrid: document.getElementById("stageGrid"),
       gradePills: document.getElementById("gradePills"),
       levelBadge: document.getElementById("levelBadge"),
+      subjectStageTag: document.getElementById("subjectStageTag"),
       subjectGrid: document.getElementById("subjectGrid"),
+      customSubjectWrap: document.getElementById("customSubjectWrap"),
+      customSubjectInput: document.getElementById("customSubjectInput"),
       topicInput: document.getElementById("topicInput"),
       objectiveInput: document.getElementById("objectiveInput"),
       interactivitySubLabel: document.getElementById("interactivitySubLabel"),
@@ -1433,12 +1798,21 @@
     };
 
     /* =========================================================================
-       4. RENDER ANTARMUKA TERPISAH (JENJANG, KELAS, MAPEL, INTERAKTIVITAS)
+       4. RENDER ANTARMUKA DINAMIS PER JENJANG & MAPEL INDIVIDUAL
        ========================================================================= */
 
     function getCurrentGradeObj() {
       const stageObj = STAGE_DATA[state.stage];
       return stageObj.grades.find((g) => g.id === state.gradeId) || stageObj.grades[0];
+    }
+
+    function getDisplaySubjectName() {
+      const subj = SUBJECT_CATALOG[state.subject];
+      if (subj.isCustomVocational) {
+        const custom = els.customSubjectInput.value.trim();
+        return custom ? `Kejuruan SMK — ${custom}` : "Kejuruan / Produktif SMK";
+      }
+      return subj.name;
     }
 
     function renderStages() {
@@ -1451,8 +1825,15 @@
         btn.addEventListener("click", () => {
           state.stage = key;
           state.gradeId = STAGE_DATA[key].grades[0].id;
+          // Jika mapel aktif tidak tersedia di jenjang baru, pindah ke mapel pertama jenjang tersebut
+          const availableSubjects = STAGE_DATA[key].subjects;
+          if (!availableSubjects.includes(state.subject)) {
+            state.subject = availableSubjects[0];
+          }
           renderStages();
           renderGrades(true);
+          renderSubjects();
+          renderInteractivities();
           updateAll();
         });
         els.stageGrid.appendChild(btn);
@@ -1488,8 +1869,17 @@
     }
 
     function renderSubjects() {
+      const stageObj = STAGE_DATA[state.stage];
+      const availableKeys = stageObj.subjects;
+      if (!availableKeys.includes(state.subject)) {
+        state.subject = availableKeys[0];
+      }
+
+      els.subjectStageTag.textContent = `Daftar Mapel Jenjang ${stageObj.short} (${availableKeys.length} Mapel)`;
       els.subjectGrid.innerHTML = "";
-      Object.entries(SUBJECT_DATA).forEach(([key, item]) => {
+
+      availableKeys.forEach((key) => {
+        const item = SUBJECT_CATALOG[key];
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "subject-card" + (key === state.subject ? " active" : "");
@@ -1508,10 +1898,13 @@
         });
         els.subjectGrid.appendChild(btn);
       });
+
+      const isCustom = Boolean(SUBJECT_CATALOG[state.subject].isCustomVocational);
+      els.customSubjectWrap.classList.toggle("show", isCustom);
     }
 
     function renderInteractivities() {
-      const subj = SUBJECT_DATA[state.subject];
+      const subj = SUBJECT_CATALOG[state.subject];
       const list = subj.interactivities;
       els.interactivitySubLabel.textContent = `Pilihan Interaktivitas Khusus ${subj.name}`;
 
@@ -1563,12 +1956,12 @@
     function renderActiveChips() {
       const stageObj = STAGE_DATA[state.stage];
       const gradeObj = getCurrentGradeObj();
-      const subj = SUBJECT_DATA[state.subject];
+      const subj = SUBJECT_CATALOG[state.subject];
       const inter = subj.interactivities.find((i) => i.id === state.interactivityId) || subj.interactivities[0];
 
       els.activeChips.innerHTML = `
         <span class="chip">${stageObj.short} &bull; ${gradeObj.label}</span>
-        <span class="chip">${subj.name}</span>
+        <span class="chip">${escapeHtml(getDisplaySubjectName())}</span>
         <span class="chip">${inter.label}</span>
       `;
     }
@@ -1590,7 +1983,7 @@
         rules.push("Sertakan efek suara umpan balik halus (klik, benar, salah, selesai) menggunakan Web Audio API murni bawaan peramban yang aktif setelah interaksi klik pertama siswa, dilengkapi tombol mute.");
       }
       if (els.optTTS.checked) {
-        rules.push("Sertakan fitur pembaca teks otomatis/klik (Text-to-Speech Bahasa Indonesia via Web Speech API) pada instruksi dan kartu materi agar ramah bagi siswa yang membutuhkan dukungan baca.");
+        rules.push("Sertakan fitur pembaca teks otomatis/klik (Text-to-Speech via Web Speech API) pada instruksi dan kartu materi agar ramah bagi siswa yang membutuhkan dukungan baca.");
       }
       if (els.optScoreCopy.checked) {
         rules.push("Pada layar akhir/rangkuman, sediakan tombol 'Salin Bukti Belajar' ke clipboard (dengan fallback execCommand agar bekerja di sandbox Google Sites) berisi nama topik, jenjang/kelas, perolehan bintang/skor, dan kode validasi unik untuk ditempel siswa ke Google Form.");
@@ -1611,11 +2004,12 @@
       const stageObj = STAGE_DATA[state.stage];
       const gradeObj = getCurrentGradeObj();
       const profile = COGNITIVE_PROFILES[gradeObj.profile];
-      const subj = SUBJECT_DATA[state.subject];
+      const subj = SUBJECT_CATALOG[state.subject];
       const inter = subj.interactivities.find((i) => i.id === state.interactivityId) || subj.interactivities[0];
       const format = FORMAT_DATA[state.formatId];
 
       const fullLevelLabel = `${stageObj.short} — ${gradeObj.label}`;
+      const displaySubject = getDisplaySubjectName();
       const topic = els.topicInput.value.trim() || "[ISI TOPIK MATERI DI SINI]";
       const objective = els.objectiveInput.value.trim() || "[ISI TUJUAN PEMBELAJARAN DI SINI]";
       const detail = els.mechanicDetail.value.trim();
@@ -1625,7 +2019,7 @@
       const headerContext = [
         `KONTEKS KURIKULUM:`,
         `- Jenjang & Kelas: ${fullLevelLabel}`,
-        `- Mata Pelajaran: ${subj.name}`,
+        `- Mata Pelajaran: ${displaySubject}`,
         `- Topik Materi: ${topic}`,
         `- Tujuan Pembelajaran: ${objective}`
       ].join("\n");
@@ -1710,6 +2104,10 @@
     function updatePrecisionMeter() {
       let score = 20;
       const missing = [];
+
+      if (SUBJECT_CATALOG[state.subject].isCustomVocational && els.customSubjectInput.value.trim().length < 3) {
+        missing.push("Nama Konsentrasi Keahlian SMK");
+      }
 
       if (els.topicInput.value.trim().length >= 4) score += 25;
       else missing.push("Topik Materi");
@@ -1852,13 +2250,17 @@
     }
 
     function loadPresetForCurrentSubject() {
-      const preset = SUBJECT_DATA[state.subject].preset;
+      const subj = SUBJECT_CATALOG[state.subject];
+      const preset = subj.preset;
+      if (subj.isCustomVocational && preset.customName) {
+        els.customSubjectInput.value = preset.customName;
+      }
       els.topicInput.value = preset.topic;
       els.objectiveInput.value = preset.objective;
       els.mechanicDetail.value = preset.detail;
       els.misconceptionInput.value = preset.misconception;
       updateAll();
-      showToast(`Contoh ${SUBJECT_DATA[state.subject].name} dimuat.`);
+      showToast(`Contoh ${subj.name} dimuat.`);
     }
 
     /* =========================================================================
@@ -1866,6 +2268,7 @@
        ========================================================================= */
 
     [
+      els.customSubjectInput,
       els.topicInput,
       els.objectiveInput,
       els.mechanicDetail,
@@ -1918,7 +2321,7 @@
       const entry = {
         id: "h_" + Date.now(),
         topic,
-        subjectName: SUBJECT_DATA[state.subject].name,
+        subjectName: getDisplaySubjectName(),
         levelLabel: `${stageObj.short} ${gradeObj.label}`,
         date: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short" }),
         promptText: els.promptOutput.value
@@ -1954,6 +2357,7 @@
     els.btnLoadPresetInline.addEventListener("click", loadPresetForCurrentSubject);
 
     els.btnResetForm.addEventListener("click", () => {
+      els.customSubjectInput.value = "";
       els.topicInput.value = "";
       els.objectiveInput.value = "";
       els.mechanicDetail.value = "";
